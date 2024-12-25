@@ -189,7 +189,11 @@ class ChildVerificationUploadInfoView
             ),
 
             CustomButton(
-                text: 'CONFIRM', onPressed: () {}, isLoading: false.obs),
+                text: 'CONFIRM',
+                onPressed: () {
+                  controller.updateSelectedIndex(0);
+                },
+                isLoading: false.obs),
 
             const SizedBox(
               height: 50,
