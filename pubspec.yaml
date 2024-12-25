@@ -1,0 +1,106 @@
+name: luncher
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  get: ^4.6.6
+  get_cli: ^1.8.1
+  pin_code_fields: ^8.0.1
+  pinput: ^5.0.0
+  roundcheckbox: ^2.0.5
+  sizer: ^3.0.4
+  flutter_advanced_switch: ^3.1.0
+  table_calendar: ^3.1.2
+  fluentui_system_icons: ^1.1.268
+  ionicons: ^0.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/animations/
+    - assets/icon/
+    - assets/fonts/
+    - assets/images/
+  
+  fonts:
+    - family: Metropolis
+      fonts:
+        - asset: assets/fonts/Metropolis-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Metropolis-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Metropolis-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Metropolis-ExtraBold.otf
+          weight: 800
+        - asset: assets/fonts/Metropolis-Light.otf
+          weight: 300
+        - asset: assets/fonts/Metropolis-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Metropolis-Thin.otf
+          weight: 100
+        - asset: assets/fonts/Metropolis-RegularItalic.otf
+          weight: 400
+          style: italic
+
+    - family: Altoys
+      fonts:
+        - asset: assets/fonts/altoysitalic.otf
+          style: italic
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700    
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+        
+
+    - family: Europa
+      fonts:
+        - asset: assets/fonts/Europa-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Europa-Light.ttf
+          weight: 300
+         
+            
+
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-Thin.ttf
+          weight: 100
+
+
+  
+    
+
