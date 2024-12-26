@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
-  final List<String> imagePaths; // Use image paths instead of icons
+  final List<String> imagePaths;
 
   const CustomBottomNavBar({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onItemTapped,
     required this.imagePaths,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +21,16 @@ class CustomBottomNavBar extends StatelessWidget {
       shape: const CircularNotchedRectangle(),
       elevation: 8,
       child: Container(
-        width: double.infinity, // Ensures full width
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withOpacity(0.4),
               spreadRadius: 1,
               blurRadius: 10,
-              offset: const Offset(0, -3), // Shadow upward
+              offset: const Offset(0, -3),
             ),
           ],
         ),
@@ -42,18 +41,13 @@ class CustomBottomNavBar extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => onItemTapped(index),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.center, // Center horizontally
-                  mainAxisAlignment:
-                      MainAxisAlignment.start, // Align items at the top
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     // Gradient Indicator
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       height: 6,
-                      width: selectedIndex == index
-                          ? 43
-                          : 0, // Hide if not selected
+                      width: selectedIndex == index ? 43 : 0,
                       decoration: BoxDecoration(
                         gradient: selectedIndex == index
                             ? const LinearGradient(
@@ -66,12 +60,26 @@ class CustomBottomNavBar extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Image (Different sizes for different icons)
-                    Image.asset(
-                      imagePaths[index],
-                      width: 24,
-                      height: 24,
-                      color: const Color(0xFF707070),
+                    // Container to maintain consistent alignment
+                    SizedBox(
+                      height: 26, // Height of the largest icon
+                      child: Center(
+                        // Centers the image vertically
+                        child: Image.asset(
+                          imagePaths[index],
+                          width: imagePaths[index] == 'assets/icon/idcard.png'
+                              ? 26
+                              : (imagePaths[index] == 'assets/icon/active.png'
+                                  ? 23
+                                  : 20),
+                          height: imagePaths[index] == 'assets/icon/idcard.png'
+                              ? 26
+                              : (imagePaths[index] == 'assets/icon/active.png'
+                                  ? 23
+                                  : 20),
+                          color: const Color(0xFF707070),
+                        ),
+                      ),
                     ),
                   ],
                 ),

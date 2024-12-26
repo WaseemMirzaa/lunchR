@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/home_settings/controllers/home_settings_controller.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
+import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 
 import '../controllers/profile_controller.dart';
 
@@ -129,15 +130,8 @@ class ProfileView extends GetView<ProfileController> {
               ),
             ),
             const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextFieldWidget(
-                  width: double.infinity,
-                  height: 56,
-                  text: 'School / Collage Name',
-                  isSuffix: true,
-                  textController: nameController),
-            ),
+            const SimpleTextFieldWithOutSuffixWidget(
+                hintText: 'School/Collage Name')
           ],
         ),
       ),

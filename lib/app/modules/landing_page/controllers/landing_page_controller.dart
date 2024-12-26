@@ -8,20 +8,17 @@ import 'package:luncher/app/modules/parents_history/controllers/parents_history_
 import 'package:luncher/app/modules/parents_history/views/parents_history_view.dart';
 import 'package:luncher/app/modules/parents_home/controllers/parents_home_controller.dart';
 import 'package:luncher/app/modules/parents_home/views/parents_home_view.dart';
-import 'package:luncher/app/modules/settings/controllers/settings_controller.dart';
-import 'package:luncher/app/modules/settings/views/settings_view.dart';
 
 class LandingPageController extends GetxController {
   final List<String> images = [
     'assets/icon/home.png',
     'assets/icon/file.png',
-    
     'assets/icon/active.png',
     'assets/icon/settings.png',
   ];
 
   final List<Widget> screens = [
-      GetBuilder<ParentsHomeController>(
+    GetBuilder<ParentsHomeController>(
       init: ParentsHomeController(),
       builder: (_) => const ParentsHomeView(),
     ),
@@ -29,7 +26,6 @@ class LandingPageController extends GetxController {
       init: ParentsHistoryController(),
       builder: (_) => const ParentsHistoryView(),
     ),
-  
     GetBuilder<NotificationsController>(
       init: NotificationsController(),
       builder: (_) => const NotificationsView(),

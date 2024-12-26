@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_selectable_options.dart';
 
@@ -73,7 +74,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                     height: 36,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -142,6 +143,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   Get.toNamed(Routes.LANDING_PAGE);
                 },
                 isLoading: RxBool(false)),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -161,7 +163,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   // Type of Payment
   Widget _buildClassRoomDelivery() {
     return SelectableOptions(
-      title: 'Classroom Delivery ?',
+      isSingleRow: true,
+      title: 'Classroom Delivery?',
       options: const ['No', 'Yes'],
       selectedOption: controller
           .selectedClassRoomDeliveryOption, // Pass the observable to SelectableOptions
@@ -241,11 +244,44 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                     return Theme(
                       data: ThemeData.light().copyWith(
                         primaryColor: const Color(
-                            0xFFF4C150), // Customize the primary color
-                        cardColor: const Color(0xFFF4C150),
-
+                            0xFFE65100), // Dark orange for primary color
                         buttonTheme: const ButtonThemeData(
-                          textTheme: ButtonTextTheme.primary,
+                          textTheme:
+                              ButtonTextTheme.primary, // Button text color
+                        ),
+                        // Customizing time picker button colors
+                        timePickerTheme: const TimePickerThemeData(
+                          backgroundColor:
+                              Color(0xFFFFE0B2), // Light orange background
+                          dialBackgroundColor:
+                              Color(0xFFFF7043), // Dark orange dial background
+                          dialHandColor:
+                              Color(0xFFE65100), // Dark orange dial hand
+                          dialTextColor: Color.fromARGB(
+                              255, 255, 255, 255), // Lighter orange dial text
+                          entryModeIconColor:
+                              Color(0xFFE65100), // Dark orange entry mode icon
+                        ),
+                        cardColor: const Color(
+                            0xFFFFA726), // Light orange for selection card background
+                        dialogBackgroundColor:
+                            const Color(0xFFFFE0B2), // Light orange for dialogs
+                        textTheme: const TextTheme(
+                          bodyLarge: TextStyle(
+                              color: Color(0xFFE65100)), // Dark orange text
+                          bodyMedium: TextStyle(
+                              color: Color(0xFFFF7043)), // Darker orange text
+                        ),
+                        colorScheme: const ColorScheme.light(
+                          primary: Color(0xFFE65100), // Dark orange primary
+                          onPrimary: Color(
+                              0xFFFFE0B2), // Light orange for text on primary
+                          secondary:
+                              Color(0xFFFF7043), // Secondary as darker orange
+                          onSecondary: Color(0xFFFFE0B2), // Text on secondary
+                          background:
+                              Color(0xFFFFCC80), // Light orange background
+                          onBackground: Color(0xFFE65100), // Text on background
                         ),
                       ),
                       child: child!,
@@ -340,7 +376,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   // Cafeteria details container
   Widget _buildCafeteriaDetails() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: const EdgeInsets.only(left: 8, right: 8),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -417,16 +453,19 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 70,
-          height: 61,
-          decoration: BoxDecoration(
-            color: Colors.grey[300], // Placeholder for image or content
-            borderRadius: BorderRadius.circular(12),
-            image: const DecorationImage(
-              image: AssetImage(
-                  'assets/images/gravy.png'), // Replace with your image
-              fit: BoxFit.cover,
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Container(
+            width: 70,
+            height: 61,
+            decoration: BoxDecoration(
+              color: Colors.grey[300], // Placeholder for image or content
+              borderRadius: BorderRadius.circular(12),
+              image: const DecorationImage(
+                image: AssetImage(
+                    'assets/images/gravy.png'), // Replace with your image
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

@@ -32,12 +32,12 @@ class SelectionTile extends StatelessWidget {
         width: 136, // Fixed width for the container
         decoration: BoxDecoration(
           color: Colors.grey[200],
-          borderRadius: BorderRadius.all(Radius.circular(14)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
               blurRadius: 6,
-              offset: Offset(0, 3), // Position of the shadow
+              offset: const Offset(0, 3), // Position of the shadow
             ),
           ],
         ),
@@ -59,6 +59,7 @@ class SelectionTile extends StatelessWidget {
                 text,
                 style: AppTextStyles.MetropolisBold.copyWith(
                   fontSize: 22, // Adjust font size as needed
+                  color: const Color(0xFF1B1C20), // Keep text color black
                 ),
               ),
             ),

@@ -54,21 +54,6 @@ class TextFieldWidget extends StatefulWidget {
 }
 
 class _TextFieldWidgetState extends State<TextFieldWidget> {
-  bool _isTextObscured = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Set the initial state based on isObscure flag
-    _isTextObscured = widget.isPassword;
-  }
-
-  void _toggleObscureText() {
-    setState(() {
-      _isTextObscured = !_isTextObscured;
-    });
-  }
-
   void _unfocus(BuildContext context) {
     FocusScope.of(context).unfocus();
   }

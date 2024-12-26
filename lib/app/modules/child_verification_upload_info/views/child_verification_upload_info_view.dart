@@ -92,14 +92,39 @@ class ChildVerificationUploadInfoView
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: Center(
-                child: Image.asset(
-                  'assets/icon/camera.png', // Change to your image asset
-                  width: 75,
-                  height: 75,
-                  fit: BoxFit.contain,
+            SizedBox(height: 5), // Spacing between date and image
+
+            // Center circular image
+            Center(
+              child: Container(
+                width: 125,
+                height: 125,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.white, // White border color
+                    width: 3, // Border width
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black
+                          .withOpacity(0.25), // Shadow color with transparency
+                      blurRadius: 8, // Spread of the shadow
+                      offset:
+                          const Offset(0, 4), // Position of the shadow (x, y)
+                    ),
+                  ],
+                ),
+                child: ClipOval(
+                  // Ensures the image stays within the circular shape
+                  child: Padding(
+                    padding: const EdgeInsets.all(35.0),
+                    child: Image.asset(
+                      "assets/icon/camera.png",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -127,8 +152,8 @@ class ChildVerificationUploadInfoView
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 227,
-                    height: 249,
+                    width: 166,
+                    height: 183,
                     decoration: BoxDecoration(
                       color: Colors.white
                           .withOpacity(0.9), // Optional background color
@@ -140,7 +165,7 @@ class ChildVerificationUploadInfoView
                         Image.asset(
                           'assets/images/gra.png', // Change to your image asset
                           width: double.infinity,
-                          height: 0.85 * 249, // 80% of container height
+                          height: 153, // 80% of container height
                           fit: BoxFit.contain,
                         ),
                         // Bottom row with text and price
@@ -153,13 +178,13 @@ class ChildVerificationUploadInfoView
                               Text(
                                 'Chicken Gravy',
                                 style: AppTextStyles.MetropolisMedium.copyWith(
-                                  fontSize: 22,
+                                  fontSize: 16,
                                 ),
                               ),
                               Text(
                                 '\$25',
                                 style: AppTextStyles.MetropolisMedium.copyWith(
-                                  fontSize: 22,
+                                  fontSize: 16,
                                 ),
                               ),
                             ],

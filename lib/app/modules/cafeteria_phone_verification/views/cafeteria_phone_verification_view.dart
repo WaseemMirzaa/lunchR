@@ -90,78 +90,73 @@ class CafeteriaPhoneVerificationView
       child: Scaffold(
         backgroundColor: AppColors.whiteColor,
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 60), // Padding to push content down
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 200), // Space between logo and form
 
-                const SizedBox(height: 140), // Space between logo and form
-
-                // Heading text
-                Text(
-                  'VERIFICATION',
-                  style: AppTextStyles.MetropolisMedium.copyWith(
-                    fontSize: 18,
-                    color: const Color(0xFF434343),
-                  ),
-                ),
-
-                const SizedBox(
-                    height: 20), // Space between heading and text field
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: Text(
-                    'A Verification Code Has Been Sent On To Your Phone Number',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.MetropolisRegular.copyWith(
-                      fontSize: 13,
-                      color: const Color(0xFF858585),
+                    // Heading text
+                    Text(
+                      'VERIFICATION',
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 18,
+                        color: const Color(0xFF434343),
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(
+                        height: 20), // Space between heading and text field
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: Text(
+                        'A Verification Code Has Been Sent On To Your Phone Number',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                          fontSize: 13,
+                          color: const Color(0xFF858585),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(
+                        height: 40), // Space between text and OTP field
+
+                    Pinput(
+                      defaultPinTheme: defaultPinTheme,
+                      focusedPinTheme: focusedPinTheme,
+                      submittedPinTheme: submittedPinTheme,
+
+                      validator: (s) {
+                        return s == '2222' ? null : 'Pin is incorrect';
+                      },
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      showCursor: true,
+                      onCompleted: (pin) {},
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceEvenly, // Adds even spacing between boxes
+                    ),
+
+                    const SizedBox(
+                        height: 20), // Space between OTP field and button
+                  ],
                 ),
-
-                const SizedBox(height: 40), // Space between text and OTP field
-
-                Pinput(
-                  defaultPinTheme: defaultPinTheme,
-                  focusedPinTheme: focusedPinTheme,
-                  submittedPinTheme: submittedPinTheme,
-
-                  validator: (s) {
-                    return s == '2222' ? null : 'Pin is incorrect';
-                  },
-                  pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                  showCursor: true,
-                  onCompleted: (pin) {},
-                  mainAxisAlignment: MainAxisAlignment
-                      .spaceEvenly, // Adds even spacing between boxes
-                ),
-
-                const SizedBox(
-                    height: 30), // Space between OTP field and button
-
-                // Verify Button
-                CustomButton(
-                  text: 'VERIFY',
-                  onPressed: () {
-                    // Get.toNamed(Routes.CHILDREN_DETAILS);
-                    Get.toNamed(Routes.CAFETERIA_DETAIL);
-                  },
-                  isLoading: false.obs, // RxBool for loading state
-                  gradientColors: const [Colors.orange, Colors.red],
-                  height: 60.0,
-                  borderRadius: 12.0,
-                  fontSize: 18.0,
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                ),
-              ],
-            ),
+              ),
+              // Custom button to submit the email
+              CustomButton(
+                text: 'VERIFY',
+                onPressed: () {
+                  Get.toNamed(Routes.CAFETERIA_DETAIL);
+                },
+                isLoading: false.obs, // RxBool for loading state
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
 }

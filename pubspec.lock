@@ -142,14 +142,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
-  fluentui_system_icons:
-    dependency: "direct main"
-    description:
-      name: fluentui_system_icons
-      sha256: "681c1c83c7261d6e0b4010ac3a20448ddb2c4b8c82f796cd52ce759f006cc60e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.268"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -224,14 +216,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
-  ionicons:
-    dependency: "direct main"
-    description:
-      name: ionicons
-      sha256: "5496bc65a16115ecf05b15b78f494ee4a8869504357668f0a11d689e970523cf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.2"
   leak_tracker:
     dependency: transitive
     description:

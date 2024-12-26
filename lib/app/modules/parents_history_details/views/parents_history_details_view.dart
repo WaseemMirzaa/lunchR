@@ -68,14 +68,15 @@ class ParentsHistoryDetailsView
             ),
 
             // Second custom Row with container, image, and texts
+            // Second custom Row with container, image, and texts
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 227,
-                    height: 249,
+                    width: 166,
+                    height: 183,
                     decoration: BoxDecoration(
                       color: Colors.white
                           .withOpacity(0.9), // Optional background color
@@ -87,7 +88,7 @@ class ParentsHistoryDetailsView
                         Image.asset(
                           'assets/images/gra.png', // Change to your image asset
                           width: double.infinity,
-                          height: 0.85 * 249, // 80% of container height
+                          height: 153, // 80% of container height
                           fit: BoxFit.contain,
                         ),
                         // Bottom row with text and price
@@ -100,13 +101,13 @@ class ParentsHistoryDetailsView
                               Text(
                                 'Chicken Gravy',
                                 style: AppTextStyles.MetropolisMedium.copyWith(
-                                  fontSize: 22,
+                                  fontSize: 16,
                                 ),
                               ),
                               Text(
                                 '\$25',
                                 style: AppTextStyles.MetropolisMedium.copyWith(
-                                  fontSize: 22,
+                                  fontSize: 16,
                                 ),
                               ),
                             ],

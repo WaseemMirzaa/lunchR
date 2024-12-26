@@ -27,8 +27,8 @@ class CustomButton extends StatelessWidget {
     this.forcedTextColor = AppColors.blackColor,
     this.width = double.infinity,
     this.gradientColors = const [
-      AppColors.gradientStartColor,
-      AppColors.gradientEndColor,
+      Colors.red,
+      Colors.orange,
     ],
     this.borderRadius = 8.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
@@ -99,7 +99,7 @@ class CustomButton extends StatelessWidget {
                                     )
                                   : AppTextStyles.PoppinsBold.copyWith(
                                       fontSize: fontSize,
-                                      color: AppColors.gradientStartColor,
+                                      color: const Color(0xFFFF2F69),
                                     )),
                 ),
               )),

@@ -5,6 +5,7 @@ import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 import 'package:luncher/widgets/custom_textfeild.dart';
+import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_meal_details_controller.dart';
@@ -24,7 +25,7 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,28 +77,20 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
                   ),
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 36,
                 ),
-                TextFieldWidget(
-                    isSuffix: true,
-                    text: 'Meal Name',
-                    textController: mealController),
+                const SimpleTextFieldWithOutSuffixWidget(hintText: 'Meal Name'),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
-                TextFieldWidget(
-                    isSuffix: true,
-                    text: 'Availability',
-                    textController: priceController),
+                const SimpleTextFieldWithOutSuffixWidget(
+                    hintText: 'Availability'),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
-                TextFieldWidget(
-                    isSuffix: true,
-                    text: 'Price',
-                    textController: descriptionController),
+                const SimpleTextFieldWithOutSuffixWidget(hintText: 'Price'),
                 const SizedBox(
-                  height: 15,
+                  height: 16,
                 ),
                 Container(
                   width: double.infinity,

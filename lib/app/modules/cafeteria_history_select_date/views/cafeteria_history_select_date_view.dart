@@ -161,7 +161,10 @@ class CafeteriaHistorySelectDateView
           ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.only(
+              left: 16,
+              top: 8,
+            ),
             child: Text(
               'Upcoming',
               style: AppTextStyles.RobotoRegular.copyWith(
@@ -176,6 +179,7 @@ class CafeteriaHistorySelectDateView
           Expanded(
               child: ListView.builder(
             itemCount: 3, // Hardcoded number of items
+            padding: EdgeInsets.only(top: 0),
             itemBuilder: (context, index) {
               return _buildOrderCard(context,
                   historyController); // Call the method to build each order card
@@ -196,7 +200,7 @@ Widget _buildOrderCard(
     child: Container(
       height: 72, // Fixed height for each item
       width: double.infinity, // Infinite width
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -208,7 +212,7 @@ Widget _buildOrderCard(
               child: Container(
                 width: 8.0, // Size of the dot
                 height: 8.0, // Size of the dot
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFFFF0031), // Dot color
                   shape: BoxShape.circle, // Makes the container circular
                 ),
@@ -227,7 +231,7 @@ Widget _buildOrderCard(
                   color: Colors.grey.withOpacity(0.3),
                   blurRadius: 6.0,
                   spreadRadius: 2.0,
-                  offset: Offset(2, 2),
+                  offset: const Offset(2, 2),
                 ),
               ],
             ),
@@ -235,15 +239,15 @@ Widget _buildOrderCard(
               children: [
                 // Left side image (50x50) and Name + Subtitle
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 16.0),
                   child: Container(
                     width: 43, // Adjust width for more rectangular shape
                     height: 43, // Adjust height for more rectangular shape
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                           8.0), // Optional: for rounded corners
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage(
                             'assets/images/gra.png'), // Image asset path
                         fit: BoxFit.cover, // Fit the image inside the container
@@ -252,7 +256,7 @@ Widget _buildOrderCard(
                   ),
                 ),
 
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,11 +269,11 @@ Widget _buildOrderCard(
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text("Wednesday",
                         style: AppTextStyles.RobotoRegular.copyWith(
                           fontSize: 12,
-                          color: Color(0xFFBFBFBF),
+                          color: const Color(0xFFBFBFBF),
                         )), // Hardcoded subtitle
                   ],
                 ),
@@ -277,7 +281,7 @@ Widget _buildOrderCard(
             ),
           ),
 
-          Spacer(),
+          const Spacer(),
 
           // Third column: Takes 15% of container width
           Padding(

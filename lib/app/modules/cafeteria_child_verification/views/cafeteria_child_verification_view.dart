@@ -6,6 +6,7 @@ import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
+import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_child_verification_controller.dart';
@@ -53,13 +54,15 @@ class CafeteriaChildVerificationView
 
                 const SizedBox(height: 60), // Padding to push content down
 
-                // Email TextField widget
-                TextFieldWidget(
-                  text: 'Child School ID',
-                  isSuffix: true,
-                  keyboardType: TextInputType.phone,
-                  textController: phoneController,
-                ),
+                // // Email TextField widget
+                // TextFieldWidget(
+                //   text: 'Child School ID',
+                //   isSuffix: true,
+                //   keyboardType: TextInputType.phone,
+                //   textController: phoneController,
+                // ),
+
+                const SimpleTextFieldWithOutSuffixWidget(hintText: 'Child School ID'),
 
                 const SizedBox(
                     height: 20), // Space between text field and button

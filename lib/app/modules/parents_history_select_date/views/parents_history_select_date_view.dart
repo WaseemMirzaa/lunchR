@@ -159,7 +159,10 @@ class ParentsHistorySelectDateView
           ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.only(
+              left: 16,
+              top: 8,
+            ),
             child: Text(
               'Upcoming',
               style: AppTextStyles.RobotoRegular.copyWith(
@@ -174,6 +177,8 @@ class ParentsHistorySelectDateView
           Expanded(
               child: ListView.builder(
             itemCount: 3, // Hardcoded number of items
+            padding: EdgeInsets.only(top: 0),
+
             itemBuilder: (context, index) {
               return _buildOrderCard(context,
                   historyController); // Call the method to build each order card

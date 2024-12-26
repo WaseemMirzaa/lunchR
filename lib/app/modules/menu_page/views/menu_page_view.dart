@@ -117,12 +117,12 @@ class MenuPageView extends GetView<MenuPageController> {
       ),
       itemCount: 6, // Total number of items
       itemBuilder: (context, index) {
-        return _buildMenuItem();
+        return _buildMenuItem(index);
       },
     );
   }
 
-  Widget _buildMenuItem() {
+  Widget _buildMenuItem(int index) {
     return SizedBox(
       width: 153,
       child: Column(
@@ -132,12 +132,20 @@ class MenuPageView extends GetView<MenuPageController> {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.asset(
-              'assets/images/gravy.png', // Replace with actual image path
+              // Use modulo operator to group indices
+              index % 3 == 0 || index % 3 == 3
+                  ? 'assets/images/gravy.png' // Images for index 0 and index 3
+                  : index % 3 == 1 || index % 3 == 4
+                      ? 'assets/images/pepper.png' // Images for index 1 and index 4
+                      : index % 3 == 2 || index % 3 == 5
+                          ? 'assets/images/roast.png' // Images for index 2 and index 5
+                          : 'assets/images/gravy.png', // Default image
               width: double.infinity, // Image takes the full width
               height: 91, // Full height of the container
               fit: BoxFit.cover,
             ),
           ),
+
           const SizedBox(height: 6), // Spacing between image and text
 
           // Menu Item Name and Price
@@ -146,7 +154,14 @@ class MenuPageView extends GetView<MenuPageController> {
             children: [
               // Menu Item Name
               Text(
-                'Item Name', // Replace with dynamic name
+                // Use modulo operator to group indices
+                index % 3 == 0 || index % 3 == 3
+                    ? 'Chicken Gravy' // Images for index 0 and index 3
+                    : index % 3 == 1 || index % 3 == 4
+                        ? 'Pepper Chicken' // Images for index 1 and index 4
+                        : index % 3 == 2 || index % 3 == 5
+                            ? 'Roast Chicken' // Images for index 2 and index 5
+                            : 'Roast Chicken', // Default image
                 style: AppTextStyles.MetropolisMedium.copyWith(
                   fontSize: 10,
                   color: Colors.black,
@@ -157,7 +172,14 @@ class MenuPageView extends GetView<MenuPageController> {
                 height: 4,
               ),
               Text(
-                '\$9.99', // Replace with dynamic price
+                // Use modulo operator to group indices
+                index % 3 == 0 || index % 3 == 3
+                    ? '\$25' // Images for index 0 and index 3
+                    : index % 3 == 1 || index % 3 == 4
+                        ? '\$45' // Images for index 1 and index 4
+                        : index % 3 == 2 || index % 3 == 5
+                            ? '\$25' // Images for index 2 and index 5
+                            : '\$25', // Default image
                 style: AppTextStyles.MetropolisMedium.copyWith(
                   fontSize: 10,
                   color: Colors.black,

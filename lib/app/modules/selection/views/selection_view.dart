@@ -46,12 +46,13 @@ class SelectionView extends GetView<SelectionController> {
 
               // 'TYPE SELECTION' text positioned much further below the center
               Text(
-                'TYPE SELECTION',
+                'Type Selection',
                 style: AppTextStyles.MetropolisBold.copyWith(
                   fontSize: 22,
                   color: AppColors.whiteColor, // Keep text white
                 ),
               ),
+
               const SizedBox(height: 60),
 
               // Additional spacing between the text and the row
@@ -78,7 +79,7 @@ class SelectionView extends GetView<SelectionController> {
 
               CustomButton(
                 isBackColor: false,
-                text: 'CONTNUE',
+                text: 'CONTINUE',
                 fontSize: 16,
                 onPressed: () {
                   // Get.toNamed(Routes.PHONE_AUTHENTICATION);

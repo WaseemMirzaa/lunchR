@@ -15,32 +15,32 @@ class NotificationsView extends GetView<NotificationsController> {
         message:
             "Hey Cody, you should definitely check out Yoga Six for hot yoga! They have amazing instructors...",
         timestamp: "11:23 AM",
-        imageUrl: "https://via.placeholder.com/150",
+        imageUrl: "assets/images/n1.png",
       ),
       ChatItem(
         name: "Scott Middough",
         message: "Yeah sounds good man. 👍",
         timestamp: "Aug 21",
-        imageUrl: "https://via.placeholder.com/150",
+       imageUrl: "assets/images/n2.png",
       ),
       ChatItem(
         name: "Thomas Hidalgo",
         message: "Hmm… good question. I'm not sure",
         timestamp: "Aug 19",
-        imageUrl: "https://via.placeholder.com/150",
+        imageUrl: "assets/images/n3.png",
       ),
       ChatItem(
         name: "Jamie Allender",
         message:
             "What type of surfboard did you end up buying? I was thinking of getting something similar.",
         timestamp: "Jul 19",
-        imageUrl: "https://via.placeholder.com/150",
+       imageUrl: "assets/images/n4.png",
       ),
       ChatItem(
         name: "Angel Hernandez",
         message: "You down to hit up TCP? Let me know when you’re free.",
         timestamp: "Jul 19",
-        imageUrl: "https://via.placeholder.com/150",
+        imageUrl: "assets/images/n5.png",
       ),
     ];
 
@@ -75,8 +75,7 @@ class NotificationsView extends GetView<NotificationsController> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16),
                               child: Container(
-                                height: 100,
-                                padding: const EdgeInsets.all(8),
+                                height: 80,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(8),
@@ -87,7 +86,7 @@ class NotificationsView extends GetView<NotificationsController> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(35),
                                       child: Image.asset(
-                                        'assets/images/userimg.png',
+                                        chat.imageUrl,
                                         width: 70,
                                         height: 70,
                                         fit: BoxFit.cover,
@@ -112,26 +111,27 @@ class NotificationsView extends GetView<NotificationsController> {
                                                 chat.name,
                                                 style: AppTextStyles.EuropaBold
                                                     .copyWith(
-                                                  color: Colors.black,
+                                                  color: const Color(0xFF334856),
+                                                  fontSize: 15,
                                                 ),
                                               ),
                                               Text(
                                                 chat.timestamp,
                                                 style: AppTextStyles.EuropaLight
                                                     .copyWith(
-                                                  color: Colors.black,
+                                                  color: const Color(0xFF798186),
+                                                  fontSize: 12,
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 4),
-                                          // Message (Subtitle)
+
                                           Text(
                                             chat.message,
                                             style: AppTextStyles.EuropaLight
                                                 .copyWith(
-                                              color: Colors.black,
-                                            ),
+                                                    color: const Color(0xFF6E8CA0),
+                                                    fontSize: 14),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -142,10 +142,9 @@ class NotificationsView extends GetView<NotificationsController> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: const Divider(
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Divider(
                                 color: Color(0xFFEEEEEE),
                                 thickness: 1,
                               ),

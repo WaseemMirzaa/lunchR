@@ -21,29 +21,34 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
       backgroundColor: Colors.white, // Set the background color to white
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 70,
-            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 70,
+                  ),
 
-            // Settings Title
-            Text(
-              'SELECT MEAL', // Title text
-              style: AppTextStyles.MetropolisMedium.copyWith(
-                fontSize: 18,
-                color: const Color(0xFF434343),
+                  // Settings Title
+                  Text(
+                    'SELECT MEAL', // Title text
+                    style: AppTextStyles.MetropolisMedium.copyWith(
+                      fontSize: 18,
+                      color: const Color(0xFF434343),
+                    ),
+                  ),
+                  const SizedBox(height: 42), // Spacing between title and list
+                  _buildSearchField(textController),
+                  const SizedBox(height: 30),
+                  _buildText(),
+                  _buildMenuList(),
+                  const SizedBox(height: 12),
+                ],
               ),
             ),
-            const SizedBox(height: 42), // Spacing between title and list
-            _buildSearchField(textController),
-            const SizedBox(height: 36),
-            _buildText(),
-
-            _buildMenuList(),
-            const SizedBox(height: 24),
             _buildBottomFixedButton(),
           ],
         ),
@@ -53,7 +58,8 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
 
   // Search TextField Widget (moved slightly down)
   Widget _buildSearchField(TextEditingController textController) {
-    return TextFieldWidget(
+    return 
+    TextFieldWidget(
       text: 'Search Meal',
       textController: textController,
       path: 'assets/icon/search.png',
@@ -85,18 +91,18 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3, // 3 items per row
         mainAxisSpacing: 16, // Spacing between rows
-        crossAxisSpacing: 16, // Spacing between columns
-        childAspectRatio: 100 / 150, // Aspect ratio for the containers
+        crossAxisSpacing: 8, // Spacing between columns
+        childAspectRatio: 100 / 170, // Aspect ratio for the containers
       ),
       itemCount: 6, // Total number of items
       itemBuilder: (context, index) {
-        return _buildMenuItem();
+        return _buildMenuItem(index);
       },
     );
   }
 
 // Menu item container (GridView item)
-  Widget _buildMenuItem() {
+  Widget _buildMenuItem(int index) {
     final _controller = ValueNotifier<bool>(true);
     return Container(
       decoration: BoxDecoration(
@@ -111,15 +117,22 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
           children: [
             // Image Placeholder
             Image.asset(
-              'assets/images/gravy.png', // Replace with actual image path
+              // Use modulo operator to group indices
+              index % 3 == 0 || index % 3 == 3
+                  ? 'assets/images/gravy.png' // Images for index 0 and index 3
+                  : index % 3 == 1 || index % 3 == 4
+                      ? 'assets/images/pepper.png' // Images for index 1 and index 4
+                      : index % 3 == 2 || index % 3 == 5
+                          ? 'assets/images/roast.png' // Images for index 2 and index 5
+                          : 'assets/images/gravy.png', // Replace with actual image path
               width: double.infinity, // Image takes the full width
-              height: 100, // Full height of the container
+
               fit: BoxFit.cover,
             ),
             // Menu Item Name and Price
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: 4.0, vertical: 4.0), // Add padding around text
+                  vertical: 4.0), // Add padding around text
               child: Column(
                 crossAxisAlignment:
                     CrossAxisAlignment.start, // Align text to the left
@@ -129,7 +142,14 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Item Name', // Replace with dynamic name
+                        // Use modulo operator to group indices
+                        index % 3 == 0 || index % 3 == 3
+                            ? 'Chicken Gravy' // Images for index 0 and index 3
+                            : index % 3 == 1 || index % 3 == 4
+                                ? 'Pepper Chicken' // Images for index 1 and index 4
+                                : index % 3 == 2 || index % 3 == 5
+                                    ? 'Roast Chicken' // Images for index 2 and index 5
+                                    : 'Roast Chicken', // Replace with dynamic name
                         style: AppTextStyles.MetropolisMedium.copyWith(
                           fontSize: 10,
                           color: Colors.black,
@@ -143,9 +163,17 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                     ],
                   ),
                   // Menu Item Price
-                  SizedBox(height: 4), // Add spacing between name and price
+                  const SizedBox(
+                      height: 4), // Add spacing between name and price
                   Text(
-                    '\$45', // Replace with dynamic price
+                    // Use modulo operator to group indices
+                    index % 3 == 0 || index % 3 == 3
+                        ? '\$25' // Images for index 0 and index 3
+                        : index % 3 == 1 || index % 3 == 4
+                            ? '\$45' // Images for index 1 and index 4
+                            : index % 3 == 2 || index % 3 == 5
+                                ? '\$25' // Images for index 2 and index 5
+                                : '\$25', // Default image, // Replace with dynamic price
                     style: AppTextStyles.MetropolisMedium.copyWith(
                       fontSize: 10,
                       color: Colors.black,
@@ -156,8 +184,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
             ),
             // Row for Switch and Add Button
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 4.0, right: 4.0, top: 2.0), // Add padding for the row
+              padding: const EdgeInsets.only(), // Add padding for the row
               child: Row(
                 mainAxisAlignment: MainAxisAlignment
                     .spaceBetween, // Space between switch and Add button
@@ -173,7 +200,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                     decoration: BoxDecoration(
                       color: Colors.white, // Background color (optional)
                       border: Border.all(
-                        color: Color(0xFFEFEFEF), // Border color
+                        color: const Color(0xFFEFEFEF), // Border color
                         width: 1, // Border width
                       ),
                       boxShadow: [
@@ -196,7 +223,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                       'Edit', // Static "Add" text
                       style: AppTextStyles.PoppinsRegular.copyWith(
                         fontSize: 7,
-                        color: Color(0xFFFFAA00),
+                        color: const Color(0xFFFFAA00),
                       ),
                     ),
                   )
@@ -215,7 +242,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
         alignment: Alignment.bottomCenter,
         child: CustomButton(
             height: 55,
-            width: 325,
+            width: double.infinity,
             text: 'Add',
             onPressed: () {
               Get.toNamed(Routes.CAFETERIA_MEAL_DETAILS);

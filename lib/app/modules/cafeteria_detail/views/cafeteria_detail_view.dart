@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
+import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_detail_controller.dart';
@@ -21,7 +22,7 @@ class CafeteriaDetailView extends GetView<CafeteriaDetailController> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,7 +38,7 @@ class CafeteriaDetailView extends GetView<CafeteriaDetailController> {
                   ),
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Container(
                   width: double.infinity,
@@ -80,32 +81,25 @@ class CafeteriaDetailView extends GetView<CafeteriaDetailController> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldWidget(
-                    isSuffix: true,
-                    text: 'Cafeteria Name',
-                    textController: mealController),
+                const SimpleTextFieldWithOutSuffixWidget(
+                    hintText: 'Cafeteria Name'),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
-                TextFieldWidget(
-                    isSuffix: true,
-                    text: 'School / Collage Name',
-                    textController: priceController),
+                const SimpleTextFieldWithOutSuffixWidget(
+                    hintText: 'School / Collage Name'),
                 const SizedBox(
                   height: 20,
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: CustomButton(
-                text: 'CONTINUE',
-                onPressed: () {
-                  Get.toNamed(Routes.CAFETERIA_MEAL_DETAILS);
-                },
-                isLoading: RxBool(false)),
-          )
+          CustomButton(
+              text: 'CONTINUE',
+              onPressed: () {
+                Get.toNamed(Routes.CAFETERIA_MEAL_DETAILS);
+              },
+              isLoading: RxBool(false))
         ],
       ),
     );

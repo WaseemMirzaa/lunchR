@@ -136,7 +136,7 @@ class WalletBalanceCard extends StatelessWidget {
           Container(
             width: 1,
             color: Colors.black.withOpacity(0.1),
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.only(left: 6, right: 10),
           ),
 
           // Wallet Balance Section
@@ -181,11 +181,16 @@ class WalletBalanceCard extends StatelessWidget {
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      price,
-                      style: AppTextStyles.MetropolisMedium.copyWith(
-                        fontSize: 16,
-                        color: Colors.black,
+                    Padding(
+                      padding: walletDesc == 'Wallet Remaining Balance'
+                          ? const EdgeInsets.only(left: 0)
+                          : const EdgeInsets.only(left: 12),
+                      child: Text(
+                        price,
+                        style: AppTextStyles.MetropolisMedium.copyWith(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     Text(

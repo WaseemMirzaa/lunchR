@@ -7,11 +7,13 @@ class SelectableOptions extends StatelessWidget {
   final List<String> options;
   final RxString selectedOption; // Observable for selected option
   final bool isRowLayout; // Optional parameter for layout control
+  final bool isSingleRow; // Optional parameter for layout control
 
   const SelectableOptions({
     Key? key,
     required this.title,
     required this.options,
+    this.isSingleRow = false, // Default is false
     required this.selectedOption,
     this.isRowLayout = false, // Default is false
   }) : super(key: key);
@@ -24,14 +26,19 @@ class SelectableOptions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Title
-          Text(
-            title,
-            style: AppTextStyles.MetropolisMedium.copyWith(
-              fontSize: 12,
-              color: Colors.black,
+          Padding(
+            padding: isSingleRow
+                ? const EdgeInsets.only(left: 4)
+                : const EdgeInsets.only(left: 12),
+            child: Text(
+              title,
+              style: AppTextStyles.MetropolisLight.copyWith(
+                fontSize: 11,
+                color: Colors.black,
+              ),
             ),
           ),
-          const SizedBox(width: 16), // Space between the title and options
+          // const SizedBox(width: 16), // Space between the title and options
 
           // Options in a horizontal row
           Expanded(
@@ -55,9 +62,11 @@ class SelectableOptions extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(width: 2),
+                      const SizedBox(width: 4),
                       Obx(() {
                         return Container(
+                          height: 18,
+                          width: 18,
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -117,11 +126,12 @@ class SelectableOptions extends StatelessWidget {
                     children: [
                       // Circular icon using Obx for state
 
-                      const SizedBox(width: 42),
+                      const SizedBox(width: 24),
 
                       Obx(() {
                         return Container(
-                          padding: const EdgeInsets.all(4),
+                          height: 18,
+                          width: 18,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: selectedOption.value == option
@@ -144,19 +154,19 @@ class SelectableOptions extends StatelessWidget {
                         );
                       }),
                       const SizedBox(
-                          width: 8), // Space between the icon and text
+                          width: 16), // Space between the icon and text
 
                       // Option Text
-                      Flexible(
-                        child: Text(
-                          option,
-                          style: AppTextStyles.MetropolisRegular.copyWith(
-                            fontSize: 12,
-                            color: Colors.black,
-                          ),
-                          overflow: TextOverflow.ellipsis, // Handle long text
+                      Text(
+                        option,
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                          fontSize: 12,
+                          color: Colors.black,
                         ),
                       ),
+                      // Flexible(
+                      //   child:
+                      // ),
                     ],
                   ),
                 ),

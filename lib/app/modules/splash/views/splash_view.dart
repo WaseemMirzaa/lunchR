@@ -42,6 +42,7 @@ class SplashView extends GetView<SplashController> {
                     'LunchR',
                     style: AppTextStyles.MetropolisRegularItalic.copyWith(
                       color: AppColors.whiteColor,
+                      fontSize: 45
                     ),
                   ),
                   Text(
