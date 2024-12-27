@@ -149,7 +149,7 @@ class CafeteriaPhoneVerificationView
               CustomButton(
                 text: 'VERIFY',
                 onPressed: () {
-                  Get.toNamed(Routes.CAFETERIA_DETAIL);
+                  Get.toNamed(Routes.CAFETERIA_CAFETERIA_DETAIL);
                 },
                 isLoading: false.obs, // RxBool for loading state
               ),

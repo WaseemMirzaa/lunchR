@@ -1,23 +1,35 @@
 import 'package:get/get.dart';
+import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/services/authentication_service.dart';
+import 'package:luncher/widgets/custom_snackbar.dart'; // Assuming this is where showCustomSnack is defined
 
 class PhoneVerificationController extends GetxController {
-  //TODO: Implement PhoneVerificationController
+  final otpController = ''.obs; // Observable for OTP
+  final isLoading = false.obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  final AuthenticationService _authService = AuthenticationService();
+
+  // Handle OTP verification
+  Future<void> verifyOTP(String verificationId) async {
+    if (otpController.value.isEmpty || otpController.value.length < 6) {
+      showCustomSnack("Please enter a valid OTP");
+      return;
+    }
+
+    try {
+      isLoading.value = true;
+
+      // Call the service for OTP verification
+      final result =
+          await _authService.verifyOTP(verificationId, otpController.value);
+
+      if (result.success) {
+        Get.offAllNamed(Routes.PARENTS_HOME); // Navigate to home screen
+      } else {
+        showCustomSnack(result.message); // Show the error message
+      }
+    } finally {
+      isLoading.value = false;
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

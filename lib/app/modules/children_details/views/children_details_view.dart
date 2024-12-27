@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_selectable_options.dart';
-
 import 'package:luncher/widgets/reuse_button.dart';
 import '../controllers/children_details_controller.dart';
 
@@ -196,7 +194,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
         GestureDetector(
           onTap: () {
             // Add your logic here
-            Get.toNamed(Routes.CAFETERIA);
+            Get.toNamed(Routes.PARENTS_CAFETERIA_SELECTION);
           },
           child: Row(
             children: [

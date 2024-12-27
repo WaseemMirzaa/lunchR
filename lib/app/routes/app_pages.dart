@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
-
-import '../modules/cafeteria/bindings/cafeteria_binding.dart';
-import '../modules/cafeteria/views/cafeteria_view.dart';
+import '../modules/cafeteria_cafeteria_detail/bindings/cafeteria_cafeteria_detail_binding.dart';
+import '../modules/cafeteria_cafeteria_detail/views/cafeteria_cafeteria_detail_view.dart';
 import '../modules/cafeteria_child_verification/bindings/cafeteria_child_verification_binding.dart';
 import '../modules/cafeteria_child_verification/views/cafeteria_child_verification_view.dart';
 import '../modules/cafeteria_child_verification_home/bindings/cafeteria_child_verification_home_binding.dart';
 import '../modules/cafeteria_child_verification_home/views/cafeteria_child_verification_home_view.dart';
-import '../modules/cafeteria_detail/bindings/cafeteria_detail_binding.dart';
-import '../modules/cafeteria_detail/views/cafeteria_detail_view.dart';
+import '../modules/cafeteria_child_verification_info/bindings/cafeteria_child_verification_info_binding.dart';
+import '../modules/cafeteria_child_verification_info/views/cafeteria_child_verification_info_view.dart';
 import '../modules/cafeteria_history/bindings/cafeteria_history_binding.dart';
 import '../modules/cafeteria_history/views/cafeteria_history_view.dart';
 import '../modules/cafeteria_history_details/bindings/cafeteria_history_details_binding.dart';
@@ -16,24 +15,26 @@ import '../modules/cafeteria_history_list/bindings/cafeteria_history_list_bindin
 import '../modules/cafeteria_history_list/views/cafeteria_history_list_view.dart';
 import '../modules/cafeteria_history_select_date/bindings/cafeteria_history_select_date_binding.dart';
 import '../modules/cafeteria_history_select_date/views/cafeteria_history_select_date_view.dart';
+import '../modules/cafeteria_home_settings/bindings/cafeteria_home_settings_binding.dart';
+import '../modules/cafeteria_home_settings/views/cafeteria_home_settings_view.dart';
 import '../modules/cafeteria_landing_page/bindings/cafeteria_landing_page_binding.dart';
 import '../modules/cafeteria_landing_page/views/cafeteria_landing_page_view.dart';
 import '../modules/cafeteria_meal_details/bindings/cafeteria_meal_details_binding.dart';
 import '../modules/cafeteria_meal_details/views/cafeteria_meal_details_view.dart';
-import '../modules/cafeteria_menu_page/bindings/cafeteria_menu_page_binding.dart';
-import '../modules/cafeteria_menu_page/views/cafeteria_menu_page_view.dart';
+import '../modules/cafeteria_meal_selection/bindings/cafeteria_meal_selection_binding.dart';
+import '../modules/cafeteria_meal_selection/views/cafeteria_meal_selection_view.dart';
+import '../modules/cafeteria_notifications/bindings/cafeteria_notifications_binding.dart';
+import '../modules/cafeteria_notifications/views/cafeteria_notifications_view.dart';
 import '../modules/cafeteria_phone_authenication/bindings/cafeteria_phone_authenication_binding.dart';
 import '../modules/cafeteria_phone_authenication/views/cafeteria_phone_authenication_view.dart';
 import '../modules/cafeteria_phone_verification/bindings/cafeteria_phone_verification_binding.dart';
 import '../modules/cafeteria_phone_verification/views/cafeteria_phone_verification_view.dart';
-import '../modules/child_verification_upload_info/bindings/child_verification_upload_info_binding.dart';
-import '../modules/child_verification_upload_info/views/child_verification_upload_info_view.dart';
+import '../modules/cafeteria_profile/bindings/cafeteria_profile_binding.dart';
+import '../modules/cafeteria_profile/views/cafeteria_profile_view.dart';
+import '../modules/cafeteria_settings/bindings/cafeteria_settings_binding.dart';
+import '../modules/cafeteria_settings/views/cafeteria_settings_view.dart';
 import '../modules/children_details/bindings/children_details_binding.dart';
 import '../modules/children_details/views/children_details_view.dart';
-import '../modules/email_verification/bindings/email_verification_binding.dart';
-import '../modules/email_verification/views/email_verification_view.dart';
-import '../modules/forget_password/bindings/forget_password_binding.dart';
-import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home_settings/bindings/home_settings_binding.dart';
 import '../modules/home_settings/views/home_settings_view.dart';
 import '../modules/landing_page/bindings/landing_page_binding.dart';
@@ -44,6 +45,8 @@ import '../modules/notifications/bindings/notifications_binding.dart';
 import '../modules/notifications/views/notifications_view.dart';
 import '../modules/parent_name/bindings/parent_name_binding.dart';
 import '../modules/parent_name/views/parent_name_view.dart';
+import '../modules/parents_cafeteria_selection/bindings/parents_cafeteria_selection_binding.dart';
+import '../modules/parents_cafeteria_selection/views/parents_cafeteria_selection_view.dart';
 import '../modules/parents_children_details/bindings/parents_children_details_binding.dart';
 import '../modules/parents_children_details/views/parents_children_details_view.dart';
 import '../modules/parents_history/bindings/parents_history_binding.dart';
@@ -62,16 +65,10 @@ import '../modules/phone_verification/bindings/phone_verification_binding.dart';
 import '../modules/phone_verification/views/phone_verification_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
-import '../modules/qr_code/bindings/qr_code_binding.dart';
-import '../modules/qr_code/views/qr_code_view.dart';
 import '../modules/selection/bindings/selection_binding.dart';
 import '../modules/selection/views/selection_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/settings_view.dart';
-import '../modules/sign_in/bindings/sign_in_binding.dart';
-import '../modules/sign_in/views/sign_in_view.dart';
-import '../modules/sign_up/bindings/sign_up_binding.dart';
-import '../modules/sign_up/views/sign_up_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 
@@ -91,35 +88,11 @@ class AppPages {
       binding: SplashBinding(),
     ),
     GetPage(
-      name: _Paths.SIGN_IN,
-      page: () => const SignInView(),
-      binding: SignInBinding(),
-    ),
-    GetPage(
-      name: _Paths.SIGN_UP,
-      page: () => const SignUpView(),
-      binding: SignUpBinding(),
-    ),
-    GetPage(
-      name: _Paths.FORGET_PASSWORD,
-      page: () => const ForgetPasswordView(),
-      binding: ForgetPasswordBinding(),
-    ),
-    GetPage(
       name: _Paths.SELECTION,
       page: () => const SelectionView(),
       binding: SelectionBinding(),
     ),
-    GetPage(
-      name: _Paths.EMAIL_VERIFICATION,
-      page: () => const EmailVerificationView(),
-      binding: EmailVerificationBinding(),
-    ),
-    GetPage(
-      name: _Paths.CAFETERIA,
-      page: () => const CafeteriaView(),
-      binding: CafeteriaBinding(),
-    ),
+  
     GetPage(
       name: _Paths.CHILDREN_DETAILS,
       page: () => const ChildrenDetailsView(),
@@ -129,11 +102,6 @@ class AppPages {
       name: _Paths.MENU_PAGE,
       page: () => const MenuPageView(),
       binding: MenuPageBinding(),
-    ),
-    GetPage(
-      name: _Paths.QR_CODE,
-      page: () => const QrCodeView(),
-      binding: QrCodeBinding(),
     ),
     GetPage(
       name: _Paths.PROFILE,
@@ -181,11 +149,6 @@ class AppPages {
       binding: CafeteriaMealDetailsBinding(),
     ),
     GetPage(
-      name: _Paths.CAFETERIA_MENU_PAGE,
-      page: () => const CafeteriaMenuPageView(),
-      binding: CafeteriaMenuPageBinding(),
-    ),
-    GetPage(
       name: _Paths.CAFETERIA_HISTORY,
       page: () => const CafeteriaHistoryView(),
       binding: CafeteriaHistoryBinding(),
@@ -214,11 +177,6 @@ class AppPages {
       name: _Paths.LANDING_PAGE,
       page: () => const LandingPageView(),
       binding: LandingPageBinding(),
-    ),
-    GetPage(
-      name: _Paths.CAFETERIA_DETAIL,
-      page: () => const CafeteriaDetailView(),
-      binding: CafeteriaDetailBinding(),
     ),
     GetPage(
       name: _Paths.CAFETERIA_LANDING_PAGE,
@@ -256,11 +214,6 @@ class AppPages {
       binding: ParentNameBinding(),
     ),
     GetPage(
-      name: _Paths.CHILD_VERIFICATION_UPLOAD_INFO,
-      page: () => const ChildVerificationUploadInfoView(),
-      binding: ChildVerificationUploadInfoBinding(),
-    ),
-    GetPage(
       name: _Paths.CAFETERIA_CHILD_VERIFICATION_HOME,
       page: () => const CafeteriaChildVerificationHomeView(),
       binding: CafeteriaChildVerificationHomeBinding(),
@@ -269,6 +222,46 @@ class AppPages {
       name: _Paths.HOME_SETTINGS,
       page: () => const HomeSettingsView(),
       binding: HomeSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_CAFETERIA_DETAIL,
+      page: () => const CafeteriaCafeteriaDetailView(),
+      binding: CafeteriaCafeteriaDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_MEAL_SELECTION,
+      page: () => const CafeteriaMealSelectionView(),
+      binding: CafeteriaMealSelectionBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_SETTINGS,
+      page: () => const CafeteriaSettingsView(),
+      binding: CafeteriaSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_PROFILE,
+      page: () => const CafeteriaProfileView(),
+      binding: CafeteriaProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_NOTIFICATIONS,
+      page: () => const CafeteriaNotificationsView(),
+      binding: CafeteriaNotificationsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_CHILD_VERIFICATION_INFO,
+      page: () => const CafeteriaChildVerificationInfoView(),
+      binding: CafeteriaChildVerificationInfoBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_HOME_SETTINGS,
+      page: () => const CafeteriaHomeSettingsView(),
+      binding: CafeteriaHomeSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PARENTS_CAFETERIA_SELECTION,
+      page: () => const ParentsCafeteriaSelectionView(),
+      binding: ParentsCafeteriaSelectionBinding(),
     ),
   ];
 }

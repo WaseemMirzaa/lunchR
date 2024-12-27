@@ -30,6 +30,7 @@ class SettingsView extends GetView<SettingsController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
+              
               height: 70,
             ),
 

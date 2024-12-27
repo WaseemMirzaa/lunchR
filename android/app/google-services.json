@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "117032118353",
+    "project_id": "luncher-86d25",
+    "storage_bucket": "luncher-86d25.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117032118353:android:f8dd4e2972e3e2930f3070",
+        "android_client_info": {
+          "package_name": "com.example.luncher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDF2KBRjQVMTcLxtDliccAOLNMEqgOsad4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

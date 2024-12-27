@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_child_verification/views/cafeteria_child_verification_view.dart';
-import 'package:luncher/app/modules/child_verification_upload_info/views/child_verification_upload_info_view.dart';
-
+import 'package:luncher/app/modules/cafeteria_child_verification_info/views/cafeteria_child_verification_info_view.dart';
 import '../controllers/cafeteria_child_verification_home_controller.dart';
 
 class CafeteriaChildVerificationHomeView
@@ -24,7 +23,7 @@ class CafeteriaChildVerificationHomeView
                 CafeteriaChildVerificationView(),
 
                 // Third child
-                ChildVerificationUploadInfoView(),
+                CafeteriaChildVerificationInfoView(),
               ],
             ),
           ),

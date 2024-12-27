@@ -1,19 +1,18 @@
+// ignore_for_file: constant_identifier_names
+
 part of 'app_pages.dart';
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
 abstract class Routes {
   Routes._();
 
-  static const SIGN_IN = _Paths.SIGN_IN;
-  static const SIGN_UP = _Paths.SIGN_UP;
-  static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
   static const SELECTION = _Paths.SELECTION;
-  static const EMAIL_VERIFICATION = _Paths.EMAIL_VERIFICATION;
+
   static const SPLASH = _Paths.SPLASH;
   static const CAFETERIA = _Paths.CAFETERIA;
   static const CHILDREN_DETAILS = _Paths.CHILDREN_DETAILS;
   static const MENU_PAGE = _Paths.MENU_PAGE;
-  static const QR_CODE = _Paths.QR_CODE;
+
   static const PROFILE = _Paths.PROFILE;
   static const SETTINGS = _Paths.SETTINGS;
   static const NOTIFICATIONS = _Paths.NOTIFICATIONS;
@@ -47,21 +46,27 @@ abstract class Routes {
   static const CAFETERIA_CHILD_VERIFICATION_HOME =
       _Paths.CAFETERIA_CHILD_VERIFICATION_HOME;
   static const HOME_SETTINGS = _Paths.HOME_SETTINGS;
+  static const CAFETERIA_CAFETERIA_DETAIL = _Paths.CAFETERIA_CAFETERIA_DETAIL;
+  static const CAFETERIA_MEAL_SELECTION = _Paths.CAFETERIA_MEAL_SELECTION;
+  static const CAFETERIA_SETTINGS = _Paths.CAFETERIA_SETTINGS;
+  static const CAFETERIA_PROFILE = _Paths.CAFETERIA_PROFILE;
+  static const CAFETERIA_NOTIFICATIONS = _Paths.CAFETERIA_NOTIFICATIONS;
+  static const CAFETERIA_CHILD_VERIFICATION_INFO =
+      _Paths.CAFETERIA_CHILD_VERIFICATION_INFO;
+  static const CAFETERIA_HOME_SETTINGS = _Paths.CAFETERIA_HOME_SETTINGS;
+  static const PARENTS_CAFETERIA_SELECTION = _Paths.PARENTS_CAFETERIA_SELECTION;
 }
 
 abstract class _Paths {
   _Paths._();
 
-  static const SIGN_IN = '/sign-in';
-  static const SIGN_UP = '/sign-up';
-  static const FORGET_PASSWORD = '/forget-password';
   static const SELECTION = '/selection';
-  static const EMAIL_VERIFICATION = '/email-verification';
+
   static const SPLASH = '/splash';
   static const CAFETERIA = '/cafeteria';
   static const CHILDREN_DETAILS = '/children-details';
   static const MENU_PAGE = '/menu-page';
-  static const QR_CODE = '/qr-code';
+
   static const PROFILE = '/profile';
   static const SETTINGS = '/settings';
   static const NOTIFICATIONS = '/notifications';
@@ -91,4 +96,13 @@ abstract class _Paths {
   static const CAFETERIA_CHILD_VERIFICATION_HOME =
       '/cafeteria-child-verification-home';
   static const HOME_SETTINGS = '/home-settings';
+  static const CAFETERIA_CAFETERIA_DETAIL = '/cafeteria-cafeteria-detail';
+  static const CAFETERIA_MEAL_SELECTION = '/cafeteria-meal-selection';
+  static const CAFETERIA_SETTINGS = '/cafeteria-settings';
+  static const CAFETERIA_PROFILE = '/cafeteria-profile';
+  static const CAFETERIA_NOTIFICATIONS = '/cafeteria-notifications';
+  static const CAFETERIA_CHILD_VERIFICATION_INFO =
+      '/cafeteria-child-verification-info';
+  static const CAFETERIA_HOME_SETTINGS = '/cafeteria-home-settings';
+  static const PARENTS_CAFETERIA_SELECTION = '/parents-cafeteria-selection';
 }
