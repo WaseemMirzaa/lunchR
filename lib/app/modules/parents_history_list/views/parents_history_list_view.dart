@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/home_settings/controllers/home_settings_controller.dart';
 import 'package:luncher/app/modules/parents_history/controllers/parents_history_controller.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
@@ -11,11 +12,61 @@ class ParentsHistoryListView extends GetView<ParentsHistoryListController> {
 
   @override
   Widget build(BuildContext context) {
-    final historyController = Get.find<ParentsHistoryController>();
+    final historyController = Get.find<HomeSettingsController>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 35),
+            child: GestureDetector(
+              onTap: () {
+                historyController.updateSelectedIndex(0);
+              },
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  height: 35,
+                  width: 35,
+                  margin: const EdgeInsets.only(
+                      top: 16), // Add some margin if needed
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 4,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                    color: Colors.white, // Background color for the container
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      "assets/icon/back.png",
+                      height: 15, // Set the height to 15
+                      width: 10, // Set the width to 15
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(
+            height: 8,
+          ),
+
+          // Settings Title
+          Text(
+            'HISTORY', // Title text
+            style: AppTextStyles.MetropolisMedium.copyWith(
+              fontSize: 18,
+              color: const Color(0xFF434343),
+            ),
+          ),
+          const SizedBox(height: 32), // Spacing between title and list
+
           // Row with month/year and calendar icon
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -44,9 +95,7 @@ class ParentsHistoryListView extends GetView<ParentsHistoryListController> {
                   ],
                 ),
                 GestureDetector(
-                  onTap: () {
-                    historyController.updateSelectedIndex(1);
-                  },
+                  onTap: () {},
                   child: Image.asset(
                     'assets/icon/calendar.png',
                     height: 20,
@@ -71,7 +120,13 @@ class ParentsHistoryListView extends GetView<ParentsHistoryListController> {
                   ), // Adjust the padding as needed
                   child: WalletBalanceCard(
                     isEdit: false,
-                    isShowScan: false,
+                    isShowScan: true,
+                    isNoImage: true,
+                    isDelivered: false,
+                    isPreparing: false,
+                    isDuration: false,
+                    isType: false,
+                    isStaff: false,
                     walletDesc: 'Monthly Spending',
                     price: '\$250',
                   ),

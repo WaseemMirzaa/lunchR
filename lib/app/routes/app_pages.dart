@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/cafeteria/bindings/cafeteria_binding.dart';
 import '../modules/cafeteria/views/cafeteria_view.dart';
+import '../modules/cafeteria_add_staff/bindings/cafeteria_add_staff_binding.dart';
+import '../modules/cafeteria_add_staff/views/cafeteria_add_staff_view.dart';
 import '../modules/cafeteria_child_verification/bindings/cafeteria_child_verification_binding.dart';
 import '../modules/cafeteria_child_verification/views/cafeteria_child_verification_view.dart';
 import '../modules/cafeteria_child_verification_home/bindings/cafeteria_child_verification_home_binding.dart';
@@ -16,6 +18,8 @@ import '../modules/cafeteria_history_list/bindings/cafeteria_history_list_bindin
 import '../modules/cafeteria_history_list/views/cafeteria_history_list_view.dart';
 import '../modules/cafeteria_history_select_date/bindings/cafeteria_history_select_date_binding.dart';
 import '../modules/cafeteria_history_select_date/views/cafeteria_history_select_date_view.dart';
+import '../modules/cafeteria_home_settings/bindings/cafeteria_home_settings_binding.dart';
+import '../modules/cafeteria_home_settings/views/cafeteria_home_settings_view.dart';
 import '../modules/cafeteria_landing_page/bindings/cafeteria_landing_page_binding.dart';
 import '../modules/cafeteria_landing_page/views/cafeteria_landing_page_view.dart';
 import '../modules/cafeteria_meal_details/bindings/cafeteria_meal_details_binding.dart';
@@ -26,6 +30,10 @@ import '../modules/cafeteria_phone_authenication/bindings/cafeteria_phone_authen
 import '../modules/cafeteria_phone_authenication/views/cafeteria_phone_authenication_view.dart';
 import '../modules/cafeteria_phone_verification/bindings/cafeteria_phone_verification_binding.dart';
 import '../modules/cafeteria_phone_verification/views/cafeteria_phone_verification_view.dart';
+import '../modules/cafeteria_settings/bindings/cafeteria_settings_binding.dart';
+import '../modules/cafeteria_settings/views/cafeteria_settings_view.dart';
+import '../modules/cafeteria_staff_list/bindings/cafeteria_staff_list_binding.dart';
+import '../modules/cafeteria_staff_list/views/cafeteria_staff_list_view.dart';
 import '../modules/child_verification_upload_info/bindings/child_verification_upload_info_binding.dart';
 import '../modules/child_verification_upload_info/views/child_verification_upload_info_view.dart';
 import '../modules/children_details/bindings/children_details_binding.dart';
@@ -44,6 +52,8 @@ import '../modules/notifications/bindings/notifications_binding.dart';
 import '../modules/notifications/views/notifications_view.dart';
 import '../modules/parent_name/bindings/parent_name_binding.dart';
 import '../modules/parent_name/views/parent_name_view.dart';
+import '../modules/parents_add_wallet/bindings/parents_add_wallet_binding.dart';
+import '../modules/parents_add_wallet/views/parents_add_wallet_view.dart';
 import '../modules/parents_children_details/bindings/parents_children_details_binding.dart';
 import '../modules/parents_children_details/views/parents_children_details_view.dart';
 import '../modules/parents_history/bindings/parents_history_binding.dart';
@@ -74,6 +84,30 @@ import '../modules/sign_up/bindings/sign_up_binding.dart';
 import '../modules/sign_up/views/sign_up_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/staff_child_verification/bindings/staff_child_verification_binding.dart';
+import '../modules/staff_child_verification/views/staff_child_verification_view.dart';
+import '../modules/staff_history/bindings/staff_history_binding.dart';
+import '../modules/staff_history/views/staff_history_view.dart';
+import '../modules/staff_history_calender/bindings/staff_history_calender_binding.dart';
+import '../modules/staff_history_calender/views/staff_history_calender_view.dart';
+import '../modules/staff_history_detail/bindings/staff_history_detail_binding.dart';
+import '../modules/staff_history_detail/views/staff_history_detail_view.dart';
+import '../modules/staff_history_list/bindings/staff_history_list_binding.dart';
+import '../modules/staff_history_list/views/staff_history_list_view.dart';
+import '../modules/staff_home_settings/bindings/staff_home_settings_binding.dart';
+import '../modules/staff_home_settings/views/staff_home_settings_view.dart';
+import '../modules/staff_landing_page/bindings/staff_landing_page_binding.dart';
+import '../modules/staff_landing_page/views/staff_landing_page_view.dart';
+import '../modules/staff_meal_selection/bindings/staff_meal_selection_binding.dart';
+import '../modules/staff_meal_selection/views/staff_meal_selection_view.dart';
+import '../modules/staff_phone_verification/bindings/staff_phone_verification_binding.dart';
+import '../modules/staff_phone_verification/views/staff_phone_verification_view.dart';
+import '../modules/staff_preparing/bindings/staff_preparing_binding.dart';
+import '../modules/staff_preparing/views/staff_preparing_view.dart';
+import '../modules/staff_profile/bindings/staff_profile_binding.dart';
+import '../modules/staff_profile/views/staff_profile_view.dart';
+import '../modules/staff_settings/bindings/staff_settings_binding.dart';
+import '../modules/staff_settings/views/staff_settings_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -269,6 +303,91 @@ class AppPages {
       name: _Paths.HOME_SETTINGS,
       page: () => const HomeSettingsView(),
       binding: HomeSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_PHONE_VERIFICATION,
+      page: () => const StaffPhoneVerificationView(),
+      binding: StaffPhoneVerificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_MEAL_SELECTION,
+      page: () => const StaffMealSelectionView(),
+      binding: StaffMealSelectionBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_PREPARING,
+      page: () => const StaffPreparingView(),
+      binding: StaffPreparingBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_HISTORY,
+      page: () => const StaffHistoryView(),
+      binding: StaffHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_HISTORY_CALENDER,
+      page: () => const StaffHistoryCalenderView(),
+      binding: StaffHistoryCalenderBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_HISTORY_DETAIL,
+      page: () => const StaffHistoryDetailView(),
+      binding: StaffHistoryDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_CHILD_VERIFICATION,
+      page: () => const StaffChildVerificationView(),
+      binding: StaffChildVerificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_LANDING_PAGE,
+      page: () => const StaffLandingPageView(),
+      binding: StaffLandingPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_HISTORY_LIST,
+      page: () => const StaffHistoryListView(),
+      binding: StaffHistoryListBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_SETTINGS,
+      page: () => const StaffSettingsView(),
+      binding: StaffSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_HOME_SETTINGS,
+      page: () => const StaffHomeSettingsView(),
+      binding: StaffHomeSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.STAFF_PROFILE,
+      page: () => const StaffProfileView(),
+      binding: StaffProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_ADD_STAFF,
+      page: () => const CafeteriaAddStaffView(),
+      binding: CafeteriaAddStaffBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_STAFF_LIST,
+      page: () => const CafeteriaStaffListView(),
+      binding: CafeteriaStaffListBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_HOME_SETTINGS,
+      page: () => const CafeteriaHomeSettingsView(),
+      binding: CafeteriaHomeSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_SETTINGS,
+      page: () => const CafeteriaSettingsView(),
+      binding: CafeteriaSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PARENTS_ADD_WALLET,
+      page: () => const ParentsAddWalletView(),
+      binding: ParentsAddWalletBinding(),
     ),
   ];
 }

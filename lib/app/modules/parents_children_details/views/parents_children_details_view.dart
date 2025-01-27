@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_clickable_container.dart';
 import 'package:luncher/widgets/custom_dialog.dart';
 import 'package:luncher/widgets/custom_selectable_options.dart';
-import 'package:luncher/widgets/custom_textfeild.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
@@ -15,10 +12,19 @@ import '../controllers/parents_children_details_controller.dart';
 
 class ParentsChildrenDetailsView
     extends GetView<ParentsChildrenDetailsController> {
-  const ParentsChildrenDetailsView({super.key});
+  final bool isAddedMenuItems;
+
+  const ParentsChildrenDetailsView({
+    super.key,
+    this.isAddedMenuItems = false, // Optional parameter with default value
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Override the default value with the argument if provided
+    final bool isMenuItemsAdded =
+        Get.arguments?['isAddedMenuItems'] ?? isAddedMenuItems;
+    print(isMenuItemsAdded);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -64,7 +70,7 @@ class ParentsChildrenDetailsView
                       isBackColor: true,
                       text: 'CONTINUE',
                       onPressed: () {
-                        Get.toNamed(Routes.CHILDREN_DETAILS);
+                        Get.toNamed(Routes.LANDING_PAGE);
                       },
                       isLoading: RxBool(false),
                     ),
@@ -102,8 +108,9 @@ class ParentsChildrenDetailsView
                       ),
                       const SizedBox(height: 24),
                       Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: _buildClassRoomDelivery()),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: _buildClassRoomDelivery(),
+                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Divider(color: Color(0xFFE9E9E9), thickness: 1),
@@ -116,7 +123,17 @@ class ParentsChildrenDetailsView
                             children: [
                               _buildCenterImage(), // Center Image
                               const SizedBox(height: 16),
-                              _buildTextFields(), // Text fields for child's name and ID
+                              _buildTextFields(index),
+
+                              // Show "Add Menu Items" button conditionally
+                              if (allInSameSchool && !isMenuItemsAdded)
+                                const SizedBox(height: 12),
+                              if (allInSameSchool && !isMenuItemsAdded)
+                                CustomButton(
+                                  text: 'ADD MENU ITEMS',
+                                  onPressed: () {},
+                                  isLoading: false.obs,
+                                ),
 
                               // Add the "School/College Name" text field conditionally
                               if (!allInSameSchool)
@@ -124,6 +141,13 @@ class ParentsChildrenDetailsView
                                   children: [
                                     const SizedBox(height: 12),
                                     _buildSchoolTextField(context),
+                                    const SizedBox(height: 12),
+                                    if (!isMenuItemsAdded)
+                                      CustomButton(
+                                        text: 'ADD MENU ITEMS',
+                                        onPressed: () {},
+                                        isLoading: false.obs,
+                                      ),
                                   ],
                                 ),
                               const SizedBox(height: 16),
@@ -150,7 +174,7 @@ class ParentsChildrenDetailsView
                   isBackColor: true,
                   text: 'CONTINUE',
                   onPressed: () {
-                    Get.toNamed(Routes.CHILDREN_DETAILS);
+                    Get.toNamed(Routes.LANDING_PAGE);
                   },
                   isLoading: RxBool(false),
                 ),
@@ -342,12 +366,25 @@ class ParentsChildrenDetailsView
   }
 
   // Reusable text fields
-  Widget _buildTextFields() {
-    return const Column(
+// Modify the _buildTextFields() method in ParentsChildrenDetailsView
+  Widget _buildTextFields(int index) {
+    // Check if controllers exist for this index
+    if (index >= controller.nameControllers.length ||
+        index >= controller.idControllers.length) {
+      return const SizedBox(); // Return empty widget if controllers don't exist
+    }
+
+    return Column(
       children: [
-        SimpleTextFieldWithOutSuffixWidget(hintText: 'Child Name'),
-        SizedBox(height: 12),
-        SimpleTextFieldWithOutSuffixWidget(hintText: 'Child School ID'),
+        SimpleTextFieldWithOutSuffixWidget(
+          hintText: 'Child Name',
+          controller: controller.nameControllers[index],
+        ),
+        const SizedBox(height: 12),
+        SimpleTextFieldWithOutSuffixWidget(
+          hintText: 'Child School ID',
+          controller: controller.idControllers[index],
+        ),
       ],
     );
   }
@@ -358,9 +395,15 @@ class ParentsChildrenDetailsView
         SimpleTextFieldWithOutSuffixWidget(
           hintText: 'School/Collage Name',
           isReadOnly: true,
+          controller: controller
+              .schoolNameController, // Add this controller to your main controller
           onTap: () async {
-            print('School/Collage Name');
-            await SchoolSelectorDialog.show(context);
+            final selectedSchool = await SchoolSelectorDialog.show(context);
+            if (selectedSchool != null) {
+              controller.schoolNameController.text = selectedSchool;
+              // Navigate to next screen if needed
+              Get.toNamed(Routes.CHILDREN_DETAILS);
+            }
           },
         ),
       ],

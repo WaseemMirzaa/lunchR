@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
 import 'package:luncher/widgets/reuse_button.dart';
@@ -36,21 +38,64 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                     fontSize: 16,
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Enable Monthly Reload",
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const AdvancedSwitch(
+                      activeColor: Colors.green,
+                      inactiveColor: Colors.grey,
+                      width: 24,
+                      height: 10,
+                      initialValue: true,
+                    )
+                  ],
+                ),
               ],
             ),
             const SizedBox(height: 24),
             // Two Wallet Balance Cards
             const WalletBalanceCard(
               isShowScan: false,
+              isDelivered: false,
+              isDuration: false,
+              isNoImage: false,
+              isPreparing: false,
+              isType: false,
+              isDeliveredBy: false,
+              isStaff: false,
             ),
             const SizedBox(height: 24),
             const WalletBalanceCard(
               isShowScan: false,
+              isDelivered: false,
+              isDuration: false,
+              isNoImage: false,
+              isPreparing: false,
+              isDeliveredBy: false,
+              isType: false,
+              isStaff: false,
             ),
-            const Spacer(),
+            const SizedBox(height: 16),
+
             CustomButton(
                 text: 'ADD WALLET BALANCE',
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed(Routes.PARENTS_ADD_WALLET);
+                },
+                isLoading: false.obs),
+            const SizedBox(height: 16),
+            CustomButton(
+                text: 'ADD CHILD',
+                onPressed: () {
+                  Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
+                },
                 isLoading: false.obs),
             const SizedBox(height: 16),
           ],

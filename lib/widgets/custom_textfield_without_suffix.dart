@@ -7,13 +7,17 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final bool isReadOnly;
   final VoidCallback? onTap;
-  
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged; // Optional onChanged callback
+
   const SimpleTextFieldWithOutSuffixWidget({
     super.key,
     required this.hintText,
     this.isReadOnly = false,
     this.keyboardType = TextInputType.text,
     this.onTap,
+    this.controller,
+    this.onChanged, // Optional onChanged callback
   });
 
   @override
@@ -37,13 +41,15 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
         children: [
           Expanded(
             child: TextFormField(
+              controller: controller,
               style: AppTextStyles.MetropolisRegular.copyWith(
                 color: const Color(0xFF4A4B4D),
                 fontSize: 16,
               ),
               keyboardType: keyboardType,
               readOnly: isReadOnly,
-              onTap: onTap, // Direct connection to onTap
+              onTap: onTap,
+              onChanged: onChanged, // Trigger the onChanged callback
               decoration: InputDecoration(
                 labelText: isReadOnly ? null : hintText,
                 hintText: isReadOnly ? hintText : null,

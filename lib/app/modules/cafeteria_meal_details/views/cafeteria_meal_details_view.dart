@@ -29,6 +29,7 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                
                 const SizedBox(
                   height: 40,
                 ),

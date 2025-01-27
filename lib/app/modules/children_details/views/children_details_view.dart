@@ -82,65 +82,59 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                         const SizedBox(height: 16),
                         _buildCafeteriaDetails(),
                         const SizedBox(height: 12),
-                        _buildTypeOfPayment(),
+                        _buildSelectMeal(),
+                        const SizedBox(height: 16),
+                        _selectMealDeals(),
                         const SizedBox(height: 8),
-                        const SizedBox(height: 8),
-                        _buildDuration(),
-                        Obx(() {
-                          if (controller.selectedPaymentOption.value ==
-                              'Meal Selection') {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        Align(
+                          alignment: Alignment
+                              .centerRight, // Aligns content to the right
+                          child: GestureDetector(
+                            onTap: () {
+                              // Add your logic here
+                              Get.toNamed(Routes.MENU_PAGE);
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize
+                                  .min, // Ensures the row only takes as much space as needed
                               children: [
-                                const SizedBox(height: 8),
-                                const SizedBox(height: 8),
-                                _buildSelectMeal(),
-                                const SizedBox(height: 16),
-                                _selectMealDeals(),
-                                const SizedBox(height: 8),
-                                _buildTimeofMeal(),
-                                const SizedBox(height: 8),
-                                _buildTimeWidget(context),
+                                Image.asset(
+                                  "assets/icon/add.png",
+                                  height: 15, // Set the height to 15
+                                  width: 15, // Set the width to 15
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  "Add",
+                                  style: AppTextStyles.PoppinsRegular.copyWith(
+                                    fontSize: 13,
+                                    color: const Color(0xFFF4C150),
+                                  ),
+                                ),
                               ],
-                            );
-                          } else {
-                            return Container(); // Return an empty container if the option is "Wallet"
-                          }
-                        }),
-                        const SizedBox(height: 24),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 18),
                         _buildClassRoomDelivery(),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 34),
                       ],
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Divider(
-                        color: Color(0xFFE9E9E9),
-                        thickness: 1,
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: _buildAddAmount(),
-                      ),
-                    ],
                   ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: _buildAddWalletAmount(),
-            ),
-            const SizedBox(height: 16),
             CustomButton(
                 fontSize: 16,
                 isBackColor: true,
                 text: 'SUBMIT',
                 onPressed: () {
-                  Get.toNamed(Routes.LANDING_PAGE);
+                  Get.toNamed(
+                    Routes.PARENTS_CHILDREN_DETAILS,
+                    arguments: {
+                      'isAddedMenuItems': true, // Pass the parameter here
+                    },
+                  );
                 },
                 isLoading: RxBool(false)),
             const SizedBox(height: 16),
@@ -151,14 +145,6 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   }
 
 // Type of Payment
-  Widget _buildTypeOfPayment() {
-    return SelectableOptions(
-      title: 'Type Of Payment',
-      options: const ['Meal Selection', 'Wallet'],
-      selectedOption: controller
-          .selectedPaymentOption, // Pass the observable to SelectableOptions
-    );
-  }
 
   // Type of Payment
   Widget _buildClassRoomDelivery() {
@@ -191,29 +177,6 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
           "Select Cafeteria",
           style: AppTextStyles.MetropolisMedium.copyWith(
             fontSize: 15,
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            // Add your logic here
-            Get.toNamed(Routes.CAFETERIA);
-          },
-          child: Row(
-            children: [
-              Image.asset(
-                "assets/icon/add.png",
-                height: 15, // Set the height to 15
-                width: 15, // Set the width to 15
-              ),
-              const SizedBox(width: 4),
-              Text(
-                "Add",
-                style: AppTextStyles.MetropolisRegular.copyWith(
-                  fontSize: 13,
-                  color: const Color(0xFFF4C150),
-                ),
-              ),
-            ],
           ),
         ),
       ],
@@ -341,32 +304,9 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Selected Meal",
+          "Selected Order",
           style: AppTextStyles.PoppinsMedium.copyWith(
             fontSize: 15,
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            // Add your logic here
-            Get.toNamed(Routes.MENU_PAGE);
-          },
-          child: Row(
-            children: [
-              Image.asset(
-                "assets/icon/add.png",
-                height: 15, // Set the height to 15
-                width: 15, // Set the width to 15
-              ),
-              const SizedBox(width: 4),
-              Text(
-                "Add",
-                style: AppTextStyles.PoppinsRegular.copyWith(
-                  fontSize: 13,
-                  color: const Color(0xFFF4C150),
-                ),
-              ),
-            ],
           ),
         ),
       ],
@@ -450,65 +390,83 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   }
 
   Widget _selectMealDeals() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Container(
-            width: 70,
-            height: 61,
-            decoration: BoxDecoration(
-              color: Colors.grey[300], // Placeholder for image or content
-              borderRadius: BorderRadius.circular(12),
-              image: const DecorationImage(
-                image: AssetImage(
-                    'assets/images/gravy.png'), // Replace with your image
-                fit: BoxFit.cover,
+    return Container(
+      padding:
+          const EdgeInsets.all(8), // Optional: for padding inside the container
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color of the container
+        borderRadius:
+            BorderRadius.circular(12), // Rounded corners for the container
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2), // Shadow color with opacity
+            blurRadius: 6, // Blur effect for the shadow
+            spreadRadius: 2, // Spread of the shadow
+            offset: const Offset(0, 2), // Shadow offset (vertical)
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Container(
+              width: 70,
+              height: 61,
+              decoration: BoxDecoration(
+                color: Colors.grey[300], // Placeholder for image or content
+                borderRadius: BorderRadius.circular(12),
+                image: const DecorationImage(
+                  image: AssetImage(
+                      'assets/images/gravy.png'), // Replace with your image
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 8,
-        ),
-        // "Chicken Gravy" text with ellipsis to prevent wrapping
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 2),
-              child: Text(
-                "Chicken Gravy",
-                maxLines: 1, // Ensure text stays in one line
-                overflow: TextOverflow.ellipsis, // Prevents text from wrapping
-                style: AppTextStyles.MetropolisMedium.copyWith(
-                  fontSize: 9,
-                  color: Colors.black,
+          const SizedBox(
+            width: 8,
+          ),
+          // "Chicken Gravy" text with ellipsis to prevent wrapping
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: Text(
+                  "Chicken Gravy",
+                  maxLines: 1, // Ensure text stays in one line
+                  overflow:
+                      TextOverflow.ellipsis, // Prevents text from wrapping
+                  style: AppTextStyles.MetropolisMedium.copyWith(
+                    fontSize: 9,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 2),
-            // "$35" text with ellipsis as well
-            Padding(
-              padding: const EdgeInsets.only(left: 2),
-              child: Text(
-                "\$35",
-                textAlign: TextAlign.left,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.MetropolisMedium.copyWith(
-                  fontSize: 9,
-                  color: Colors.black,
+              const SizedBox(height: 2),
+              // "$35" text with ellipsis as well
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: Text(
+                  "\$35",
+                  textAlign: TextAlign.left,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.MetropolisMedium.copyWith(
+                    fontSize: 9,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-          ],
-        )
-      ],
+            ],
+          )
+        ],
+      ),
     );
   }
 

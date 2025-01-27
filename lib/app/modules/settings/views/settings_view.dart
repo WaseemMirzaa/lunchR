@@ -55,10 +55,10 @@ class SettingsView extends GetView<SettingsController> {
                         controller.updateSelectedIndex(1);
                       } else if (index == 4) {
                         Get.toNamed(Routes.SPLASH);
+                      } else if (index == 1) {
+                        controller.updateSelectedIndex(2);
                       }
-                      //else if (index == 2) {
-                      //   Get.toNamed('/privacy');
-                      // } else if (index == 3) {
+                      // else if (index == 3) {
                       //   Get.toNamed('/terms');
                       // } else if (index == 4) {
                       //   Get.toNamed('/signout');

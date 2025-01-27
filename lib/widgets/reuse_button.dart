@@ -56,7 +56,7 @@ class CustomButton extends StatelessWidget {
           color: isBackColor
               ? null
               : AppColors.whiteColor, // Apply solid background if no gradient
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(50),
           boxShadow: isBackColor || isForcedTextColor
               ? [
                   BoxShadow(
@@ -74,7 +74,7 @@ class CustomButton extends StatelessWidget {
                 onTap: isLoading.value
                     ? null
                     : onPressed, // Use .value to access RxBool
-                borderRadius: BorderRadius.circular(32),
+                borderRadius: BorderRadius.circular(50),
                 child: Center(
                   child: isLoading.value // Use .value to access RxBool
                       ? SizedBox(

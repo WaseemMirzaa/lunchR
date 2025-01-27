@@ -148,7 +148,7 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
               CustomButton(
                 text: 'VERIFY',
                 onPressed: () {
-                  Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
+                  Get.toNamed(Routes.PARENTS_ADD_WALLET);
                 },
                 isLoading: false.obs, // RxBool for loading state
               ),

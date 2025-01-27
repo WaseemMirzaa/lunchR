@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/parents_history_details/views/parents_history_details_view.dart';
-import 'package:luncher/app/modules/parents_history_list/views/parents_history_list_view.dart';
+
 import 'package:luncher/app/modules/parents_history_select_date/views/parents_history_select_date_view.dart';
 import 'package:luncher/config/app_text_style.dart';
 
@@ -25,9 +25,6 @@ class ParentsHistoryView extends GetView<ParentsHistoryController> {
                   onTap: () {
                     if (controller.selectedIndex.value == 1) {
                       controller.updateSelectedIndex(0);
-                    }
-                    if (controller.selectedIndex.value == 2) {
-                      controller.updateSelectedIndex(1);
                     }
                   },
                   child: Container(
@@ -70,11 +67,15 @@ class ParentsHistoryView extends GetView<ParentsHistoryController> {
         ),
 
         // Settings Title
-        Text(
-          'HISTORY', // Title text
-          style: AppTextStyles.MetropolisMedium.copyWith(
-            fontSize: 18,
-            color: const Color(0xFF434343),
+        Obx(
+          () => Text(
+            controller.selectedIndex.value == 1
+                ? 'History'
+                : 'Upcoming', // Title text
+            style: AppTextStyles.MetropolisMedium.copyWith(
+              fontSize: 18,
+              color: const Color(0xFF434343),
+            ),
           ),
         ),
         const SizedBox(height: 32), // Spacing between title and list
@@ -84,7 +85,6 @@ class ParentsHistoryView extends GetView<ParentsHistoryController> {
               index: controller
                   .selectedIndex.value, // Bind the selected index to controller
               children: const [
-                ParentsHistoryListView(), // First page: List view
                 ParentsHistorySelectDateView(), // Second page: Date view
                 ParentsHistoryDetailsView(), // Third page: Details view
               ],

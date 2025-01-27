@@ -1,65 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 class SelectionTile extends StatelessWidget {
   final String imgPath;
   final String text;
-  final double imageHeight; // Optional image height
-  final double imageWidth; // Optional image width
-  final bool isParent;
+  final double imageHeight;
+  final double imageWidth;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-  // Constructor with optional parameters for image height and width
   const SelectionTile({
     required this.imgPath,
     required this.text,
-    this.isParent = false,
-    this.imageHeight = 102, // Default value if not passed
-    this.imageWidth = 102, // Default value if not passed
+    this.imageHeight = 102,
+    this.imageWidth = 102,
+    required this.isSelected,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        isParent
-            ? Get.toNamed(Routes.PHONE_AUTHENTICATION)
-            : Get.toNamed(Routes.CAFETERIA_PHONE_AUTHENICATION);
-      },
+      onTap: onTap,
       child: Container(
-        height: 182, // Fixed height for the container
-        width: 136, // Fixed width for the container
+        height: 182,
+        width: 136,
         decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: const BorderRadius.all(Radius.circular(15)),
+          border: isSelected
+              ? Border.all(
+                  color: AppColors.gradientStartColor, // Highlight color
+                  width: 3.0,
+                )
+              : null,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
               blurRadius: 6,
-              offset: const Offset(0, 3), // Position of the shadow
+              offset: const Offset(0, 3),
             ),
           ],
         ),
         child: Stack(
-          alignment: Alignment.center, // Align the content in the center
+          alignment: Alignment.center,
           children: [
-            // Image inside the container, scaled to fit while maintaining aspect ratio
             Image.asset(
               imgPath,
-              height: imageHeight, // Use the provided image height
-              width: imageWidth, // Use the provided image width
-              fit: BoxFit
-                  .contain, // Ensures the image scales and stays within the bounds
+              height: imageHeight,
+              width: imageWidth,
+              fit: BoxFit.contain,
             ),
-            // Text below the image, positioned relative to the stack
             Positioned(
-              bottom: 10, // Adjust the vertical position of the text
+              bottom: 10,
               child: Text(
                 text,
                 style: AppTextStyles.MetropolisBold.copyWith(
-                  fontSize: 22, // Adjust font size as needed
-                  color: const Color(0xFF1B1C20), // Keep text color black
+                  fontSize: 22,
+                  color: const Color(0xFF1B1C20),
                 ),
               ),
             ),

@@ -195,7 +195,7 @@ Widget _buildOrderCard(
     BuildContext context, CafeteriaHistoryController historyController) {
   return GestureDetector(
     onTap: () {
-      historyController.updateSelectedIndex(2);
+      historyController.updateSelectedIndex(1);
     },
     child: Container(
       height: 72, // Fixed height for each item

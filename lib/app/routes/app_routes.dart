@@ -47,6 +47,23 @@ abstract class Routes {
   static const CAFETERIA_CHILD_VERIFICATION_HOME =
       _Paths.CAFETERIA_CHILD_VERIFICATION_HOME;
   static const HOME_SETTINGS = _Paths.HOME_SETTINGS;
+  static const STAFF_PHONE_VERIFICATION = _Paths.STAFF_PHONE_VERIFICATION;
+  static const STAFF_MEAL_SELECTION = _Paths.STAFF_MEAL_SELECTION;
+  static const STAFF_PREPARING = _Paths.STAFF_PREPARING;
+  static const STAFF_HISTORY = _Paths.STAFF_HISTORY;
+  static const STAFF_HISTORY_CALENDER = _Paths.STAFF_HISTORY_CALENDER;
+  static const STAFF_HISTORY_DETAIL = _Paths.STAFF_HISTORY_DETAIL;
+  static const STAFF_CHILD_VERIFICATION = _Paths.STAFF_CHILD_VERIFICATION;
+  static const STAFF_LANDING_PAGE = _Paths.STAFF_LANDING_PAGE;
+  static const STAFF_HISTORY_LIST = _Paths.STAFF_HISTORY_LIST;
+  static const STAFF_SETTINGS = _Paths.STAFF_SETTINGS;
+  static const STAFF_HOME_SETTINGS = _Paths.STAFF_HOME_SETTINGS;
+  static const STAFF_PROFILE = _Paths.STAFF_PROFILE;
+  static const CAFETERIA_ADD_STAFF = _Paths.CAFETERIA_ADD_STAFF;
+  static const CAFETERIA_STAFF_LIST = _Paths.CAFETERIA_STAFF_LIST;
+  static const CAFETERIA_HOME_SETTINGS = _Paths.CAFETERIA_HOME_SETTINGS;
+  static const CAFETERIA_SETTINGS = _Paths.CAFETERIA_SETTINGS;
+  static const PARENTS_ADD_WALLET = _Paths.PARENTS_ADD_WALLET;
 }
 
 abstract class _Paths {
@@ -91,4 +108,21 @@ abstract class _Paths {
   static const CAFETERIA_CHILD_VERIFICATION_HOME =
       '/cafeteria-child-verification-home';
   static const HOME_SETTINGS = '/home-settings';
+  static const STAFF_PHONE_VERIFICATION = '/staff-phone-verification';
+  static const STAFF_MEAL_SELECTION = '/staff-meal-selection';
+  static const STAFF_PREPARING = '/staff-preparing';
+  static const STAFF_HISTORY = '/staff-history';
+  static const STAFF_HISTORY_CALENDER = '/staff-history-calender';
+  static const STAFF_HISTORY_DETAIL = '/staff-history-detail';
+  static const STAFF_CHILD_VERIFICATION = '/staff-child-verification';
+  static const STAFF_LANDING_PAGE = '/staff-landing-page';
+  static const STAFF_HISTORY_LIST = '/staff-history-list';
+  static const STAFF_SETTINGS = '/staff-settings';
+  static const STAFF_HOME_SETTINGS = '/staff-home-settings';
+  static const STAFF_PROFILE = '/staff-profile';
+  static const CAFETERIA_ADD_STAFF = '/cafeteria-add-staff';
+  static const CAFETERIA_STAFF_LIST = '/cafeteria-staff-list';
+  static const CAFETERIA_HOME_SETTINGS = '/cafeteria-home-settings';
+  static const CAFETERIA_SETTINGS = '/cafeteria-settings';
+  static const PARENTS_ADD_WALLET = '/parents-add-wallet';
 }

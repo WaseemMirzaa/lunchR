@@ -7,11 +7,25 @@ class WalletBalanceCard extends StatelessWidget {
   final bool isShowScan;
   final String price;
   final String image;
+  final bool isType;
+  final bool isDuration;
+  final bool isStaff;
+  final bool isPreparing;
+  final bool isDelivered;
+  final bool isDeliveredBy;
+  final bool isNoImage;
 
   // Constructor with default value for isEdit
   const WalletBalanceCard(
       {Key? key,
       this.isEdit = true,
+      this.isType = true,
+      this.isDeliveredBy = true,
+      this.isDuration = true,
+      this.isNoImage = true,
+      this.isPreparing = true,
+      this.isDelivered = true,
+      this.isStaff = true,
       this.walletDesc = 'Wallet balance',
       this.image = 'assets/icon/scan.png',
       this.price = '\$25',
@@ -20,7 +34,7 @@ class WalletBalanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 113,
+      height: isShowScan ? 117 : 80,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -80,6 +94,7 @@ class WalletBalanceCard extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
+                    Spacer(),
                     if (isEdit)
                       Text(
                         "Edit",
@@ -88,6 +103,13 @@ class WalletBalanceCard extends StatelessWidget {
                           color: const Color(0xFFFF9A0D),
                         ),
                       ),
+                    SizedBox(width: 8),
+                    if (!isShowScan)
+                      Image.asset(
+                        'assets/icon/delete.png',
+                        width: 15,
+                        height: 15,
+                      )
                   ],
                 ),
                 Text(
@@ -100,47 +122,105 @@ class WalletBalanceCard extends StatelessWidget {
                   style: AppTextStyles.MetropolisRegular.copyWith(
                       fontSize: 12, color: const Color(0xFF858585)),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      "Type: ",
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12, color: Colors.black),
+                if (isType)
+                  Row(
+                    children: [
+                      Text(
+                        "Type: ",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: Colors.black),
+                      ),
+                      Text(
+                        "Wallet Balance",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: const Color(0xFF858585)),
+                      ),
+                    ],
+                  ),
+                if (isDuration)
+                  Row(
+                    children: [
+                      Text(
+                        "Duration: ",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: Colors.black),
+                      ),
+                      Text(
+                        "Weekly",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: const Color(0xFF858585)),
+                      ),
+                    ],
+                  ),
+                if (isStaff)
+                  Row(
+                    children: [
+                      Text(
+                        "Staff Name: ",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: Colors.black),
+                      ),
+                      Text(
+                        "Name",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: const Color(0xFF858585)),
+                      ),
+                    ],
+                  ),
+                if (isDeliveredBy)
+                  Row(
+                    children: [
+                      Text(
+                        "Delivered By: ",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: Colors.black),
+                      ),
+                      Text(
+                        "Name",
+                        style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12, color: const Color(0xFF858585)),
+                      ),
+                    ],
+                  ),
+                SizedBox(height: 8),
+                if (isPreparing)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GradientButton(
+                      height: 30,
+                      width: 90,
+                      onTap: () {
+                        print("Preparing button tapped!");
+                        // Add your onTap logic here
+                      },
                     ),
-                    Text(
-                      "Wallet Balance",
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12, color: const Color(0xFF858585)),
+                  ),
+                if (isDelivered)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      "Delivered",
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Duration: ",
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12, color: Colors.black),
-                    ),
-                    Text(
-                      "Weekly",
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12, color: const Color(0xFF858585)),
-                    ),
-                  ],
-                ),
+                  ),
               ],
             ),
           ),
 
           // Vertical Divider
-          Container(
-            width: 1,
-            color: Colors.black.withOpacity(0.1),
-            margin: const EdgeInsets.only(left: 6, right: 10),
-          ),
+          isShowScan
+              ? Container(
+                  width: 1,
+                  color: Colors.black.withOpacity(0.1),
+                  margin: const EdgeInsets.only(left: 6, right: 10),
+                )
+              : SizedBox.shrink(),
 
           // Wallet Balance Section
-          isShowScan
+          isShowScan && !isNoImage
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -168,44 +248,74 @@ class WalletBalanceCard extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    Text(
-                      walletDesc,
-                      style: AppTextStyles.MetropolisMedium.copyWith(
-                        fontSize: 6,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.center, // Center the second line
-                    )
                   ],
                 )
-              : Column(
+              : SizedBox.shrink(),
+
+          isNoImage
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: walletDesc == 'Wallet Remaining Balance'
-                          ? const EdgeInsets.only(left: 0)
-                          : const EdgeInsets.only(left: 12),
-                      child: Text(
-                        price,
-                        style: AppTextStyles.MetropolisMedium.copyWith(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
                     Text(
-                      walletDesc == 'Wallet Remaining Balance'
-                          ? '${walletDesc.split(' ').take(2).join(' ')}\n${walletDesc.split(' ').skip(2).join(' ')}'
-                          : walletDesc,
+                      price,
                       style: AppTextStyles.MetropolisMedium.copyWith(
-                        fontSize: 6,
+                        fontSize: 16,
                         color: Colors.black,
                       ),
-                      textAlign: TextAlign.center, // Center the second line
-                    )
+                    ),
                   ],
-                ),
+                )
+              : SizedBox.shrink()
         ],
+      ),
+    );
+  }
+}
+
+class GradientButton extends StatelessWidget {
+  final VoidCallback onTap; // Function to handle button tap
+  final double height; // Height of the button
+  final double width; // Width of the button
+
+  const GradientButton({
+    Key? key,
+    required this.onTap,
+    required this.height,
+    required this.width,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50), // Rounded corners
+          gradient: const LinearGradient(
+            colors: [Colors.red, Colors.orange], // Gradient colors
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.red.withOpacity(0.3), // Shadow color
+              blurRadius: 8,
+              offset: const Offset(0, 4), // Shadow position
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            'Deliver',
+            style: AppTextStyles.MetropolisMedium.copyWith(
+              fontSize: 10,
+              color: Colors.white, // Text color
+            ),
+          ),
+        ),
       ),
     );
   }

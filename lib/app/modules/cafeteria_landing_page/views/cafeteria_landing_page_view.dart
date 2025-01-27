@@ -5,7 +5,7 @@ import '../controllers/cafeteria_landing_page_controller.dart';
 
 class CafeteriaLandingPageView extends GetView<CafeteriaLandingPageController> {
   const CafeteriaLandingPageView({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

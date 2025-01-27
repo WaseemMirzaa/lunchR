@@ -74,7 +74,7 @@ class ChildVerificationUploadInfoView
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: '20,July ',
+                      text: 'July ',
                       style: AppTextStyles.RobotoLight.copyWith(
                         fontSize: 18,
                         color: const Color(0xFF2E2E2E),
@@ -204,8 +204,14 @@ class ChildVerificationUploadInfoView
               child: const WalletBalanceCard(
                 isEdit: false,
                 walletDesc: 'Wallet Remaining Balance',
-                price: '\$25',
-                isShowScan: false,
+                price: '\$250',
+                isShowScan: true,
+                isNoImage: true,
+                isPreparing: false,
+                isDelivered: false,
+                isStaff: false,
+                isType: false,
+                isDuration: false,
               ),
             ),
 

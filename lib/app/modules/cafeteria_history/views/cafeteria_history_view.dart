@@ -11,7 +11,7 @@ import '../controllers/cafeteria_history_controller.dart';
 
 class CafeteriaHistoryView extends GetView<CafeteriaHistoryController> {
   const CafeteriaHistoryView({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,9 +27,6 @@ class CafeteriaHistoryView extends GetView<CafeteriaHistoryController> {
                   onTap: () {
                     if (controller.selectedIndex.value == 1) {
                       controller.updateSelectedIndex(0);
-                    }
-                    if (controller.selectedIndex.value == 2) {
-                      controller.updateSelectedIndex(1);
                     }
                   },
                   child: Container(
@@ -68,13 +65,18 @@ class CafeteriaHistoryView extends GetView<CafeteriaHistoryController> {
         }),
 
         // Settings Title
-        Text(
-          'HISTORY', // Title text
-          style: AppTextStyles.MetropolisMedium.copyWith(
-            fontSize: 18,
-            color: const Color(0xFF434343),
-          ),
-        ),
+        Obx(() {
+          return Text(
+            controller.selectedIndex.value == 0
+                ? 'Upcoming'
+                : 'History', // Title text
+            style: AppTextStyles.MetropolisMedium.copyWith(
+              fontSize: 18,
+              color: const Color(0xFF434343),
+            ),
+          );
+        }),
+
         const SizedBox(height: 32), // Spacing between title and list
         Expanded(
           child: Obx(
@@ -82,7 +84,6 @@ class CafeteriaHistoryView extends GetView<CafeteriaHistoryController> {
               index: controller
                   .selectedIndex.value, // Bind the selected index to controller
               children: const [
-                CafeteriaHistoryListView(), // Third page: Details view
                 CafeteriaHistorySelectDateView(), // First page: List view
                 CafeteriaHistoryDetailsView()
               ],

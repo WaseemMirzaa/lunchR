@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
+import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_history_details_controller.dart';
 
@@ -24,7 +25,7 @@ class CafeteriaHistoryDetailsView
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: '20,July ',
+                      text: 'July ',
                       style: AppTextStyles.RobotoLight.copyWith(
                         fontSize: 18,
                         color: const Color(0xFF2E2E2E),
@@ -67,7 +68,6 @@ class CafeteriaHistoryDetailsView
               ),
             ),
 
-           
             // Second custom Row with container, image, and texts
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -125,8 +125,20 @@ class CafeteriaHistoryDetailsView
                 isEdit: false,
                 walletDesc: 'Wallet Remaining Balance',
                 price: '\$250',
-                isShowScan: false,
+                isShowScan: true,
+                isNoImage: true,
+                isPreparing: false,
+                isDelivered: false,
+                isStaff: false,
+                isType: false,
+                isDuration: false,
               ),
+            ),
+
+            CustomButton(
+                text: 'Confirm', onPressed: () {}, isLoading: false.obs),
+            SizedBox(
+              height: 16,
             )
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/parents_history_list/views/parents_history_list_view.dart';
 import 'package:luncher/app/modules/profile/views/profile_view.dart';
 import 'package:luncher/app/modules/settings/views/settings_view.dart';
 
@@ -24,6 +25,8 @@ class HomeSettingsView extends GetView<HomeSettingsController> {
 
                 // Third child
                 ProfileView(),
+
+                ParentsHistoryListView(),
               ],
             ),
           ),
