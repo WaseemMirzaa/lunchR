@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 class PhoneVerificationController extends GetxController {
   //TODO: Implement PhoneVerificationController
 
+
+  String pin = '';
+
   final count = 0.obs;
   @override
   void onInit() {

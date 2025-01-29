@@ -44,15 +44,15 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                     Text(
                       "Enable Monthly Reload",
                       style: AppTextStyles.MetropolisMedium.copyWith(
-                        fontSize: 12,
+                        fontSize: 13,
                       ),
                     ),
                     const SizedBox(width: 8),
                     const AdvancedSwitch(
                       activeColor: Colors.green,
                       inactiveColor: Colors.grey,
-                      width: 24,
-                      height: 10,
+                      width: 27,
+                      height: 12,
                       initialValue: true,
                     )
                   ],

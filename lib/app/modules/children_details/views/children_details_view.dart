@@ -463,6 +463,21 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   ),
                 ),
               ),
+              const SizedBox(height: 2),
+              // "$35" text with ellipsis as well
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: Text(
+                  "Chicken Gravy – A flavorful, spiced dish with \ntender chicken in a rich sauce.",
+                  textAlign: TextAlign.left,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.MetropolisMedium.copyWith(
+                    fontSize: 9,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
             ],
           )
         ],

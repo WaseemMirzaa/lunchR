@@ -77,7 +77,7 @@ class ScheduleDialog extends StatelessWidget {
       child: Container(
         // Increased width to 98% of screen width
         width: screenSize.width - 32,
-        height: screenSize.height * 0.35,
+        height: screenSize.height * 0.40,
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -231,10 +231,31 @@ class ScheduleDialog extends StatelessWidget {
                 ),
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4,15,5,0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                      'Available At:',
+                      style: AppTextStyles.MetropolisRegular.copyWith(
+                          fontSize: 12)),Text(
+                      '12am',
+                      style: AppTextStyles.MetropolisRegular.copyWith(
+                          fontSize: 12)),Text(
+                      '2pm',
+                      style: AppTextStyles.MetropolisRegular.copyWith(
+                          fontSize: 12)),Text(
+                      '5pm',
+                      style: AppTextStyles.MetropolisRegular.copyWith(
+                          fontSize: 12)),
+                ],
+              ),
+            ),
             Obx(() => controller.showDaySelection
                 ? Column(
                     children: [
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -286,6 +307,13 @@ class ScheduleDialog extends StatelessWidget {
                             )
                             .toList(),
                       ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                          'Your order is schedule for 10am to repeat Monday & Tuesday every weekly',
+                          style: AppTextStyles.MetropolisRegular.copyWith(
+                              fontSize: 12)),
                     ],
                   )
                 : const SizedBox.shrink()),

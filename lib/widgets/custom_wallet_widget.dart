@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:luncher/config/app_text_style.dart';
+
+import '../app/routes/app_pages.dart';
 
 class WalletBalanceCard extends StatelessWidget {
   final bool isEdit; // Parameter to control the visibility of "Edit" text
@@ -88,10 +92,15 @@ class WalletBalanceCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Children Name",
-                      style: AppTextStyles.MetropolisMedium.copyWith(
-                        fontSize: 14,
+                    GestureDetector(
+                      onTap: (){
+                        Get.toNamed(Routes.CAFETERIA);
+                      },
+                      child: Text(
+                        "Children Name",
+                        style: AppTextStyles.MetropolisMedium.copyWith(
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     Spacer(),

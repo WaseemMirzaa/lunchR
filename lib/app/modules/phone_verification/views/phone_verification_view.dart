@@ -130,11 +130,13 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
                       submittedPinTheme: submittedPinTheme,
 
                       validator: (s) {
-                        return s == '2222' ? null : 'Pin is incorrect';
+                        return (s == '1234' || s == '0000') ? null : 'Pin is incorrect';
                       },
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
-                      onCompleted: (pin) {},
+                      onCompleted: (pin) {
+                        controller.pin = pin;
+                      },
                       mainAxisAlignment: MainAxisAlignment
                           .spaceEvenly, // Adds even spacing between boxes
                     ),
@@ -148,7 +150,12 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
               CustomButton(
                 text: 'VERIFY',
                 onPressed: () {
-                  Get.toNamed(Routes.PARENTS_ADD_WALLET);
+                  print(controller.pin);
+                  if (controller.pin == '1234') {
+                    Get.toNamed(Routes.LANDING_PAGE);
+                  } else if (controller.pin == '0000') {
+                    Get.toNamed(Routes.PARENTS_ADD_WALLET);
+                  }
                 },
                 isLoading: false.obs, // RxBool for loading state
               ),

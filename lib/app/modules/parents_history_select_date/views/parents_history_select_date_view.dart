@@ -157,7 +157,14 @@ class ParentsHistorySelectDateView
               height: 1,
             ),
           ),
-
+          Padding(
+            padding: const EdgeInsets.only(right: 20, top: 10),
+            child: Align(alignment: Alignment.bottomRight,
+                child: Text('Balance: -200\$', style: AppTextStyles.RobotoRegular.copyWith(
+                  color: const Color(0xFFBFBFBF),
+                  fontSize: 13,
+                ),)),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               left: 16,
