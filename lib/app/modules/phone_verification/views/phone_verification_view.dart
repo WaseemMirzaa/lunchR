@@ -152,9 +152,9 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
                 onPressed: () {
                   print(controller.pin);
                   if (controller.pin == '1234') {
-                    Get.toNamed(Routes.LANDING_PAGE);
+                    Get.offAllNamed(Routes.LANDING_PAGE);
                   } else if (controller.pin == '0000') {
-                    Get.toNamed(Routes.PARENTS_ADD_WALLET);
+                    Get.offAllNamed(Routes.PARENTS_ADD_WALLET);
                   }
                 },
                 isLoading: false.obs, // RxBool for loading state

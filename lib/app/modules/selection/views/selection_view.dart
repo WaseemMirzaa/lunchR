@@ -35,11 +35,10 @@ class SelectionView extends GetView<SelectionController> {
               Center(
                 child: Text(
                   'LunchR',
-                  style: AppTextStyles.AltoysItalic.copyWith(
-                    fontSize: 45,
-                    color: AppColors.whiteColor,
+                  style: AppTextStyles.MetropolisRegularItalic.copyWith(
+                      color: AppColors.whiteColor,
+                      fontSize: 45,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
               const Spacer(flex: 8), // Push "TYPE SELECTION" further down

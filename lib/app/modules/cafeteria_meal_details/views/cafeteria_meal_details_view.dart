@@ -140,7 +140,7 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
           CustomButton(
               text: 'SUBMIT',
               onPressed: () {
-                Get.toNamed(Routes.CAFETERIA_LANDING_PAGE);
+                Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
               },
               isLoading: RxBool(false))
         ],

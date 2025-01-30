@@ -160,7 +160,7 @@ class ParentsHistorySelectDateView
           Padding(
             padding: const EdgeInsets.only(right: 20, top: 10),
             child: Align(alignment: Alignment.bottomRight,
-                child: Text('Balance: -200\$', style: AppTextStyles.RobotoRegular.copyWith(
+                child: Text('Balance: 200\$', style: AppTextStyles.RobotoRegular.copyWith(
                   color: const Color(0xFFBFBFBF),
                   fontSize: 13,
                 ),)),

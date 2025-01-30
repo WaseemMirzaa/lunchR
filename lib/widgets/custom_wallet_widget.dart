@@ -92,24 +92,24 @@ class WalletBalanceCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: (){
-                        Get.toNamed(Routes.CAFETERIA);
-                      },
-                      child: Text(
-                        "Children Name",
-                        style: AppTextStyles.MetropolisMedium.copyWith(
-                          fontSize: 14,
-                        ),
+                    Text(
+                      "Children Name",
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 14,
                       ),
                     ),
                     Spacer(),
                     if (isEdit)
-                      Text(
-                        "Edit",
-                        style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12,
-                          color: const Color(0xFFFF9A0D),
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(Routes.CAFETERIA);
+                        },
+                        child: Text(
+                          "Edit",
+                          style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFFFF9A0D),
+                          ),
                         ),
                       ),
                     SizedBox(width: 8),

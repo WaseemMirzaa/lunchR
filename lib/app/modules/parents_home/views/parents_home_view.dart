@@ -10,8 +10,12 @@ import '../controllers/parents_home_controller.dart';
 class ParentsHomeView extends GetView<ParentsHomeController> {
   const ParentsHomeView({super.key});
 
+
+
+
   @override
   Widget build(BuildContext context) {
+    final switchController = ValueNotifier<bool>(true); // Controller for switch
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -48,9 +52,10 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const AdvancedSwitch(
+                    AdvancedSwitch(
                       activeColor: Colors.green,
                       inactiveColor: Colors.grey,
+                      controller: switchController,
                       width: 27,
                       height: 12,
                       initialValue: true,

@@ -70,7 +70,7 @@ class ParentsChildrenDetailsView
                       isBackColor: true,
                       text: 'CONTINUE',
                       onPressed: () {
-                        Get.toNamed(Routes.LANDING_PAGE);
+                        Get.offAllNamed(Routes.LANDING_PAGE);
                       },
                       isLoading: RxBool(false),
                     ),
@@ -174,7 +174,7 @@ class ParentsChildrenDetailsView
                   isBackColor: true,
                   text: 'CONTINUE',
                   onPressed: () {
-                    Get.toNamed(Routes.LANDING_PAGE);
+                    Get.offAllNamed(Routes.LANDING_PAGE);
                   },
                   isLoading: RxBool(false),
                 ),

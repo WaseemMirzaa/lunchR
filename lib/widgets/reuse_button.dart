@@ -39,43 +39,42 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          // Check if isBackColor is true, then apply gradient
-          gradient: isBackColor
-              ? LinearGradient(
-                  colors: gradientColors,
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.bottomRight,
-                )
-              : null,
-          color: isBackColor
-              ? null
-              : AppColors.whiteColor, // Apply solid background if no gradient
-          borderRadius: BorderRadius.circular(50),
-          boxShadow: isBackColor || isForcedTextColor
-              ? [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 4,
-                    spreadRadius: 2,
+    return GestureDetector(
+      onTap: isLoading.value
+          ? null
+          : onPressed, // Use .value to access RxBool
+      child: Padding(
+        padding: padding,
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            // Check if isBackColor is true, then apply gradient
+            gradient: isBackColor
+                ? LinearGradient(
+                    colors: gradientColors,
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.bottomRight,
                   )
-                ]
-              : null, // No shadow when no background color
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: Obx(() => InkWell(
-                // Wrap with Obx for reactivity
-                onTap: isLoading.value
-                    ? null
-                    : onPressed, // Use .value to access RxBool
-                borderRadius: BorderRadius.circular(50),
-                child: Center(
+                : null,
+            color: isBackColor
+                ? null
+                : AppColors.whiteColor, // Apply solid background if no gradient
+            borderRadius: BorderRadius.circular(50),
+            boxShadow: isBackColor || isForcedTextColor
+                ? [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      blurRadius: 4,
+                      spreadRadius: 2,
+                    )
+                  ]
+                : null, // No shadow when no background color
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child:
+                Center(
                   child: isLoading.value // Use .value to access RxBool
                       ? SizedBox(
                           height: height * 0.5,
@@ -101,8 +100,8 @@ class CustomButton extends StatelessWidget {
                                       fontSize: fontSize,
                                       color: const Color(0xFFFF2F69),
                                     )),
-                ),
-              )),
+                )),
+
         ),
       ),
     );

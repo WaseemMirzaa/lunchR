@@ -129,7 +129,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                 isBackColor: true,
                 text: 'SUBMIT',
                 onPressed: () {
-                  Get.toNamed(
+                  Get.offAllNamed(
                     Routes.PARENTS_CHILDREN_DETAILS,
                     arguments: {
                       'isAddedMenuItems': true, // Pass the parameter here
@@ -391,6 +391,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
 
   Widget _selectMealDeals() {
     return Container(
+      height: 100,
       padding:
           const EdgeInsets.all(8), // Optional: for padding inside the container
       decoration: BoxDecoration(
@@ -413,7 +414,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
             padding: const EdgeInsets.only(left: 8),
             child: Container(
               width: 70,
-              height: 61,
+              height: 81,
               decoration: BoxDecoration(
                 color: Colors.grey[300], // Placeholder for image or content
                 borderRadius: BorderRadius.circular(12),
@@ -443,7 +444,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   overflow:
                       TextOverflow.ellipsis, // Prevents text from wrapping
                   style: AppTextStyles.MetropolisMedium.copyWith(
-                    fontSize: 9,
+                    fontSize: 13,
                     color: Colors.black,
                   ),
                 ),
@@ -458,26 +459,43 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.MetropolisMedium.copyWith(
-                    fontSize: 9,
+                    fontSize: 11,
                     color: Colors.black,
                   ),
                 ),
               ),
               const SizedBox(height: 2),
-              // "$35" text with ellipsis as well
-              Padding(
-                padding: const EdgeInsets.only(left: 2),
-                child: Text(
-                  "Chicken Gravy – A flavorful, spiced dish with \ntender chicken in a rich sauce.",
-                  textAlign: TextAlign.left,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.MetropolisMedium.copyWith(
-                    fontSize: 9,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
+              // product description
+              // Obx(() {
+              //   final selectedTimes = controller.scheduleController.selectedTimes
+              //       .asMap()
+              //       .entries
+              //       .where((entry) => entry.value)
+              //       .map((entry) => controller.scheduleController.availableTimes[entry.key]) // Map the index to the actual time value
+              //       .join(', ');
+              //
+              //
+              //   final selectedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+              //       .asMap()
+              //       .entries
+              //       .where((entry) => controller.scheduleController.selectedDays[entry.key]) // Only take the selected (true) days
+              //       .map((entry) => entry.value)
+              //       .join(', ');
+              //
+              //   if (selectedTimes.isEmpty || selectedDays.isEmpty) {
+              //     return const SizedBox.shrink();
+              //   }
+              //
+              //   return Text(
+              //     'Your order is scheduled for $selectedTimes to repeat on $selectedDays every ${controller.scheduleController.repeatUnit.value}',
+              //     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12),
+              //   );
+              // }),
+
+              Text('Your order is scheduled at 12am \nevery week.', style: AppTextStyles.PoppinsMedium.copyWith(
+                fontSize: 11,
+                color: Colors.black,
+              ),)
             ],
           )
         ],
@@ -486,15 +504,14 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   }
 
   // Generic method for selectable options
-
   Widget _buildAddWalletAmount() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Left side: Add Amount Button inside its own container
         Container(
-          width: 173, // Fixed width for the button container
-          height: 53, // Fixed height for the button container
+          width: 173,
+          height: 53,
           child: CustomButton(
             isBackColor: false,
             width: double.infinity,

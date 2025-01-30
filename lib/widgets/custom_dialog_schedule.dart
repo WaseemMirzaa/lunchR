@@ -8,12 +8,15 @@ class ScheduleDialogController extends GetxController {
   final RxInt repeatCount = 1.obs;
   final RxString repeatUnit = 'day'.obs;
   final RxList<bool> selectedDays = List.generate(7, (index) => index == 0).obs;
+  final RxList<bool> selectedTimes = List.generate(3, (index) => false).obs;
 
   // Show day selection for both week and month
   bool get showDaySelection =>
-      repeatUnit.value.contains('week') || repeatUnit.value.contains('month');
+      repeatUnit.value.contains('week') || repeatUnit.value.contains('month') || repeatUnit.value.contains('day');
 
   List<String> get timeUnits => ['day', 'week', 'month'];
+
+  List<String> get availableTimes => ['12am', '2pm', '5pm'];
 
   String get currentRepeatUnit {
     String baseUnit = repeatUnit.value;
@@ -40,6 +43,11 @@ class ScheduleDialogController extends GetxController {
     selectedDays.refresh();
   }
 
+  void toggleTime(int index) {
+    selectedTimes[index] = !selectedTimes[index];
+    selectedTimes.refresh();
+  }
+
   void updateRepeatUnit(String? value) {
     if (value != null) {
       // Remove 's' if present and store base form
@@ -61,7 +69,7 @@ class ScheduleDialogController extends GetxController {
 }
 
 class ScheduleDialog extends StatelessWidget {
-  final controller = Get.put(ScheduleDialogController());
+  final controller = Get.find<ScheduleDialogController>();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +85,7 @@ class ScheduleDialog extends StatelessWidget {
       child: Container(
         // Increased width to 98% of screen width
         width: screenSize.width - 32,
-        height: screenSize.height * 0.40,
+        height: screenSize.height * 0.48,
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -183,7 +191,7 @@ class ScheduleDialog extends StatelessWidget {
                 ),
                 const SizedBox(width: smallPadding),
                 Container(
-                  width: 80,
+                  width: 85,
                   decoration: BoxDecoration(
                     color: AppColors.whiteColor,
                     borderRadius: BorderRadius.circular(15),
@@ -231,24 +239,46 @@ class ScheduleDialog extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4,15,5,0),
-              child: Row(
+            const SizedBox(height: defaultPadding),
+            Obx(
+              () => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                      'Available At:',
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12)),Text(
-                      '12am',
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12)),Text(
-                      '2pm',
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12)),Text(
-                      '5pm',
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 12)),
+                    'Available at',
+                    style: AppTextStyles.MetropolisRegular.copyWith(
+                        fontSize: 12),
+                  ),
+                  ...List.generate(controller.availableTimes.length, (index) {
+                    return GestureDetector(
+                      onTap: () => controller.toggleTime(index),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: controller.selectedTimes[index]
+                              ? const Color(0xFFFFF3E0)
+                              : const Color(0xFFF2F2F2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: controller.selectedTimes[index]
+                                ? const Color(0xFFFF9A0D)
+                                : Colors.grey.shade400,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Text(
+                          controller.availableTimes[index],
+                          style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12,
+                            color: controller.selectedTimes[index]
+                                ? Colors.black87
+                                : const Color(0xFFFF9A0D),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -308,12 +338,47 @@ class ScheduleDialog extends StatelessWidget {
                             .toList(),
                       ),
                       const SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
-                      Text(
-                          'Your order is schedule for 10am to repeat Monday & Tuesday every weekly',
-                          style: AppTextStyles.MetropolisRegular.copyWith(
-                              fontSize: 12)),
+                      Obx(() {
+                        final selectedTimes = controller.selectedTimes
+                            .asMap()
+                            .entries
+                            .where((entry) => entry.value)
+                            .map((entry) => controller.availableTimes[entry.key])
+                            .join(', ');
+
+                        final selectedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                            .asMap()
+                            .entries
+                            .where((entry) => controller.selectedDays[entry.key])
+                            .map((entry) => entry.value)
+                            .join(', ');
+
+                        if (selectedTimes.isEmpty) {
+                          return const SizedBox.shrink();
+                        }
+
+                        String scheduleMessage;
+
+                        if (controller.repeatUnit.value == 'week') {
+                          scheduleMessage = 'Your order is scheduled for $selectedTimes on $selectedDays ${controller.repeatUnit.value}';
+                        }
+                        if (controller.repeatUnit.value == 'month') {
+                          scheduleMessage = 'Your order is scheduled for $selectedTimes on $selectedDays every week this ${controller.repeatUnit.value}';
+                        } else {
+                          scheduleMessage = 'Your order is scheduled for $selectedTimes $selectedDays daily';
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            scheduleMessage,
+                            style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }),
                     ],
                   )
                 : const SizedBox.shrink()),

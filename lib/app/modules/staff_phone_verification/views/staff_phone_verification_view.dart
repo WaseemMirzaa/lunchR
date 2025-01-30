@@ -148,7 +148,7 @@ class StaffPhoneVerificationView
               CustomButton(
                 text: 'VERIFY',
                 onPressed: () {
-                  Get.toNamed(Routes.STAFF_LANDING_PAGE);
+                  Get.offAllNamed(Routes.STAFF_LANDING_PAGE);
                 },
                 isLoading: false.obs, // RxBool for loading state
               ),

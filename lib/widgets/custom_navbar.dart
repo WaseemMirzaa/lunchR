@@ -39,6 +39,54 @@ class CustomBottomNavBar extends StatelessWidget {
           children: List.generate(imagePaths.length, (index) {
             return Expanded(
               child: GestureDetector(
+                onTap: () {
+                  debugPrint("Tapped on index: $index");
+                  onItemTapped(index);
+                },
+                behavior: HitTestBehavior.opaque, // Ensures the entire area is tappable
+                child: SizedBox(
+                  height: 50, // Ensure a tappable height
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Gradient Indicator
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: 6,
+                        width: selectedIndex == index ? 43 : 0,
+                        decoration: BoxDecoration(
+                          gradient: selectedIndex == index
+                              ? const LinearGradient(
+                            colors: [Colors.pink, Colors.orange],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          )
+                              : null,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Icon
+                      SizedBox(
+                        height: 26,
+                        child: Center(
+                          child: Image.asset(
+                            imagePaths[index],
+                            width: imagePaths[index] == 'assets/icon/idcard.png' ? 26 :
+                            (imagePaths[index] == 'assets/icon/active.png' ? 23 : 20),
+                            height: imagePaths[index] == 'assets/icon/idcard.png' ? 26 :
+                            (imagePaths[index] == 'assets/icon/active.png' ? 23 : 20),
+                            color: const Color(0xFF707070),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+            return Expanded(
+              child: GestureDetector(
                 onTap: () => onItemTapped(index),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
