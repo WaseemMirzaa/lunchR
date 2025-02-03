@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/services/authentication_service.dart';
-import 'package:luncher/widgets/custom_snackbar.dart';
 
 class PhoneAuthenticationController extends GetxController {
   final phoneController = TextEditingController();
