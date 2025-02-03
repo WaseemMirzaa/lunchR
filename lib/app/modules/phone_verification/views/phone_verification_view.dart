@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
+
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/reuse_button.dart';
@@ -22,7 +22,7 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
       height: 56,
       textStyle: AppTextStyles.PoppinsRegular.copyWith(
         fontSize: 33,
-        color: Color(0xFF858585),
+        color: const Color(0xFF858585),
       ),
       decoration: BoxDecoration(
         color: Colors.white, // White background color
@@ -89,77 +89,86 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
       child: Scaffold(
         backgroundColor: AppColors.whiteColor,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 200), // Space between logo and form
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 60), // Padding to push content down
 
-                    // Heading text
-                    Text(
-                      'VERIFICATION',
-                      style: AppTextStyles.MetropolisMedium.copyWith(
-                        fontSize: 18,
-                        color: const Color(0xFF434343),
-                      ),
-                    ),
+                const SizedBox(height: 140), // Space between logo and form
 
-                    const SizedBox(
-                        height: 20), // Space between heading and text field
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: Text(
-                        'A Verification Code Has Been Sent On To Your Phone Number',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.MetropolisRegular.copyWith(
-                          fontSize: 13,
-                          color: const Color(0xFF858585),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(
-                        height: 40), // Space between text and OTP field
-
-                    Pinput(
-                      defaultPinTheme: defaultPinTheme,
-                      focusedPinTheme: focusedPinTheme,
-                      submittedPinTheme: submittedPinTheme,
-
-                      validator: (s) {
-                        return (s == '1234' || s == '0000') ? null : 'Pin is incorrect';
-                      },
-                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                      showCursor: true,
-                      onCompleted: (pin) {
-                        controller.pin = pin;
-                      },
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceEvenly, // Adds even spacing between boxes
-                    ),
-
-                    const SizedBox(
-                        height: 20), // Space between OTP field and button
-                  ],
+                // Heading text
+                Text(
+                  'VERIFICATION',
+                  style: AppTextStyles.MetropolisMedium.copyWith(
+                    fontSize: 18,
+                    color: const Color(0xFF434343),
+                  ),
                 ),
-              ),
-              // Custom button to submit the email
-              CustomButton(
-                text: 'VERIFY',
-                onPressed: () {
-                  print(controller.pin);
-                  if (controller.pin == '1234') {
-                    Get.offAllNamed(Routes.LANDING_PAGE);
-                  } else if (controller.pin == '0000') {
-                    Get.offAllNamed(Routes.PARENTS_ADD_WALLET);
-                  }
-                },
-                isLoading: false.obs, // RxBool for loading state
-              ),
-            ],
+
+                const SizedBox(
+                    height: 20),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: Text(
+                    'A Verification Code Has Been Sent On To Your Phone Number',
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.MetropolisRegular.copyWith(
+                      fontSize: 13,
+                      color: const Color(0xFF858585),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 40), // Space between text and OTP field
+
+                Pinput(
+                  defaultPinTheme: defaultPinTheme,
+                  focusedPinTheme: focusedPinTheme,
+                  submittedPinTheme: submittedPinTheme,
+                  length: 6,
+                  pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                  showCursor: true,
+                  onChanged: (pin) {
+                    controller.otpController.value = pin; // Final OTP value
+                  },
+                  onCompleted: (pin) {
+                    controller.otpController.value = pin; // Final OTP value
+
+                    // Check if the entered PIN is 000000
+                    // if (pin == '000000') {
+                    //   // Navigate to the cafeteria section
+                    //   Get.offAllNamed(
+                    //       '/cafeteria');
+                    // }
+
+                  },
+                  mainAxisAlignment: MainAxisAlignment
+                      .spaceEvenly, // Adds even spacing between boxes
+                ),
+
+                const SizedBox(
+                  height: 30,
+                ),
+
+                // Verify Button
+                CustomButton(
+                  text: 'VERIFY',
+                  onPressed: () {
+                    final verificationId = Get.arguments;
+                    controller.verifyOTP(verificationId);
+                  },
+                  isLoading: controller.isLoading,
+                  // RxBool for loading state
+                  gradientColors: const [Colors.orange, Colors.red],
+                  height: 60.0,
+                  borderRadius: 12.0,
+                  fontSize: 18.0,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                ),
+              ],
+            ),
           ),
         ),
       ),
