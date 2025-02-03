@@ -48,7 +48,7 @@ class PhoneAuthenticationController extends GetxController {
             arguments: result.verificationId);
       } else {
         // Navigate to the home screen if no verificationId (auto-verification)
-        Get.offAllNamed(Routes.PARENTS_HOME);
+        showCustomSnack(result.message);
       }
     } else {
       showCustomSnack(result.message);

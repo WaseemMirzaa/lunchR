@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/services/authentication_service.dart';
-import 'package:luncher/widgets/custom_snackbar.dart'; // Assuming this is where showCustomSnack is defined
+import 'package:luncher/widgets/custom_snackbar.dart';
 
 class PhoneVerificationController extends GetxController {
   final otpController = ''.obs; // Observable for OTP
@@ -24,7 +24,7 @@ class PhoneVerificationController extends GetxController {
           await _authService.verifyOTP(verificationId, otpController.value);
 
       if (result.success) {
-        Get.offAllNamed(Routes.PARENTS_HOME); // Navigate to home screen
+        Get.offAllNamed(Routes.LANDING_PAGE); // Navigate to home screen
       } else {
         showCustomSnack(result.message); // Show the error message
       }
