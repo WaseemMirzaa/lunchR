@@ -18,6 +18,7 @@ class PhoneVerificationController extends GetxController {
 
     try {
       isLoading.value = true;
+      
 
       // Call the service for OTP verification
       final result =
