@@ -47,29 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB5eFlMDUqOhgl08kBIE5YkzvjppoVAIXo',
-    appId: '1:117032118353:web:f246801aebc692c20f3070',
-    messagingSenderId: '117032118353',
-    projectId: 'luncher-86d25',
-    authDomain: 'luncher-86d25.firebaseapp.com',
-    storageBucket: 'luncher-86d25.firebasestorage.app',
-    measurementId: 'G-9DB1Q66S6E',
+    apiKey: 'AIzaSyCnR1DIehg2I1D_-n1OXi97Wb5NBsENlJM',
+    appId: '1:227455413233:web:da00a5af79722e79b03250',
+    messagingSenderId: '227455413233',
+    projectId: 'snacktag-app',
+    authDomain: 'snacktag-app.firebaseapp.com',
+    storageBucket: 'snacktag-app.firebasestorage.app',
+    measurementId: 'G-981RPEMB7N',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDF2KBRjQVMTcLxtDliccAOLNMEqgOsad4',
-    appId: '1:117032118353:android:f8dd4e2972e3e2930f3070',
-    messagingSenderId: '117032118353',
-    projectId: 'luncher-86d25',
-    storageBucket: 'luncher-86d25.firebasestorage.app',
+    apiKey: 'AIzaSyCcafJCZfLho2xFuKP9A3-bN8Dn2d5ar70',
+    appId: '1:227455413233:android:cfc28e4ba322bef2b03250',
+    messagingSenderId: '227455413233',
+    projectId: 'snacktag-app',
+    storageBucket: 'snacktag-app.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDVweqgPrKRZZK7tQXbkvC5LqJPPUVVDBk',
-    appId: '1:117032118353:ios:232206dcba23974e0f3070',
-    messagingSenderId: '117032118353',
-    projectId: 'luncher-86d25',
-    storageBucket: 'luncher-86d25.firebasestorage.app',
+    apiKey: 'AIzaSyBVVv-4-pZion3kd9eHGiYmhQAgepC1vgA',
+    appId: '1:227455413233:ios:e234e95d45b2cbb7b03250',
+    messagingSenderId: '227455413233',
+    projectId: 'snacktag-app',
+    storageBucket: 'snacktag-app.firebasestorage.app',
     iosBundleId: 'com.example.luncher',
   );
+
 }
