@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/models/meal_model.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
 
 import 'package:luncher/widgets/reuse_button.dart';
@@ -58,15 +59,14 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
 
   // Search TextField Widget (moved slightly down)
   Widget _buildSearchField(TextEditingController textController) {
-    return 
-    TextFieldWidget(
+    return TextFieldWidget(
       text: 'Search Meal',
       textController: textController,
       path: 'assets/icon/search.png',
       isBGChangeColor: true,
       height: 40,
       isSuffixBG: true,
-      onChanged: (value) {},
+      onChanged: (value) => controller.updateSearchText(value),
     );
   }
 
@@ -83,27 +83,32 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
     );
   }
 
-// List of Menu Items (GridView with Image, Name, Price)
   Widget _buildMenuList() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3, // 3 items per row
-        mainAxisSpacing: 16, // Spacing between rows
-        crossAxisSpacing: 8, // Spacing between columns
-        childAspectRatio: 100 / 170, // Aspect ratio for the containers
-      ),
-      itemCount: 6, // Total number of items
-      itemBuilder: (context, index) {
-        return _buildMenuItem(index);
-      },
-    );
+    return Obx(() => controller.isLoading.value
+        ? const Center(child: CircularProgressIndicator())
+        : GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 8,
+              childAspectRatio: 100 / 170,
+            ),
+            itemCount: controller.searchText.value.isEmpty
+                ? controller.meals.length
+                : controller.filteredMeals.length,
+            itemBuilder: (context, index) {
+              return _buildMenuItem(controller.searchText.value.isEmpty
+                  ? controller.meals[index]
+                  : controller.filteredMeals[index]);
+            },
+          ));
   }
 
-// Menu item container (GridView item)
-  Widget _buildMenuItem(int index) {
-    final _controller = ValueNotifier<bool>(true);
+  Widget _buildMenuItem(MealModel meal) {
+    final _controller = ValueNotifier<bool>(meal.availability == 'available');
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -112,68 +117,65 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Ensures left alignment
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Placeholder
-            Image.asset(
-              // Use modulo operator to group indices
-              index % 3 == 0 || index % 3 == 3
-                  ? 'assets/images/gravy.png' // Images for index 0 and index 3
-                  : index % 3 == 1 || index % 3 == 4
-                      ? 'assets/images/pepper.png' // Images for index 1 and index 4
-                      : index % 3 == 2 || index % 3 == 5
-                          ? 'assets/images/roast.png' // Images for index 2 and index 5
-                          : 'assets/images/gravy.png', // Replace with actual image path
-              width: double.infinity, // Image takes the full width
+            // Image from Firestore
+            meal.imageUrl != null && meal.imageUrl!.isNotEmpty
+                ? Image.network(
+                    meal.imageUrl!,
+                    width: double.infinity,
+                    height: 100,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/gravy.png',
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  )
+                : Image.asset(
+                    'assets/images/gravy.png',
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
 
-              fit: BoxFit.cover,
-            ),
-            // Menu Item Name and Price
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 4.0), // Add padding around text
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // Align text to the left
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Menu Item Name
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        // Use modulo operator to group indices
-                        index % 3 == 0 || index % 3 == 3
-                            ? 'Chicken Gravy' // Images for index 0 and index 3
-                            : index % 3 == 1 || index % 3 == 4
-                                ? 'Pepper Chicken' // Images for index 1 and index 4
-                                : index % 3 == 2 || index % 3 == 5
-                                    ? 'Roast Chicken' // Images for index 2 and index 5
-                                    : 'Roast Chicken', // Replace with dynamic name
-                        style: AppTextStyles.MetropolisMedium.copyWith(
-                          fontSize: 10,
-                          color: Colors.black,
+                      Expanded(
+                        child: Text(
+                          meal.name ?? 'Unnamed Item',
+                          style: AppTextStyles.MetropolisMedium.copyWith(
+                            fontSize: 10,
+                            color: Colors.black,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Image.asset(
-                        'assets/icon/delete.png', // Replace with actual icon
-                        width: 15,
-                        height: 15,
+                      GestureDetector(
+                        onTap: () {
+                          if (meal.id != null) {
+                            controller.deleteMeal(meal.id!);
+                          }
+                        },
+                        child: Image.asset(
+                          'assets/icon/delete.png',
+                          width: 15,
+                          height: 15,
+                        ),
                       )
                     ],
                   ),
-                  // Menu Item Price
-                  const SizedBox(
-                      height: 4), // Add spacing between name and price
+                  const SizedBox(height: 4),
                   Text(
-                    // Use modulo operator to group indices
-                    index % 3 == 0 || index % 3 == 3
-                        ? '\$25' // Images for index 0 and index 3
-                        : index % 3 == 1 || index % 3 == 4
-                            ? '\$45' // Images for index 1 and index 4
-                            : index % 3 == 2 || index % 3 == 5
-                                ? '\$25' // Images for index 2 and index 5
-                                : '\$25', // Default image, // Replace with dynamic price
+                    '\$${meal.price ?? "0"}',
                     style: AppTextStyles.MetropolisMedium.copyWith(
                       fontSize: 10,
                       color: Colors.black,
@@ -182,48 +184,57 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                 ],
               ),
             ),
-            // Row for Switch and Add Button
+
             Padding(
-              padding: const EdgeInsets.only(), // Add padding for the row
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // Space between switch and Add button
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   AdvancedSwitch(
                     controller: _controller,
                     activeColor: Colors.green,
                     height: 12,
                     width: 25,
+                    onChanged: (value) {
+                      if (meal.id != null) {
+                        controller.updateMeal(meal.id!, {
+                          'availability': value ? 'available' : 'unavailable'
+                        });
+                      }
+                    },
                   ),
-                  // Add Button text
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color (optional)
-                      border: Border.all(
-                        color: const Color(0xFFEFEFEF), // Border color
-                        width: 1, // Border width
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF707070)
-                              .withOpacity(0.1), // Shadow color with opacity
-                          spreadRadius: 1, // Spread radius of shadow
-                          blurRadius: 1, // Blur radius of shadow
-                          offset: const Offset(0,
-                              1), // Only vertical offset (bottom side shadow)
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(
+                        Routes.CAFETERIA_MEAL_DETAILS,
+                        arguments: meal, // Pass MealModel as argument
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: const Color(0xFFEFEFEF),
+                          width: 1,
                         ),
-                      ],
-
-                      borderRadius: BorderRadius.circular(
-                          32), // Rounded corners (optional)
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 3), // Inner padding
-                    child: Text(
-                      'Edit', // Static "Add" text
-                      style: AppTextStyles.PoppinsRegular.copyWith(
-                        fontSize: 7,
-                        color: const Color(0xFFFFAA00),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF707070).withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(32),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 3),
+                      child: Text(
+                        'Edit',
+                        style: AppTextStyles.PoppinsRegular.copyWith(
+                          fontSize: 7,
+                          color: const Color(0xFFFFAA00),
+                        ),
                       ),
                     ),
                   )

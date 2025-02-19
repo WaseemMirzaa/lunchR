@@ -11,7 +11,7 @@ class CafeteriaSettingsView extends GetView<CafeteriaSettingsController> {
   const CafeteriaSettingsView({super.key});
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CafeteriaHomeSettingsController>();
+    final controllerHome = Get.find<CafeteriaHomeSettingsController>();
 
     final List<String> settings = [
       "Profile",
@@ -53,13 +53,13 @@ class CafeteriaSettingsView extends GetView<CafeteriaSettingsController> {
                   return GestureDetector(
                     onTap: () {
                       if (index == 0) {
-                        controller.updateSelectedIndex(1);
+                        controllerHome.updateSelectedIndex(1);
                       } else if (index == 5) {
-                        Get.toNamed(Routes.SPLASH);
+                        controller.logout();
                       } else if (index == 1) {
-                        controller.updateSelectedIndex(2);
+                        controllerHome.updateSelectedIndex(2);
                       } else if (index == 2) {
-                        controller.updateSelectedIndex(5);
+                        controllerHome.updateSelectedIndex(5);
                       }
                       //else if (index == 4) {
                       //   Get.toNamed('/signout');

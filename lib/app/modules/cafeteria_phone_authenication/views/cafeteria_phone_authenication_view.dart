@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
+
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_simple_textfields.dart';
-import 'package:luncher/widgets/custom_textfeild.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_phone_authenication_controller.dart';
@@ -14,6 +13,7 @@ class CafeteriaPhoneAuthenicationView
     extends GetView<CafeteriaPhoneAuthenicationController> {
   const CafeteriaPhoneAuthenicationView({super.key});
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
@@ -50,10 +50,11 @@ class CafeteriaPhoneAuthenicationView
                   const SizedBox(
                       height: 50), // Space between heading and text field
 
-                  const SimpleTextFieldWidget(
+                  SimpleTextFieldWidget(
                     hintText: 'Mobile No',
                     imagePath: 'assets/icon/call_light.png',
                     keyboardType: TextInputType.phone,
+                    controller: controller.phoneController,
                   ),
 
                   const SizedBox(
@@ -64,10 +65,10 @@ class CafeteriaPhoneAuthenicationView
             // Custom button to submit the email
             CustomButton(
               text: 'CONTINUE AS CAFETERIA OWNER',
-              onPressed: () {
-                Get.toNamed(Routes.CAFETERIA_PHONE_VERIFICATION);
-              },
-              isLoading: false.obs, // RxBool for loading state
+              onPressed: () async => await controller.authenticatePhoneNumber(
+                true,
+              ),
+              isLoading: controller.isLoading,
             ),
 
             const SizedBox(
@@ -77,10 +78,10 @@ class CafeteriaPhoneAuthenicationView
             // Custom button to submit the email
             CustomButton(
               text: 'CONTINUE AS STAFF',
-              onPressed: () {
-                Get.toNamed(Routes.STAFF_PHONE_VERIFICATION);
-              },
-              isLoading: false.obs, // RxBool for loading state
+              onPressed: () async => await controller.authenticatePhoneNumber(
+                false,
+              ),
+              isLoading: controller.isLoading,
             ),
           ],
         ),

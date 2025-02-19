@@ -1,23 +1,56 @@
 import 'package:get/get.dart';
+import 'package:luncher/models/meal_model.dart';
+import 'package:luncher/services/meal_service.dart';
+import 'dart:io';
 
 class CafeteriaMenuPageController extends GetxController {
-  //TODO: Implement CafeteriaMenuPageController
+  final MealService _mealService = MealService();
+  var meals = <MealModel>[].obs;
+  var filteredMeals = <MealModel>[].obs; // Filtered list for searching
+  var isLoading = false.obs;
+  var searchText = "".obs; // Observable for search text
 
-  final count = 0.obs;
   @override
   void onInit() {
+    fetchMeals();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void fetchMeals() {
+    isLoading.value = true;
+
+    meals.bindStream(_mealService.getMeals());
+    ever(meals, (_) => filterMeals()); // Re-filter when meals update
+
+    isLoading.value = false;
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void filterMeals() {
+    if (searchText.value.isEmpty) {
+      filteredMeals.assignAll(meals);
+    } else {
+      filteredMeals.assignAll(meals.where((meal) =>
+          meal.name!.toLowerCase().contains(searchText.value.toLowerCase())));
+    }
   }
 
-  void increment() => count.value++;
+  void updateSearchText(String text) {
+    searchText.value = text;
+    filterMeals();
+  }
+
+  Future<void> addMeal(MealModel meal, File? imageFile) async {
+    await _mealService.addMeal(meal, imageFile);
+    fetchMeals();
+  }
+
+  Future<void> updateMeal(String mealId, Map<String, dynamic> data) async {
+    await _mealService.updateMeal(mealId, data);
+    fetchMeals();
+  }
+
+  Future<void> deleteMeal(String mealId) async {
+    await _mealService.deleteMeal(mealId);
+    fetchMeals();
+  }
 }

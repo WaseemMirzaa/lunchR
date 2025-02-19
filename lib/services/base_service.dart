@@ -1,82 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
-class BaseService {
+abstract class BaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  // Singleton Pattern
-  static final BaseService _instance = BaseService._internal();
-  factory BaseService() => _instance;
-  BaseService._internal();
-
-  /// Create or Update a Document
-  Future<void> setDocument(
-      {required String collectionPath,
-      required String docId,
-      required Map<String, dynamic> data}) async {
-    try {
-      await _firestore.collection(collectionPath).doc(docId).set(data);
-    } catch (e) {
-      print('Error during setDocument: $e');
-      rethrow;
-    }
+  Future<void> createDocument(
+      String collectionPath, String docId, Map<String, dynamic> data) async {
+    await _firestore.collection(collectionPath).doc(docId).set(data);
   }
 
-  /// Add a Document (Auto-ID)
-  Future<DocumentReference> addDocument(
-      {required String collectionPath, required Map<String, dynamic> data}) async {
-    try {
-      return await _firestore.collection(collectionPath).add(data);
-    } catch (e) {
-      print('Error during addDocument: $e');
-      rethrow;
-    }
+  Future<DocumentSnapshot<Map<String, dynamic>>> getDocument(
+      String collectionPath, String docId) {
+    return _firestore.collection(collectionPath).doc(docId).get();
   }
 
-  /// Read a Document
-  Future<DocumentSnapshot> getDocument(
-      {required String collectionPath, required String docId}) async {
-    try {
-      return await _firestore.collection(collectionPath).doc(docId).get();
-    } catch (e) {
-      print('Error during getDocument: $e');
-      rethrow;
-    }
-  }
-
-  /// Read All Documents in a Collection
-  Future<List<QueryDocumentSnapshot>> getCollection(
-      {required String collectionPath}) async {
-    try {
-      final QuerySnapshot querySnapshot =
-          await _firestore.collection(collectionPath).get();
-      return querySnapshot.docs;
-    } catch (e) {
-      print('Error during getCollection: $e');
-      rethrow;
-    }
-  }
-
-  /// Update a Document
   Future<void> updateDocument(
-      {required String collectionPath,
-      required String docId,
-      required Map<String, dynamic> data}) async {
+      String collectionPath, String docId, Map<String, dynamic> data) async {
+    await _firestore.collection(collectionPath).doc(docId).update(data);
+  }
+
+  Future<void> deleteDocument(String collectionPath, String docId) async {
+    await _firestore.collection(collectionPath).doc(docId).delete();
+  }
+
+  // New method to delete image from Firebase Storage
+  Future<void> deleteStorage(String folderName, String docId) async {
     try {
-      await _firestore.collection(collectionPath).doc(docId).update(data);
+      Reference ref = _storage.ref().child('$folderName/$docId.jpg');
+      await ref.delete(); // Delete the image from Firebase Storage
     } catch (e) {
-      print('Error during updateDocument: $e');
-      rethrow;
+      throw Exception("Image deletion failed: $e");
     }
   }
 
-  /// Delete a Document
-  Future<void> deleteDocument(
-      {required String collectionPath, required String docId}) async {
+  Future<String> uploadImage(
+      File imageFile, String folderName, String docId) async {
     try {
-      await _firestore.collection(collectionPath).doc(docId).delete();
+      Reference ref = _storage.ref().child('$folderName/$docId.jpg');
+      UploadTask uploadTask = ref.putFile(imageFile);
+      TaskSnapshot snapshot = await uploadTask;
+      return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      print('Error during deleteDocument: $e');
-      rethrow;
+      throw Exception("Image upload failed: $e");
     }
   }
 }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 
-import 'package:luncher/widgets/custom_textfeild.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
-
 import '../controllers/cafeteria_meal_details_controller.dart';
 
 class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
@@ -15,10 +11,6 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController mealController = TextEditingController();
-    final TextEditingController priceController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -27,25 +19,19 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                
-                const SizedBox(
-                  height: 40,
-                ),
+                const SizedBox(height: 50),
                 Align(
                   alignment: Alignment.topLeft,
                   child: GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
+                    onTap: () => Get.back(),
                     child: Container(
                       height: 35,
                       width: 35,
-                      margin: const EdgeInsets.only(
-                          top: 16), // Add some margin if needed
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.2),
@@ -53,22 +39,15 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
                             spreadRadius: 2,
                           ),
                         ],
-                        color:
-                            Colors.white, // Background color for the container
                       ),
                       child: Center(
-                        child: Image.asset(
-                          "assets/icon/back.png",
-                          height: 15, // Set the height to 15
-                          width: 10, // Set the width to 15
-                        ),
+                        child: Image.asset("assets/icon/back.png",
+                            height: 15, width: 10),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -77,74 +56,97 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
                         color: const Color(0xFF434343), fontSize: 18),
                   ),
                 ),
-                const SizedBox(
-                  height: 36,
-                ),
-                const SimpleTextFieldWithOutSuffixWidget(hintText: 'Meal Name'),
-                const SizedBox(
-                  height: 16,
-                ),
-                const SimpleTextFieldWithOutSuffixWidget(
+                const SizedBox(height: 36),
+                SimpleTextFieldWithOutSuffixWidget(
+                    controller: controller.nameController,
+                    hintText: 'Meal Name'),
+                const SizedBox(height: 16),
+                SimpleTextFieldWithOutSuffixWidget(
+                    controller: controller.availabilityController,
                     hintText: 'Availability'),
-                const SizedBox(
-                  height: 16,
-                ),
-                const SimpleTextFieldWithOutSuffixWidget(hintText: 'Price'),
-                const SizedBox(
-                  height: 16,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 127, // Fixed height
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Set background color
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3), // Shadow color
-                        spreadRadius: 2, // Spread of the shadow
-                        blurRadius: 6, // Blur intensity of the shadow
-                        offset:
-                            const Offset(0, 3), // Offset of the shadow (X, Y)
+                const SizedBox(height: 16),
+                SimpleTextFieldWithOutSuffixWidget(
+                    controller: controller.priceController, hintText: 'Price'),
+                const SizedBox(height: 16),
+                GestureDetector(
+                  onTap: () => controller.pickImage(),
+                  child: Obx(() {
+                    return Container(
+                      width: double.infinity,
+                      height: 127,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ],
-                    borderRadius:
-                        BorderRadius.circular(20), // Optional: round corners
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Image.asset(
-                          'assets/icon/camera.png',
-                          width: 60,
-                          height: 50,
-                        ),
+                      child: ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(20), // Apply radius to image
+                        child: controller.selectedImage.value != null
+                            ? Image.file(
+                                controller.selectedImage.value!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 127,
+                              )
+                            : controller.imageUrl.value.isNotEmpty
+                                ? Image.network(
+                                    controller.imageUrl.value,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: 127,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return _buildPlaceholder();
+                                    },
+                                  )
+                                : _buildPlaceholder(),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Upload Meal Photo',
-                        style: AppTextStyles.MetropolisRegular.copyWith(
-                            fontSize: 12, color: const Color(0xFFB6B7B7)),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
+                    );
+                  }),
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 30),
           CustomButton(
-              text: 'SUBMIT',
-              onPressed: () {
-                Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
-              },
-              isLoading: RxBool(false))
+            text: 'SUBMIT',
+            onPressed: controller.submitMeal,
+            isLoading: controller.isLoading,
+          ),
         ],
       ),
+    );
+  }
+
+  // Placeholder Widget Function
+// Placeholder Widget Function
+  Widget _buildPlaceholder() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/icon/camera.png', width: 60, height: 50),
+        const SizedBox(height: 10),
+        Text(
+          'Upload Meal Photo',
+          style: AppTextStyles.MetropolisRegular.copyWith(
+            fontSize: 12,
+            color: const Color(0xFFB6B7B7),
+          ),
+        ),
+      ],
     );
   }
 }
