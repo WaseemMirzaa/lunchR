@@ -7,8 +7,7 @@ import 'package:luncher/widgets/custom_dialog_schedule.dart';
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
 
-void main() async{
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
