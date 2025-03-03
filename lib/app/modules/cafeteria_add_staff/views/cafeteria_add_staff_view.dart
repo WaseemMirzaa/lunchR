@@ -224,7 +224,7 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
                           ),
-                          initialCountryCode: 'US',
+                          initialCountryCode: 'PK',
                           onChanged: (phone) {
                             controller.phoneController.text = phone.completeNumber;
                           },

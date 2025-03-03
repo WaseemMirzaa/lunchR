@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
+import 'package:luncher/models/cefeteria_admin/meal_shedule_model.dart';
 import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/meal_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,11 +16,14 @@ class CafeteriaMealDetailsController extends GetxController {
 
   final nameController = TextEditingController();
   final availabilityController = TextEditingController();
+  final availableTimeDateController = TextEditingController();
   final priceController = TextEditingController();
   Rx<File?> selectedImage = Rx<File?>(null);
   RxString imageUrl = ''.obs; // Store the network image URL separately
   RxBool isLoading = false.obs;
   MealModel? meal;
+  List<String> availableAt = [];
+  List<String> repeatOn = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final UserPreferences userPreferences = UserPreferences();
 
@@ -40,27 +44,41 @@ class CafeteriaMealDetailsController extends GetxController {
     if (meal != null) {
       nameController.text = meal!.name ?? "";
       availabilityController.text = meal!.availability ?? "";
+      availableTimeDateController.text = meal!.availableTimeDate ?? "";
       priceController.text = meal!.price ?? "";
       imageUrl.value = meal!.imageUrl ?? ""; // Set network image URL
     }
   }
 
-  Future<void> pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      selectedImage.value = File(pickedFile.path);
-      imageUrl.value = ''; // Clear the old network image when new one is picked
+  /// Function to save the meal schedule
+  Future<void> addMealAndSchedule(
+      MealModel meal, File? imageFile, MealSheduleModel schedule, String userId) async {
+    try {
+      // Step 1: Add meal and get the meal ID
+      String mealId = await _mealService.addMeal(meal, imageFile);
+
+      // Step 2: Assign mealId to the schedule
+      schedule.mealId = mealId;
+      schedule.userId = userId;
+
+      // Step 3: Save meal schedule
+      await _mealService.saveMealSchedule(schedule);
+
+      print("✅ Meal and schedule saved successfully!");
+    } catch (e) {
+      print("🔥 Error adding meal and schedule: $e");
     }
   }
 
   Future<void> submitMeal() async {
     final userId = await userPreferences.getUserId();
-    print("user id is ${userId}");
+
     String name = nameController.text.trim();
     String availability = availabilityController.text.trim();
     String price = priceController.text.trim();
-    if (name.isEmpty || availability.isEmpty || price.isEmpty) {
+    String available = availableTimeDateController.text.trim();
+    print("Available value $available");
+    if (name.isEmpty || availability.isEmpty || available.isEmpty || price.isEmpty) {
       Get.snackbar("Validation Error", "All fields are required");
       return;
     }
@@ -74,13 +92,24 @@ class CafeteriaMealDetailsController extends GetxController {
           name: name,
           availability: availability,
           price: price,
+          availableTimeDate: available,
         );
-        await _mealService.addMeal(newMeal, selectedImage.value);
+        // await _mealService.addMeal(newMeal, selectedImage.value);
+        String mealId = await _mealService.addMeal(newMeal, selectedImage.value);
+
+        MealSheduleModel mealSchedule = MealSheduleModel(
+          mealId: mealId,
+          userId: userId!,
+          availableAt: availableAt.toList(),
+          repeatOn: repeatOn.toList(),
+        );
+        await _mealService.saveMealSchedule(mealSchedule);
+        Get.snackbar("Success", "Meal saved successfully!");
       } else {
         // Updating an existing meal
         await _mealService.updateMeal(meal!.id!, {
           // Set the user id
-          "userId":userId,
+          "userId": userId,
           "name": name,
           "availability": availability,
           "price": price,
@@ -93,6 +122,14 @@ class CafeteriaMealDetailsController extends GetxController {
       Get.snackbar("Error", "Failed to save meal. Please try again.");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImage.value = File(pickedFile.path);
+      imageUrl.value = ''; // Clear the old network image when new one is picked
     }
   }
 }

@@ -1,179 +1,66 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/services/meal_service.dart';
-import 'dart:io';
 
 class CafeteriaMenuPageController extends GetxController {
   final MealService _mealService = MealService();
+
   var meals = <MealModel>[].obs;
   var filteredMeals = <MealModel>[].obs;
-  var isdataFound = false.obs;// Filtered list for searching
+  var isDataFound = false.obs;
   var isLoading = false.obs;
-  var searchText = "".obs; // Observable for search text
+  var searchText = "".obs;
   TextEditingController searchTextController = TextEditingController();
-  // final _controller = ValueNotifier<bool>(meals.first.availability == 'available');
   final Map<String, ValueNotifier<bool>> switchControllers = {};
 
   @override
   void onInit() {
+    super.onInit();
     searchText.value = searchTextController.text;
     fetchMeals();
-    super.onInit();
   }
 
-//   void fetchMeals() {
-//     isLoading.value = true;
-//
-//     meals.bindStream(_mealService.getMeals());
-//     ever(meals, (_) => filterMeals()); // Re-filter when meals update
-// print("sss# ${meals}");
-//     isLoading.value = false;
-//   }
-//   void fetchMeals() {
-//     isLoading.value = true;
-//
-//     // Bind the stream to the 'meals' list
-//     meals.bindStream(_mealService.getMeals());
-//
-//     // Re-filter meals and print when meals update
-//     ever(meals, (_) {
-//       filterMeals();
-//     });
-//
-//     // Listen to the stream and set loading to false once data is received
-//     _mealService.getMeals().listen((snapshot) {
-//       if (snapshot.isNotEmpty) {
-//         isLoading.value = false; // Set loading to false when data is received
-//       }
-//       isLoading.value = false; // Set loading to false when data is received
-//
-//     });  }
-
-  void filterMeals() {
-
-    // isLoading.value = true;
-
-    meals.bindStream(_mealService.getMeals());
-
-    ever(meals, (_) {
-      for (var meal in meals) {
-        if (!switchControllers.containsKey(meal.id)) {
-          switchControllers[meal.id!] = ValueNotifier<bool>(meal.availability == 'available');
-        } else {
-          // ✅ Update the existing switch controller when Firestore data changes
-          switchControllers[meal.id]!.value = meal.availability == 'available';
-        }
-      }
-    });
-
-    _mealService.getMeals().listen((snapshot) {
-      if (snapshot.isNotEmpty) {
-
-
-        filteredMeals.value = snapshot;
-        meals.value = snapshot;
-        // isLoading.value = false;
-
-        if (searchTextController.text.isEmpty) {
-
-          // filteredMeals.assignAll(meals);
-          isdataFound.value=false;
-        } else {
-          // Print the updated value of meals
-          isdataFound.value = false;
-
-          // print('Filtering ✅${meals.value}');
-          var list = meals.value;
-
-
-          meals.value.clear();
-          filteredMeals.value.clear();
-
-          for(var data in list) {
-
-            if(data.name!.toLowerCase().contains(searchTextController.text.toLowerCase()
-            )) {
-
-              print('Filtering ✅${data.name}');
-              print('Filtering ✅${searchTextController.text}');
-              print('Filtering ✅${data.toMap()}');
-
-
-              meals.add(data);
-              filteredMeals.add(data);
-
-
-              print('Filtering ✅${meals}');
-              print('Filtering ✅${filteredMeals}');
-            }
-          }
-
-          meals.assignAll(list);
-          filteredMeals.assignAll(list);
-          // print('Filtering ✅${meals.value}');
-
-          // if(searchTextController.text.isNotEmpty && filteredMeals.isEmpty){
-          //   print("empty");
-          //   isdataFound.value = false;
-          // }
-        }
-      }
-    });
-
-  }
   void fetchMeals() {
     isLoading.value = true;
+    String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
 
-    meals.bindStream(_mealService.getMeals());
+    if (userId.isEmpty) {
+      print("User not logged in");
+      isLoading.value = false;
+      return;
+    }
+
+    meals.bindStream(_mealService.getMealsByUser(userId));
 
     ever(meals, (_) {
       for (var meal in meals) {
         if (!switchControllers.containsKey(meal.id)) {
           switchControllers[meal.id!] = ValueNotifier<bool>(meal.availability == 'available');
         } else {
-          // ✅ Update the existing switch controller when Firestore data changes
           switchControllers[meal.id]!.value = meal.availability == 'available';
         }
       }
+      filterMeals();
     });
-
-    _mealService.getMeals().listen((snapshot) {
-      if (snapshot.isNotEmpty) {
-
-        filteredMeals.value = snapshot;
-        meals.value = snapshot;
-        isLoading.value = false;
-
-      }
-    });
+    isLoading.value = false;
   }
 
-  Future<void> updateMeal(String mealId, bool isAvailable) async {
-
-    await _mealService.updateMeal(mealId, {'availability': isAvailable ? 'available' : 'unavailable'});
-
-    // ✅ Update the switch state immediately in UI
-    if (switchControllers.containsKey(mealId)) {
-      switchControllers[mealId]!.value = isAvailable;
+  void filterMeals() {
+    if (searchText.value.isEmpty) {
+      filteredMeals.assignAll(meals);
+      isDataFound.value = false;
+    } else {
+      filteredMeals.assignAll(meals.where((meal) => meal.name!.toLowerCase().contains(searchText.value.toLowerCase())));
+      isDataFound.value = filteredMeals.isEmpty;
     }
   }
 
   void updateSearchText(String text) {
     searchText.value = text;
-    isdataFound.value = false;
-    print("sss# ${searchText.value}");
-
-    if(text.isEmpty) {
-
-      fetchMeals();
-    } else {
-
-      // fetchMeals();
-      filterMeals();
-
-    }
+    filterMeals();
   }
 
   Future<void> addMeal(MealModel meal, File? imageFile) async {
@@ -181,10 +68,12 @@ class CafeteriaMenuPageController extends GetxController {
     fetchMeals();
   }
 
-  // Future<void> updateMeal(String mealId, Map<String, dynamic> data) async {
-  //   await _mealService.updateMeal(mealId, data);
-  //   fetchMeals();
-  // }
+  Future<void> updateMeal(String mealId, bool isAvailable) async {
+    await _mealService.updateMeal(mealId, {'availability': isAvailable ? 'available' : 'unavailable'});
+    if (switchControllers.containsKey(mealId)) {
+      switchControllers[mealId]!.value = isAvailable;
+    }
+  }
 
   Future<void> deleteMeal(String mealId) async {
     await _mealService.deleteMeal(mealId);

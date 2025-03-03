@@ -85,7 +85,7 @@ class ScheduleDialog extends StatelessWidget {
       child: Container(
         // Increased width to 98% of screen width
         width: screenSize.width - 32,
-        height: screenSize.height * 0.48,
+        height: screenSize.height * 0.50,
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

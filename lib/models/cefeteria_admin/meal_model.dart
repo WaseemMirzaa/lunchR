@@ -3,10 +3,11 @@ class MealModel {
   String? userId;
   String? name;
   String? availability;
+  String? availableTimeDate;
   String? price;
   String? imageUrl;
 
-  MealModel({this.id, this.userId,this.name, this.availability, this.price, this.imageUrl});
+  MealModel({this.id, this.userId,this.name, this.availability,this.availableTimeDate, this.price, this.imageUrl});
 
   Map<String, dynamic> toMap() {
     return {
@@ -14,6 +15,7 @@ class MealModel {
       "userId": userId,
       "name": name,
       "availability": availability,
+      "availableTimeDate": availableTimeDate,
       "price": price,
       "imageUrl": imageUrl,
     };
@@ -25,6 +27,7 @@ class MealModel {
       userId: data["userId"],
       name: data["name"] ?? "",
       availability: data["availability"] ?? "",
+      availableTimeDate: data["availableTimeDate"] ?? "",
       price: data["price"] ?? "",
       imageUrl: data["imageUrl"] ?? "",
     );

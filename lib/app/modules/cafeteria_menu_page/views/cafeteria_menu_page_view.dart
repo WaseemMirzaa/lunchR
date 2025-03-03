@@ -89,7 +89,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
     //   isSuffixBG: true,
     //   onChanged: (value) => controller.updateSearchText(value),
     // );
-      return SearchTextFieldWidget(
+    return SearchTextFieldWidget(
       hintText: 'Search Meal',
       textController: textController,
       onChanged: (value) => controller.updateSearchText(value),
@@ -112,7 +112,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
   Widget _buildMenuList() {
     return Obx(() => controller.isLoading.value
         ? const Center(child: CircularProgressIndicator())
-        :controller.isdataFound.value == true?Text(
+        :controller.isDataFound.value == true?Text(
       'Data Not Found', // Replace with dynamic text
       style: AppTextStyles.PoppinsBold.copyWith(
         fontSize: 14,
@@ -157,7 +157,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
       itemCount: controller.filteredMeals.length,
       itemBuilder: (context, index) {
         return _buildMenuItem(
-        controller.filteredMeals[index]
+            controller.filteredMeals[index]
         );
       },
     )
@@ -165,9 +165,9 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
   }
 
   Widget _buildMenuItem(
-    MealModel meal,
+      MealModel meal,
 
-  ) {
+      ) {
     final controller = Get.find<CafeteriaMenuPageController>();
 
     // ✅ Ensure every meal has a switch controller
@@ -181,11 +181,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
     // print("Switch Value is :${_controller}");
 
     // ✅ Debugging prints
-    print("Meal ID: ${meal.id}");
-    print("Meal Name: ${meal.name}");
-    print("Meal Availability: ${meal.availability}");
-    print("Meal Price: ${meal.price}");
-    print("Switch Value: ${switchController.value}");
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -199,23 +195,23 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
             // Image from Firestore
             meal.imageUrl != null && meal.imageUrl!.isNotEmpty
                 ? Image.network(
-                    meal.imageUrl!,
-                    width: double.infinity,
-                    height: 100,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'assets/images/gravy.png',
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
+              meal.imageUrl!,
+              width: double.infinity,
+              height: 100,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/gravy.png',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                );
+              },
+            )
                 : Image.asset(
-                    'assets/images/gravy.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+              'assets/images/gravy.png',
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
