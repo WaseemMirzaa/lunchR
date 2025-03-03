@@ -308,7 +308,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STAFF_PHONE_VERIFICATION,
-      page: () => const StaffPhoneAuthenticationView(),
+      page: () =>  StaffPhoneAuthenticationView(),
       binding: StaffPhoneVerificationBinding(),
     ),
     GetPage(
