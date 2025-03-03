@@ -53,21 +53,75 @@ class CafeteriaMenuPageController extends GetxController {
 
   void filterMeals() {
 
-    if (searchText.value.isEmpty) {
+    // isLoading.value = true;
 
-      filteredMeals.assignAll(meals);
-      isdataFound.value=false;
-    } else {
-       // Print the updated value of meals
-      isdataFound.value = false;
+    meals.bindStream(_mealService.getMeals());
 
-      filteredMeals.assignAll(meals.where((meal) =>
-       meal.name!.toLowerCase().contains(searchText.value.toLowerCase().trim())));
-      if(searchText.value.isNotEmpty && filteredMeals.isEmpty){
-        print("empty");
-        isdataFound.value = true;
+    ever(meals, (_) {
+      for (var meal in meals) {
+        if (!switchControllers.containsKey(meal.id)) {
+          switchControllers[meal.id!] = ValueNotifier<bool>(meal.availability == 'available');
+        } else {
+          // ✅ Update the existing switch controller when Firestore data changes
+          switchControllers[meal.id]!.value = meal.availability == 'available';
+        }
       }
-    }
+    });
+
+    _mealService.getMeals().listen((snapshot) {
+      if (snapshot.isNotEmpty) {
+
+
+        filteredMeals.value = snapshot;
+        meals.value = snapshot;
+        // isLoading.value = false;
+
+        if (searchTextController.text.isEmpty) {
+
+          // filteredMeals.assignAll(meals);
+          isdataFound.value=false;
+        } else {
+          // Print the updated value of meals
+          isdataFound.value = false;
+
+          // print('Filtering ✅${meals.value}');
+          var list = meals.value;
+
+
+          meals.value.clear();
+          filteredMeals.value.clear();
+
+          for(var data in list) {
+
+            if(data.name!.toLowerCase().contains(searchTextController.text.toLowerCase()
+            )) {
+
+              print('Filtering ✅${data.name}');
+              print('Filtering ✅${searchTextController.text}');
+              print('Filtering ✅${data.toMap()}');
+
+
+              meals.add(data);
+              filteredMeals.add(data);
+
+
+              print('Filtering ✅${meals}');
+              print('Filtering ✅${filteredMeals}');
+            }
+          }
+
+          meals.assignAll(list);
+          filteredMeals.assignAll(list);
+          // print('Filtering ✅${meals.value}');
+
+          // if(searchTextController.text.isNotEmpty && filteredMeals.isEmpty){
+          //   print("empty");
+          //   isdataFound.value = false;
+          // }
+        }
+      }
+    });
+
   }
   void fetchMeals() {
     isLoading.value = true;
@@ -116,6 +170,7 @@ class CafeteriaMenuPageController extends GetxController {
       fetchMeals();
     } else {
 
+      // fetchMeals();
       filterMeals();
 
     }
