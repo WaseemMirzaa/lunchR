@@ -1,23 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/routes/app_pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CafeteriaSettingsController extends GetxController {
-  //TODO: Implement CafeteriaSettingsController
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+      removeUserId();
+      Get.offAllNamed(Routes.SPLASH); // Navigate to the Splash Screen
+    } catch (e) {
+      Get.snackbar("Error", "Failed to log out. Please try again.");
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> removeUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userId');
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

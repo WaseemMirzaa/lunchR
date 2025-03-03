@@ -7,6 +7,7 @@ class CafeteriaHomeSettingsBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<CafeteriaHomeSettingsController>(
       () => CafeteriaHomeSettingsController(),
+      fenix: true
     );
   }
 }

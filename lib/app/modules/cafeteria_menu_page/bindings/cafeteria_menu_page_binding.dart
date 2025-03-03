@@ -7,6 +7,7 @@ class CafeteriaMenuPageBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<CafeteriaMenuPageController>(
       () => CafeteriaMenuPageController(),
+      fenix: true
     );
   }
 }

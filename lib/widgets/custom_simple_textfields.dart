@@ -4,15 +4,16 @@ import 'package:luncher/config/app_text_style.dart';
 
 class SimpleTextFieldWidget extends StatelessWidget {
   final String hintText;
-
-  final String imagePath;
+  final String? imagePath;
   final TextInputType keyboardType;
+  final TextEditingController? controller; // Optional controller
 
   const SimpleTextFieldWidget({
     super.key,
     required this.hintText,
-    required this.imagePath,
+     this.imagePath,
     this.keyboardType = TextInputType.text,
+    this.controller,
   });
 
   @override
@@ -36,6 +37,7 @@ class SimpleTextFieldWidget extends StatelessWidget {
         children: [
           Expanded(
             child: TextFormField(
+              controller: controller, // Assign the controller if provided
               style: AppTextStyles.MetropolisRegular.copyWith(
                 color: const Color(0xFF4A4B4D),
                 fontSize: 16,
@@ -54,7 +56,7 @@ class SimpleTextFieldWidget extends StatelessWidget {
               ),
             ),
           ),
-          Container(
+        imagePath == null?const SizedBox():  Container(
             width: 40,
             height: 40,
             decoration: BoxDecoration(
@@ -70,7 +72,7 @@ class SimpleTextFieldWidget extends StatelessWidget {
             ),
             child: Center(
               child: Image.asset(
-                imagePath,
+                imagePath!,
                 width: 17,
                 height: 17,
                 fit: BoxFit.contain,
