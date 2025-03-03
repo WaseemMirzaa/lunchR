@@ -65,8 +65,6 @@ class AuthenticationService extends GetxService {
         smsCode: otp,
       );
 
-      
-
       await _auth.signInWithCredential(credential);
       return Result.success(message: "OTP verification successful");
     } catch (e) {

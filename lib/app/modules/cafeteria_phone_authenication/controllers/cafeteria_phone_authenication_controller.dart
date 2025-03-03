@@ -29,6 +29,7 @@ class CafeteriaPhoneAuthenicationController extends GetxController {
   Future<void> authenticatePhoneNumber(
     bool isCafeteriaAdmin,
   ) async {
+
     final phoneNumber = phoneController.text.trim();
 
     log("Phone number: $phoneNumber");
@@ -44,8 +45,11 @@ class CafeteriaPhoneAuthenicationController extends GetxController {
 
     // Handle result
     if (result.success) {
+
       if (result.verificationId != null) {
         // Navigate to OTP verification screen
+        print('Auth Test ✅vId: ${result.verificationId}');
+        print('Auth Test ✅phone: ${phoneNumber}');
         isCafeteriaAdmin == true
             ? Get.toNamed(Routes.CAFETERIA_PHONE_VERIFICATION, arguments: {
                 'verificationId': result.verificationId,

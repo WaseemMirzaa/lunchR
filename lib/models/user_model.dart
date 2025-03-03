@@ -5,12 +5,19 @@ class UserModel {
   final String? phoneNumber;
   final String? role;
   final DateTime? userAccountCreatedTime;
+   String? cafeteriaName;
+   String? schoolName;
+   String? cafeteriaLogo;
+
 
   UserModel({
     this.userID,
     this.phoneNumber,
     this.role,
     this.userAccountCreatedTime,
+    this.cafeteriaName,
+    this.schoolName,
+    this.cafeteriaLogo,
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +27,9 @@ class UserModel {
       UserKey.ROLE: role,
       UserKey.USER_ACCOUNT_CREATED_TIME:
           userAccountCreatedTime?.toIso8601String(),
+      UserKey.CAFETERIA_LOGO: cafeteriaLogo,
+      UserKey.SCHOOL_NAME: schoolName,
+      UserKey.CAFETERIA_NAME: cafeteriaName,
     };
   }
 
@@ -31,6 +41,9 @@ class UserModel {
       userAccountCreatedTime: json[UserKey.USER_ACCOUNT_CREATED_TIME] != null
           ? DateTime.tryParse(json[UserKey.USER_ACCOUNT_CREATED_TIME])
           : null,
+      cafeteriaLogo: json[UserKey.CAFETERIA_LOGO] as String?,
+      schoolName: json[UserKey.SCHOOL_NAME] as String?,
+      cafeteriaName: json[UserKey.CAFETERIA_NAME] as String?,
     );
   }
 }

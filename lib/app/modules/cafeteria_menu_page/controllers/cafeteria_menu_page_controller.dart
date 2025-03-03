@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
@@ -51,6 +52,11 @@ class CafeteriaMenuPageController extends GetxController {
 //     });  }
 
   void filterMeals() {
+
+    var user = FirebaseAuth.instance.currentUser;
+
+    var userId = user?.uid ?? '';
+
     if (searchText.value.isEmpty) {
 
       filteredMeals.assignAll(meals);
@@ -59,7 +65,8 @@ class CafeteriaMenuPageController extends GetxController {
        // Print the updated value of meals
       isdataFound.value = false;
       filteredMeals.assignAll(meals.where((meal) =>
-          meal.name!.toLowerCase().contains(searchText.value.toLowerCase())));
+      ( meal.name!.toLowerCase().contains(searchText.value.toLowerCase()) && meal.userId
+       == userId)));
       if(searchText.value.isNotEmpty && filteredMeals.isEmpty){
         print("empty");
         isdataFound.value = true;

@@ -278,7 +278,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA_PHONE_VERIFICATION,
-      page: () => const CafeteriaPhoneVerificationView(),
+      page: () => CafeteriaPhoneVerificationView(),
       binding: CafeteriaPhoneVerificationBinding(),
     ),
     GetPage(

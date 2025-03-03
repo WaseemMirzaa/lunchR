@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/services/Shared_preference/preferences.dart';
@@ -26,13 +28,16 @@ class MealService extends BaseService {
   Stream<List<MealModel>> getMeals() {
     // var userId = await userPreferences.getUserId();
 
+    var user = FirebaseAuth.instance.currentUser;
+    var userId = user?.uid ?? '';
     return FirebaseFirestore.instance.collection("meals").snapshots().map(
       (snapshot) {
         return snapshot.docs.map((doc) {
           print("sss#ll ${doc.data()}");
 
           return MealModel.fromMap(doc.id, doc.data());
-        }).toList();
+        })    .where((meal) => meal.userId == userId) // Filter based on userId
+            .toList();
       },
     );
   }

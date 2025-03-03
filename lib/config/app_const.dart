@@ -10,6 +10,12 @@ class UserKey {
   static const String PHONE_NUMBER = "phoneNumber";
   static const String ROLE = "role";
   static const String USER_ACCOUNT_CREATED_TIME = "userAccountCreatedTime";
+
+  static var CAFETERIA_LOGO = 'cafeteriaLogo';
+
+  static var SCHOOL_NAME= 'schoolName';
+
+  static var CAFETERIA_NAME='cafeteriaName';
 }
 
 class MealKey {

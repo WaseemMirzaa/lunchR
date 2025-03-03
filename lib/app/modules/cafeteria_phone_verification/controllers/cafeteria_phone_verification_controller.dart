@@ -9,12 +9,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CafeteriaPhoneVerificationController extends GetxController {
   final otpController = ''.obs; // Observable for OTP
   final isLoading = false.obs;
+  final pin = ''.obs;
 
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
 
+  final String verificationId;
+  final String phoneNumber;
+
+  CafeteriaPhoneVerificationController({
+    required this.verificationId,
+    required this.phoneNumber,
+  });
+
+  @override
+  void onInit() {
+    super.onInit();
+    // You can now use verificationId and phoneNumber in your controller
+    print('Verification ID: $verificationId');
+    print('Phone Number: $phoneNumber');
+  }
+
   // Handle OTP verification
-  Future<void> verifyOTP(String verificationId, String phoneNumber) async {
+  Future<void> verifyOTP() async {
+
     if (otpController.value.isEmpty || otpController.value.length < 6) {
       showCustomSnack("Please enter a valid OTP");
       return;
@@ -33,11 +51,24 @@ class CafeteriaPhoneVerificationController extends GetxController {
           userAccountCreatedTime: DateTime.now(),
         );
 
-        await _userService.createUser(user);
 
-        Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
+        bool newUserCreated = await _userService.createUser(user);
+
+        if(newUserCreated || user.cafeteriaName == null || (user.cafeteriaName != null && user.cafeteriaName!.isEmpty)) {
+
+          Get.toNamed(Routes.CAFETERIA_DETAIL);
+
+        } else {
+
+          Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
+
+        }
+
+
       } else {
+
         showCustomSnack(result.message);
+
       }
     } finally {
       isLoading.value = false;

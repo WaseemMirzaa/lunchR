@@ -132,12 +132,14 @@ class CafeteriaPhoneVerificationView
                       submittedPinTheme: submittedPinTheme,
 
                       validator: (s) {
-                        return s == '2222' ? null : 'Pin is incorrect';
+                        // return( s != null &&  s.length < 6) ?  '' : ;
                       },
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
                       obscureText: true,
-                      onCompleted: (pin) {},
+                      onCompleted: (pin) {
+                        controller.otpController.value = pin;
+                      },
                       mainAxisAlignment: MainAxisAlignment
                           .spaceEvenly, // Adds even spacing between boxes
                     ),
@@ -147,11 +149,12 @@ class CafeteriaPhoneVerificationView
                   ],
                 ),
               ),
-              // Custom button to submit the email
+
               CustomButton(
                 text: 'VERIFY',
-                onPressed: () {
-                  Get.toNamed(Routes.CAFETERIA_DETAIL);
+                onPressed: () async {
+
+                  await controller.verifyOTP();
                 },
                 isLoading: false.obs, // RxBool for loading state
               ),

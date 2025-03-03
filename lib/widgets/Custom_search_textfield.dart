@@ -49,44 +49,37 @@ class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
           ),
         ],
       ),
-      child: TextField(
-        controller: widget.textController,
-        focusNode: widget.focusNode,
-        readOnly: widget.isReadOnly,
-        inputFormatters: widget.inputFormatters,
-        onChanged: widget.onChanged,
-        onTap: widget.onTap,
-        onSubmitted: widget.onSubmit != null ? (_) => widget.onSubmit!() : null,
-        textInputAction: TextInputAction.search,
-        style: AppTextStyles.PoppinsRegular.copyWith(
-          fontSize: 14,
-          color: const Color(0xFF4A4B4D),
-        ),
-        decoration: InputDecoration(
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Image.asset(
-              'assets/icon/search.png',
-              width: 20,
-              height: 20,
-              color: Colors.grey,
-            ),
-          ),
-          suffixIcon: widget.textController.text.isNotEmpty
-              ? IconButton(
-            icon: const Icon(Icons.clear, color: Colors.grey),
-            onPressed: () {
-              widget.textController.clear();
-              widget.onChanged?.call('');
-            },
-          )
-              : null,
-          hintText: widget.hintText,
-          hintStyle: AppTextStyles.MetropolisRegular.copyWith(
-            color: const Color(0xFFB6B7B7),
+      child: Center(
+        child: TextField(
+          controller: widget.textController,
+          focusNode: widget.focusNode,
+          readOnly: widget.isReadOnly,
+          inputFormatters: widget.inputFormatters,
+          onChanged: widget.onChanged,
+          onTap: widget.onTap,
+          onSubmitted: widget.onSubmit != null ? (_) => widget.onSubmit!() : null,
+          textInputAction: TextInputAction.search,
+          style: AppTextStyles.PoppinsRegular.copyWith(
             fontSize: 14,
+            color: const Color(0xFF4A4B4D),
           ),
-          border: InputBorder.none,
+          decoration: InputDecoration(
+            suffixIcon: widget.textController.text.isNotEmpty
+                ? IconButton(
+              icon: const Icon(Icons.clear, color: Colors.grey),
+              onPressed: () {
+                widget.textController.clear();
+                widget.onChanged?.call('');
+              },
+            )
+                : null,
+            hintText: widget.hintText,
+            hintStyle: AppTextStyles.MetropolisRegular.copyWith(
+              color: const Color(0xFFB6B7B7),
+              fontSize: 14,
+            ),
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
