@@ -12,6 +12,8 @@ class CafeteriaMenuPageController extends GetxController {
   var isLoading = false.obs;
   var searchText = "".obs; // Observable for search text
   TextEditingController searchTextController = TextEditingController();
+  // final _controller = ValueNotifier<bool>(meals.first.availability == 'available');
+  final Map<String, ValueNotifier<bool>> switchControllers = {};
 
   @override
   void onInit() {
@@ -28,25 +30,25 @@ class CafeteriaMenuPageController extends GetxController {
 // print("sss# ${meals}");
 //     isLoading.value = false;
 //   }
-  void fetchMeals() {
-    isLoading.value = true;
-
-    // Bind the stream to the 'meals' list
-    meals.bindStream(_mealService.getMeals());
-
-    // Re-filter meals and print when meals update
-    ever(meals, (_) {
-      filterMeals();
-    });
-
-    // Listen to the stream and set loading to false once data is received
-    _mealService.getMeals().listen((snapshot) {
-      if (snapshot.isNotEmpty) {
-        isLoading.value = false; // Set loading to false when data is received
-      }
-      isLoading.value = false; // Set loading to false when data is received
-
-    });  }
+//   void fetchMeals() {
+//     isLoading.value = true;
+//
+//     // Bind the stream to the 'meals' list
+//     meals.bindStream(_mealService.getMeals());
+//
+//     // Re-filter meals and print when meals update
+//     ever(meals, (_) {
+//       filterMeals();
+//     });
+//
+//     // Listen to the stream and set loading to false once data is received
+//     _mealService.getMeals().listen((snapshot) {
+//       if (snapshot.isNotEmpty) {
+//         isLoading.value = false; // Set loading to false when data is received
+//       }
+//       isLoading.value = false; // Set loading to false when data is received
+//
+//     });  }
 
   void filterMeals() {
     if (searchText.value.isEmpty) {
@@ -65,6 +67,37 @@ class CafeteriaMenuPageController extends GetxController {
       }
     }
   }
+  void fetchMeals() {
+    isLoading.value = true;
+
+    meals.bindStream(_mealService.getMeals());
+
+    ever(meals, (_) {
+      for (var meal in meals) {
+        if (!switchControllers.containsKey(meal.id)) {
+          switchControllers[meal.id!] = ValueNotifier<bool>(meal.availability == 'available');
+        } else {
+          // ✅ Update the existing switch controller when Firestore data changes
+          switchControllers[meal.id]!.value = meal.availability == 'available';
+        }
+      }
+    });
+
+    _mealService.getMeals().listen((snapshot) {
+      if (snapshot.isNotEmpty) {
+        isLoading.value = false;
+      }
+    });
+  }
+
+  Future<void> updateMeal(String mealId, bool isAvailable) async {
+    await _mealService.updateMeal(mealId, {'availability': isAvailable ? 'available' : 'unavailable'});
+
+    // ✅ Update the switch state immediately in UI
+    if (switchControllers.containsKey(mealId)) {
+      switchControllers[mealId]!.value = isAvailable;
+    }
+  }
 
   void updateSearchText(String text) {
     searchText.value = text;
@@ -79,10 +112,10 @@ class CafeteriaMenuPageController extends GetxController {
     fetchMeals();
   }
 
-  Future<void> updateMeal(String mealId, Map<String, dynamic> data) async {
-    await _mealService.updateMeal(mealId, data);
-    fetchMeals();
-  }
+  // Future<void> updateMeal(String mealId, Map<String, dynamic> data) async {
+  //   await _mealService.updateMeal(mealId, data);
+  //   fetchMeals();
+  // }
 
   Future<void> deleteMeal(String mealId) async {
     await _mealService.deleteMeal(mealId);

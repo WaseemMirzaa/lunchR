@@ -82,7 +82,7 @@ class CafeteriaPhoneAuthenicationView extends GetView<CafeteriaPhoneAuthenicatio
                   Get.toNamed(Routes.STAFF_PHONE_VERIFICATION);
                 },
 
-                isLoading: controller.isLoading.value,
+                isLoading: controller.isStaffLoading.value,
               ),
             ),
           ],

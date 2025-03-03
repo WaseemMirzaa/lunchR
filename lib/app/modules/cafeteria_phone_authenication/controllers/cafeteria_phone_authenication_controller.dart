@@ -8,6 +8,7 @@ import '../../../../widgets/custom_snackbar.dart';
 class CafeteriaPhoneAuthenicationController extends GetxController {
   final phoneController = TextEditingController();
   final isLoading = false.obs;
+  final isStaffLoading = false.obs;
 
   final AuthenticationService _authService = AuthenticationService();
 

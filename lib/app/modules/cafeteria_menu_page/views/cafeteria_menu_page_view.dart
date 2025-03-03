@@ -166,9 +166,26 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
 
   Widget _buildMenuItem(
     MealModel meal,
-  ) {
-    final _controller = ValueNotifier<bool>(meal.availability == 'available');
 
+  ) {
+    final controller = Get.find<CafeteriaMenuPageController>();
+
+    // ✅ Ensure every meal has a switch controller
+    if (!controller.switchControllers.containsKey(meal.id)) {
+      controller.switchControllers[meal.id!] = ValueNotifier<bool>(meal.availability == 'available');
+    }
+
+    // final _controller = ValueNotifier<bool>(meal.availability == 'available');
+
+    final switchController = controller.switchControllers[meal.id]!;
+    // print("Switch Value is :${_controller}");
+
+    // ✅ Debugging prints
+    print("Meal ID: ${meal.id}");
+    print("Meal Name: ${meal.name}");
+    print("Meal Availability: ${meal.availability}");
+    print("Meal Price: ${meal.price}");
+    print("Switch Value: ${switchController.value}");
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -249,18 +266,33 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AdvancedSwitch(
-                    controller: _controller,
-                    activeColor: Colors.green,
-                    height: 12,
-                    width: 25,
-                    onChanged: (value) {
-                      if (meal.id != null) {
-                        controller.updateMeal(
-                            meal.id!, {'availability': value ? 'available' : 'unavailable'});
-                      }
+                  // ✅ Advanced Switch with ValueNotifier
+                  ValueListenableBuilder<bool>(
+                    valueListenable: switchController,
+                    builder: (context, value, child) {
+                      return AdvancedSwitch(
+                        controller: switchController,
+                        activeColor: Colors.green,
+                        height: 12,
+                        width: 25,
+                        onChanged: (newValue) {
+                          controller.updateMeal(meal.id!, newValue);
+                        },
+                      );
                     },
                   ),
+                  // AdvancedSwitch(
+                  //   controller: _controller,
+                  //   activeColor: Colors.green,
+                  //   height: 12,
+                  //   width: 25,
+                  //   onChanged: (value) {
+                  //     if (meal.id != null) {
+                  //       controller.updateMeal(
+                  //           meal.id!, {'availability': value ? 'available' : 'unavailable'});
+                  //     }
+                  //   },
+                  // ),
                   GestureDetector(
                     onTap: () {
                       Get.toNamed(

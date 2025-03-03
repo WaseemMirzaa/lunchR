@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/base_service.dart';
 
 class MealService extends BaseService {
+  final UserPreferences userPreferences = UserPreferences();
+
   Future<void> addMeal(MealModel meal, File? imageFile) async {
     String docId = FirebaseFirestore.instance.collection("meals").doc().id;
 
@@ -21,6 +24,8 @@ class MealService extends BaseService {
   }
 
   Stream<List<MealModel>> getMeals() {
+    // var userId = await userPreferences.getUserId();
+
     return FirebaseFirestore.instance.collection("meals").snapshots().map(
       (snapshot) {
         return snapshot.docs.map((doc) {

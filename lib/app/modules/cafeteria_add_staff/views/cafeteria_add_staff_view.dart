@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/config/validation.dart';
 import 'package:luncher/models/cefeteria_admin/staff_model.dart';
@@ -188,10 +190,45 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
                         controller: controller.emailController,
                       ),
                       const SizedBox(height: 20),
-                      SimpleTextFieldWithOutSuffixWidget(
-                        hintText: 'Phone',
-                        keyboardType: TextInputType.number,
-                        controller: controller.phoneController,
+                      // SimpleTextFieldWithOutSuffixWidget(
+                      //   hintText: 'Phone',
+                      //   keyboardType: TextInputType.number,
+                      //   controller: controller.phoneController,
+                      // ),
+                      // Phone number field
+                      Container(
+                        height: 56,
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 30, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: AppColors.whiteColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: IntlPhoneField(
+                          decoration: InputDecoration(
+                            labelText: 'Phone',
+                            labelStyle: AppTextStyles.MetropolisRegular.copyWith(
+                              color: const Color(0xFFB6B7B7),
+                              fontSize: 12,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            border: InputBorder.none,
+                            counterText: '',
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          initialCountryCode: 'US',
+                          onChanged: (phone) {
+                            controller.phoneController.text = phone.completeNumber;
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // SimpleTextFieldWithOutSuffixWidget(
