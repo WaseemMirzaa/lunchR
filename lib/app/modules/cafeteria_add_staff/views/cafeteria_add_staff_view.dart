@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/config/validation.dart';
 import 'package:luncher/models/cefeteria_admin/staff_model.dart';
 import 'package:luncher/widgets/custom_back_button.dart';
+import 'package:luncher/widgets/custom_password_text_field.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_add_staff_controller.dart';
 
 class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
-
   // Constructor: Initialize both 'isEdit' and 'staffModelL' from Get.arguments
   const CafeteriaAddStaffView({super.key});
   @override
   Widget build(BuildContext context) {
-
-
     // final addStaffController = Get.find<CafeteriaHomeSettingsController>();
     return GestureDetector(
       onTap: () {
@@ -134,7 +134,7 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
                                               return _buildPlaceholder();
                                             },
                                           )
-                                        :  _buildPlaceholder(),
+                                        : _buildPlaceholder(),
                                 // Image.asset(
                                 //   'assets/images/userimg.png', // Replace with the actual image URL
                                 //   fit: BoxFit.cover,
@@ -147,7 +147,7 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
                               right: 0,
                               child: CustomBackButton(
                                   onTap: () => controller.pickImage(),
-                                  widget:  const Icon(Icons.add)))
+                                  widget: const Icon(Icons.add)))
                         ],
                       ),
                       // if (isEdit) const SizedBox(height: 10),
@@ -180,7 +180,6 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
                       //   ),
                       const SizedBox(height: 20),
                       SimpleTextFieldWithOutSuffixWidget(
-
                         hintText: 'Staff Name',
                         controller: controller.nameController,
                       ),
@@ -191,20 +190,62 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
                         controller: controller.emailController,
                       ),
                       const SizedBox(height: 20),
-                      SimpleTextFieldWithOutSuffixWidget(
-                        hintText: 'Phone',
-                        controller: controller.phoneController,
+                      // SimpleTextFieldWithOutSuffixWidget(
+                      //   hintText: 'Phone',
+                      //   keyboardType: TextInputType.number,
+                      //   controller: controller.phoneController,
+                      // ),
+                      // Phone number field
+                      Container(
+                        height: 56,
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 30, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: AppColors.whiteColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: IntlPhoneField(
+                          decoration: InputDecoration(
+                            labelText: 'Phone',
+                            labelStyle: AppTextStyles.MetropolisRegular.copyWith(
+                              color: const Color(0xFFB6B7B7),
+                              fontSize: 12,
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            border: InputBorder.none,
+                            counterText: '',
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          initialCountryCode: 'US',
+                          onChanged: (phone) {
+                            controller.phoneController.text = phone.completeNumber;
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      SimpleTextFieldWithOutSuffixWidget(
-                        hintText: 'Password',
+                      // SimpleTextFieldWithOutSuffixWidget(
+                      //   hintText: 'Password',
+                      //   controller: controller.passwordController,
+                      //   isVisible: true,
+                      // ),
+                      CustomPasswordFieldWidget(
+                        hintText: "Password",
                         controller: controller.passwordController,
+                        isVisible: false,
                       ),
                       const SizedBox(height: 20),
                       Obx(
                         () => CustomButton1(
                             text: 'Continue',
-                            onPressed:() async {
+                            onPressed: () async {
                               await controller.addStaffData();
                               // addStaffController.updateSelectedIndex(0);
                             },
@@ -219,7 +260,6 @@ class CafeteriaAddStaffView extends GetView<CafeteriaAddStaffController> {
         ),
       ),
     );
-
   }
 
   // Placeholder Widget Function
