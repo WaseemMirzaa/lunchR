@@ -22,12 +22,27 @@ class AuthenticationService extends GetxService {
         verificationCompleted: (PhoneAuthCredential credential) async {
           if (!completer.isCompleted) {
             try {
-              await _auth.signInWithCredential(credential);
-              completer
-                  .complete(Result.success(message: "Verification completed"));
+              // Sign in with the received credential
+              UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+              // Get the signed-in user
+              User? user = userCredential.user;
+
+              if (user != null) {
+                // Save user to Firestore
+                await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
+                  "phoneNumber": user.phoneNumber,
+                  "createdAt": FieldValue.serverTimestamp(),
+                  "role": "staff", // or "cafeteria_admin", depending on the user type
+                });
+
+                // Complete the authentication process
+                completer.complete(Result.success(message: "Verification completed"));
+              } else {
+                completer.complete(Result.error("User is null after sign-in"));
+              }
             } catch (e) {
-              completer
-                  .complete(Result.error("Failed to sign in with credentials"));
+              completer.complete(Result.error("Failed to sign in with credentials: $e"));
             }
           }
         },

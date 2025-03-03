@@ -24,43 +24,84 @@ class CafeteriaPhoneAuthenicationController extends GetxController {
     }
     return true;
   }
-
-  // Handle phone number authentication
-  Future<void> authenticatePhoneNumber(
-    bool isCafeteriaAdmin,
-  ) async {
+  //
+  // // Handle phone number authentication
+  // Future<void> authenticatePhoneNumber(
+  //   bool isCafeteriaAdmin,
+  // ) async {
+  //   final phoneNumber = phoneController.text.trim();
+  //
+  //   log("Phone number: $phoneNumber");
+  //
+  //   if (!validatePhoneNumber(phoneNumber)) return;
+  //
+  //   isLoading.value = true;
+  //
+  //   // Call the service and wait for the result
+  //   final result = await _authService.authenticatePhoneNumber(phoneNumber);
+  //
+  //   isLoading.value = false;
+  //
+  //   // Handle result
+  //   if (result.success) {
+  //     if (result.verificationId != null) {
+  //       // Navigate to OTP verification screen
+  //       isCafeteriaAdmin == true
+  //           ? Get.toNamed(Routes.CAFETERIA_PHONE_VERIFICATION, arguments: {
+  //               'verificationId': result.verificationId,
+  //               'phoneNumber': phoneNumber,
+  //             })
+  //           : Get.toNamed(Routes.STAFF_PHONE_VERIFICATION, arguments: {
+  //               'verificationId': result.verificationId,
+  //               'phoneNumber': phoneNumber,
+  //             });
+  //     } else {
+  //       // Navigate to the home screen if no verificationId (auto-verification)
+  //       showCustomSnack(result.message);
+  //     }
+  //   } else {
+  //     showCustomSnack(result.message);
+  //   }
+  // }
+  Future<void> authenticatePhoneNumber(bool isCafeteriaAdmin) async {
     final phoneNumber = phoneController.text.trim();
+    log("Entered Phone Number: $phoneNumber");
 
-    log("Phone number: $phoneNumber");
-
-    if (!validatePhoneNumber(phoneNumber)) return;
+    if (!validatePhoneNumber(phoneNumber)) {
+      showCustomSnack("Invalid phone number. Please enter a valid number.");
+      return;
+    }
 
     isLoading.value = true;
 
-    // Call the service and wait for the result
-    final result = await _authService.authenticatePhoneNumber(phoneNumber);
+    try {
+      final result = await _authService.authenticatePhoneNumber(phoneNumber);
+      isLoading.value = false;
 
-    isLoading.value = false;
+      if (result.success) {
+        if (result.verificationId != null) {
+          log("Verification ID received: ${result.verificationId}");
 
-    // Handle result
-    if (result.success) {
-      if (result.verificationId != null) {
-        // Navigate to OTP verification screen
-        isCafeteriaAdmin == true
-            ? Get.toNamed(Routes.CAFETERIA_PHONE_VERIFICATION, arguments: {
-                'verificationId': result.verificationId,
-                'phoneNumber': phoneNumber,
-              })
-            : Get.toNamed(Routes.STAFF_PHONE_VERIFICATION, arguments: {
-                'verificationId': result.verificationId,
-                'phoneNumber': phoneNumber,
-              });
+          // Navigate to OTP verification screen
+          Get.toNamed(
+            isCafeteriaAdmin ? Routes.CAFETERIA_PHONE_VERIFICATION : Routes.STAFF_PHONE_VERIFICATION,
+            arguments: {
+              'verificationId': result.verificationId,
+              'phoneNumber': phoneNumber,
+            },
+          );
+        } else {
+          showCustomSnack(result.message);
+        }
       } else {
-        // Navigate to the home screen if no verificationId (auto-verification)
+        log("Authentication failed: ${result.message}");
         showCustomSnack(result.message);
       }
-    } else {
-      showCustomSnack(result.message);
+    } catch (e) {
+      isLoading.value = false;
+      log("Error in phone authentication: $e");
+      showCustomSnack("An unexpected error occurred. Please try again.");
     }
   }
+
 }
