@@ -44,15 +44,14 @@ class PhoneAuthenticationController extends GetxController {
     // Handle result
     if (result.success) {
       if (result.verificationId != null) {
-        // Navigate to OTP verification screen
-        Get.toNamed(Routes.PHONE_VERIFICATION,
-            arguments: result.verificationId);
+        Get.toNamed(Routes.PHONE_VERIFICATION, arguments: {
+          "verificationId": result.verificationId,
+          "phoneNumber": phoneNumber,  // Pass phone number
+        });
       } else {
-        // Navigate to the home screen if no verificationId (auto-verification)
         showCustomSnack(result.message);
       }
-    } else {
-      showCustomSnack(result.message);
     }
+
   }
 }
