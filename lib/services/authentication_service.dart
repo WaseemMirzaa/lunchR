@@ -75,20 +75,17 @@ class AuthenticationService extends GetxService {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
-      // Query the Firestore collection to find the staff with matching phone and password
       QuerySnapshot snapshot = await firestore
           .collection("staffData")
           .where("staffPhone", isEqualTo: number)
           .where("staffPassword", isEqualTo: password)
           .get();
 
-      // Check if any document is found
       if (snapshot.docs.isNotEmpty) {
-        // Get the first document
-        var staffData = snapshot.docs.first.data() as Map<String, dynamic>; // Get document data
-        String staffId = snapshot.docs.first.id; // Get the document ID
+        var staffData = snapshot.docs.first.data() as Map<String, dynamic>;
+        String staffId = snapshot.docs.first.id;
         userPreferences.saveUserId(staffId);
-        // Convert the Map to a StaffDataModel instance
+
         final newStaffData = StaffDataModel.fromMap({
           'id': staffId,
           'name': staffData["staffName"],
@@ -97,18 +94,13 @@ class AuthenticationService extends GetxService {
           'cafeteriaId': staffData["userId"],
         });
 
-// Save the StaffDataModel instance
         await userPreferences.saveStaffData(newStaffData);
-
-        // Convert the document data to StaffModel and return it
         return StaffModel.fromMap(staffId, staffData);
       } else {
-        // No staff found, login failed
-        print("No staff found with the given phone number and password");
-        return null; // Return null if no staff data is found
+        print("Invalid phone number or password");
+        return null; // Return null when credentials are incorrect
       }
     } catch (e) {
-      // Handle errors
       print("Error during login: $e");
       return null; // Return null in case of an error
     }

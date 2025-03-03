@@ -11,44 +11,40 @@ class StaffPhoneVerificationController extends GetxController {
 
   final AuthenticationService _authService = AuthenticationService();
 
-  // Handle OTP verification
+  // Handle login
   Future<void> staffLogin() async {
     isLoading.value = true;
     String staffPhone = phoneController.text.trim();
     String staffPassword = passwordController.text.trim();
+
     if (staffPhone.isEmpty || staffPassword.isEmpty) {
-      showCustomSnack("Phone And Password Can't Empty");
+      showCustomSnack("Phone And Password Can't Be Empty");
+      isLoading.value = false;
       return;
     }
-    Future.delayed(Duration(seconds: 2));
 
     try {
-
       bool phoneExists = await _authService.isPhoneNumberExists(staffPhone);
       if (!phoneExists) {
-       return showCustomSnack("Phone Number Not Exist Please Enter Correct Phone Number");
+        showCustomSnack("Phone Number Not Found. Please Enter the Correct Phone Number");
+        isLoading.value = false;
+        return;
       }
-       await _authService.staffLogin(staffPhone,staffPassword).then((val){
 
-         Get.offAllNamed(Routes.STAFF_LANDING_PAGE);
-
-       }).catchError((error, stacktrace) {
-         // Handle the error
-         showCustomSnack(error.toString());
-
-       });
-
-
-      // final result =
-      //     await _authService.verifyOTP(verificationId, otpController.value);
-      //
-      // if (result.success) {
-      //   Get.offAllNamed(Routes.LANDING_PAGE); // Navigate to home screen
-      // } else {
-      //   showCustomSnack(result.message); // Show the error message
-      // }
+      // ✅ Wait for the login response and check if staff exists
+      final staff = await _authService.staffLogin(staffPhone, staffPassword);
+      if (staff != null) {
+        Get.offAllNamed(Routes.STAFF_LANDING_PAGE); // Navigate on success
+        phoneController.clear();
+        passwordController.clear();
+      } else {
+        showCustomSnack("Phone number and password combination mismatch");
+      }
+    } catch (e) {
+      showCustomSnack("Something went wrong: $e");
     } finally {
       isLoading.value = false;
     }
   }
+
 }
