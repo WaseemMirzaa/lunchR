@@ -8,6 +8,7 @@ import '../../../../widgets/custom_snackbar.dart';
 
 class PhoneAuthenticationController extends GetxController {
   final phoneController = TextEditingController();
+  var phoneError = RxnString();
   final isLoading = false.obs;
 
   final AuthenticationService _authService = AuthenticationService();

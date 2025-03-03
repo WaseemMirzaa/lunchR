@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfeild.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 import '../controllers/phone_authentication_controller.dart';
 
@@ -62,6 +61,7 @@ class PhoneAuthenticationView extends GetView<PhoneAuthenticationController> {
                   ],
                 ),
                 child: IntlPhoneField(
+                  // disableLengthCheck: true,
                   decoration: InputDecoration(
                     labelText: 'Mobile No',
                     labelStyle: AppTextStyles.MetropolisRegular.copyWith(
@@ -73,28 +73,31 @@ class PhoneAuthenticationView extends GetView<PhoneAuthenticationController> {
                     counterText: '',
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
+                    errorText: null,
+
                   ),
                   initialCountryCode: 'US',
                   onChanged: (phone) {
                     controller.phoneController.text = phone.completeNumber;
                   },
                 ),
+
               ),
 
               const SizedBox(height: 30),
 
               // Continue button
-              CustomButton1(
+              Obx(() => CustomButton1(
                 text: 'CONTINUE',
-                onPressed: () async =>
-                    await controller.authenticatePhoneNumber(),
+                onPressed: () async => await controller.authenticatePhoneNumber(),
                 isLoading: controller.isLoading.value,
                 gradientColors: const [Colors.orange, Colors.red],
                 height: 60.0,
                 borderRadius: 12.0,
                 fontSize: 18.0,
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              ),
+              )),
+
               const SizedBox(height: 20),
             ],
           ),
