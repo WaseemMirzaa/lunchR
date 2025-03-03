@@ -117,20 +117,22 @@ class CafeteriaStaffListView extends StatelessWidget {
                                                       child: addStaffController
                                                                   .staffDataList[index].imageUrl !=
                                                               null
-                                                          ? Image.network(
-                                                              addStaffController
-                                                                  .staffDataList[index].imageUrl!,
-                                                              width: double.infinity,
-                                                              // height: 100,
-                                                              fit: BoxFit.cover,
-                                                              // errorBuilder: (context, error, stackTrace) {
-                                                              //   return Image.asset(
-                                                              //     'assets/images/icecream.png',
-                                                              //     width: double.infinity,
-                                                              //     fit: BoxFit.cover,
-                                                              //   );
-                                                              // },
-                                                            )
+                                                          ? ClipOval(
+                                                            child: Image.network(
+                                                                addStaffController
+                                                                    .staffDataList[index].imageUrl!,
+                                                                width: double.infinity,
+                                                                // height: 100,
+                                                                fit: BoxFit.cover,
+                                                                // errorBuilder: (context, error, stackTrace) {
+                                                                //   return Image.asset(
+                                                                //     'assets/images/icecream.png',
+                                                                //     width: double.infinity,
+                                                                //     fit: BoxFit.cover,
+                                                                //   );
+                                                                // },
+                                                              ),
+                                                          )
                                                           : Image.asset(
                                                               'assets/images/profile_emoji.png',
                                                               width: double.infinity,

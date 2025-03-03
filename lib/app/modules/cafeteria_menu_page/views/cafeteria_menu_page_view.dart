@@ -6,6 +6,7 @@ import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
+import 'package:luncher/widgets/Custom_search_textfield.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
 
 import 'package:luncher/widgets/reuse_button.dart';
@@ -51,7 +52,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                           ),
                         ),
                         const SizedBox(height: 42), // Spacing between title and list
-                        _buildSearchField(textController),
+                        _buildSearchField(controller.searchTextController),
                         const SizedBox(height: 30),
                         _buildText(),
                         const SizedBox(height: 32),
@@ -79,13 +80,18 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
 
   // Search TextField Widget (moved slightly down)
   Widget _buildSearchField(TextEditingController textController) {
-    return TextFieldWidget(
-      text: 'Search Meal',
+    // return TextFieldWidget(
+    //   text: 'Search Meal',
+    //   textController: textController,
+    //   path: 'assets/icon/search.png',
+    //   isBGChangeColor: true,
+    //   height: 40,
+    //   isSuffixBG: true,
+    //   onChanged: (value) => controller.updateSearchText(value),
+    // );
+      return SearchTextFieldWidget(
+      hintText: 'Search Meal',
       textController: textController,
-      path: 'assets/icon/search.png',
-      isBGChangeColor: true,
-      height: 40,
-      isSuffixBG: true,
       onChanged: (value) => controller.updateSearchText(value),
     );
   }
@@ -118,26 +124,44 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
         fontSize: 14,
         color: AppColors.blackColor,
       ),
-    ): GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 8,
-                  childAspectRatio: 100 / 170,
-                ),
-                itemCount: controller.searchText.value.isEmpty
-                    ? controller.meals.length
-                    : controller.filteredMeals.length,
-                itemBuilder: (context, index) {
-                  return _buildMenuItem(
-                    controller.searchText.value.isEmpty
-                        ? controller.meals[index]
-                        : controller.filteredMeals[index],
-                  );
-                },
-              ));
+    ):
+    // GridView.builder(
+    //             shrinkWrap: true,
+    //             physics: const NeverScrollableScrollPhysics(),
+    //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //               crossAxisCount: 3,
+    //               mainAxisSpacing: 16,
+    //               crossAxisSpacing: 8,
+    //               childAspectRatio: 100 / 170,
+    //             ),
+    //             itemCount: controller.searchText.value.isEmpty
+    //                 ? controller.meals.length
+    //                 : controller.filteredMeals.length,
+    //             itemBuilder: (context, index) {
+    //               return _buildMenuItem(
+    //                 controller.searchText.value.isEmpty
+    //                     ? controller.meals[index]
+    //                     : controller.filteredMeals[index],
+    //               );
+    //             },
+    //           )
+    GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 8,
+        childAspectRatio: 100 / 170,
+      ),
+      itemCount: controller.filteredMeals.length,
+      itemBuilder: (context, index) {
+        return _buildMenuItem(
+        controller.filteredMeals[index]
+        );
+      },
+    )
+    );
   }
 
   Widget _buildMenuItem(

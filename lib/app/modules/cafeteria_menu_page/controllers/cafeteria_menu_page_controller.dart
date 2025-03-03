@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/services/meal_service.dart';
@@ -10,9 +11,11 @@ class CafeteriaMenuPageController extends GetxController {
   var isdataFound = false.obs;// Filtered list for searching
   var isLoading = false.obs;
   var searchText = "".obs; // Observable for search text
+  TextEditingController searchTextController = TextEditingController();
 
   @override
   void onInit() {
+    searchText.value = searchTextController.text;
     fetchMeals();
     super.onInit();
   }
@@ -45,11 +48,11 @@ class CafeteriaMenuPageController extends GetxController {
 
     });  }
 
-
   void filterMeals() {
     if (searchText.value.isEmpty) {
 
       filteredMeals.assignAll(meals);
+      isdataFound.value=false;
     } else {
        // Print the updated value of meals
       isdataFound.value = false;

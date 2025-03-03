@@ -7,6 +7,7 @@ import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/config/validation.dart';
 import 'package:luncher/models/cefeteria_admin/staff_model.dart';
 import 'package:luncher/widgets/custom_back_button.dart';
+import 'package:luncher/widgets/custom_password_text_field.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
@@ -150,9 +151,14 @@ class CafeteriaEditStaffView extends GetView<CafeteriaEditStaffController> {
                           controller: controller.phoneController,
                         ),
                         const SizedBox(height: 20),
-                        SimpleTextFieldWithOutSuffixWidget(
-                          hintText: 'Password',
+                        // SimpleTextFieldWithOutSuffixWidget(
+                        //   hintText: 'Password',
+                        //   controller: controller.passwordController,
+                        // ),
+                        CustomPasswordFieldWidget(
+                          hintText: "Password",
                           controller: controller.passwordController,
+                          isVisible: false,
                         ),
                         const SizedBox(height: 20),
                         Obx(
