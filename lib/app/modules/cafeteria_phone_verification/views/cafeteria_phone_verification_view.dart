@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
@@ -23,53 +22,45 @@ class CafeteriaPhoneVerificationView
       height: 56,
       textStyle: AppTextStyles.PoppinsRegular.copyWith(
         fontSize: 33,
-        color: Color(0xFF858585),
+        color: const Color(0xFF858585),
       ),
       decoration: BoxDecoration(
-        color: Colors.white, // White background color
-        border: Border.all(
-          color: Colors.white, // Border color
-          width: 3, // Border width
-        ),
-        borderRadius: BorderRadius.circular(40), // Rounded corners
+        color: Colors.white,
+        border: Border.all(color: Colors.white, width: 3),
+        borderRadius: BorderRadius.circular(40),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2), // Shadow color
-            blurRadius: 6, // Blur radius for the shadow
-            offset: const Offset(0, 3), // Shadow offset
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(
-        color: Colors.white, // Keep the white border when focused
-      ),
-      borderRadius: BorderRadius.circular(40), // Maintain rounded corners
+      border: Border.all(color: Colors.white),
+      borderRadius: BorderRadius.circular(40),
       boxShadow: [
         BoxShadow(
-          color: Colors.black
-              .withOpacity(0.3), // Slightly stronger shadow on focus
-          blurRadius: 8, // Increase blur radius for the shadow
-          offset: const Offset(0, 4), // Shadow offset for focus state
+          color: Colors.black.withOpacity(0.3),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
         ),
       ],
     );
 
     final submittedPinTheme = defaultPinTheme.copyDecorationWith(
-      color: Colors.white, // Maintain white background
+      color: Colors.white,
       boxShadow: [
         BoxShadow(
-          color: Colors.black
-              .withOpacity(0.2), // Consistent shadow for submitted state
+          color: Colors.black.withOpacity(0.2),
           blurRadius: 6,
           offset: const Offset(0, 3),
         ),
       ],
     );
 
-    // Start timer when the screen is loaded
     void startTimer() {
       if (isTimerRunning.value) {
         Future.delayed(const Duration(seconds: 1), () {
@@ -77,7 +68,7 @@ class CafeteriaPhoneVerificationView
             timer.value--;
             startTimer();
           } else {
-            isTimerRunning.value = false; // Stop the timer after 60 seconds
+            isTimerRunning.value = false;
           }
         });
       }
@@ -96,9 +87,8 @@ class CafeteriaPhoneVerificationView
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   children: [
-                    const SizedBox(height: 200), // Space between logo and form
+                    const SizedBox(height: 200),
 
-                    // Heading text
                     Text(
                       'VERIFICATION',
                       style: AppTextStyles.MetropolisMedium.copyWith(
@@ -107,13 +97,12 @@ class CafeteriaPhoneVerificationView
                       ),
                     ),
 
-                    const SizedBox(
-                        height: 20), // Space between heading and text field
+                    const SizedBox(height: 20),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50),
                       child: Text(
-                        'A Verification Code Has Been Sent On To Your Phone Number',
+                        'A Verification Code Has Been Sent To Your Phone Number',
                         textAlign: TextAlign.center,
                         style: AppTextStyles.MetropolisRegular.copyWith(
                           fontSize: 13,
@@ -122,38 +111,38 @@ class CafeteriaPhoneVerificationView
                       ),
                     ),
 
-                    const SizedBox(
-                        height: 40), // Space between text and OTP field
+                    const SizedBox(height: 40),
 
                     Pinput(
-                      length: 6, // Number of digits in the PIN
                       defaultPinTheme: defaultPinTheme,
                       focusedPinTheme: focusedPinTheme,
                       submittedPinTheme: submittedPinTheme,
-
-                      validator: (s) {
-                        return s == '2222' ? null : 'Pin is incorrect';
-                      },
+                      length: 6,
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
                       obscureText: true,
-                      onCompleted: (pin) {},
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceEvenly, // Adds even spacing between boxes
+                      onChanged: (pin) {
+                        controller.otpController.value = pin;
+                      },
+                      onCompleted: (pin) {
+                        controller.otpController.value = pin;
+                      },
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     ),
 
-                    const SizedBox(
-                        height: 20), // Space between OTP field and button
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
-              // Custom button to submit the email
               CustomButton(
                 text: 'VERIFY',
                 onPressed: () {
-                  Get.toNamed(Routes.CAFETERIA_DETAIL);
+                  final verificationId = Get.arguments?['verificationId'] ?? "";
+                  final phoneNumber = Get.arguments?['phoneNumber'] ?? "";
+
+                  controller.verifyOTP(verificationId, phoneNumber);
                 },
-                isLoading: false.obs, // RxBool for loading state
+                isLoading: controller.isLoading,
               ),
             ],
           ),
