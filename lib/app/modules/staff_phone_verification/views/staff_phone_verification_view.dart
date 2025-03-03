@@ -134,6 +134,7 @@ class StaffPhoneVerificationView
                       },
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
+                      obscureText: true,
                       onCompleted: (pin) {},
                       mainAxisAlignment: MainAxisAlignment
                           .spaceEvenly, // Adds even spacing between boxes

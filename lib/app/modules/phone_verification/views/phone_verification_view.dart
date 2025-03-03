@@ -130,6 +130,7 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
                   length: 6,
                   pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                   showCursor: true,
+                  obscureText: true,
                   onChanged: (pin) {
                     controller.otpController.value = pin; // Final OTP value
                   },
