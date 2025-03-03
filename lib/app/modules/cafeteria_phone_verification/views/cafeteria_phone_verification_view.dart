@@ -152,22 +152,24 @@ class CafeteriaPhoneVerificationView
                 ),
 
                 // Verify Button
-                CustomButton(
-                  text: 'VERIFY',
-                  onPressed: () {
-                    final arguments = Get.arguments as Map<String, dynamic>;
-                    final verificationId = arguments['verificationId'];
-                    final phoneNumber = arguments['phoneNumber'];
+                Obx(
+                      ()=>CustomButton1(
+                    text: 'VERIFY',
+                    onPressed: () {
+                      final arguments = Get.arguments as Map<String, dynamic>;
+                      final verificationId = arguments['verificationId'];
+                      final phoneNumber = arguments['phoneNumber'];
 
-                    controller.verifyOTP(verificationId, phoneNumber);
-                  },
-                  isLoading: controller.isLoading,
-                  // RxBool for loading state
-                  gradientColors: const [Colors.orange, Colors.red],
-                  height: 60.0,
-                  borderRadius: 12.0,
-                  fontSize: 18.0,
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      controller.verifyOTP(verificationId, phoneNumber);
+                    },
+                    isLoading: controller.isLoading.value,
+                    // RxBool for loading state
+                    gradientColors: const [Colors.orange, Colors.red],
+                    height: 60.0,
+                    borderRadius: 12.0,
+                    fontSize: 18.0,
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  ),
                 ),
               ],
             ),

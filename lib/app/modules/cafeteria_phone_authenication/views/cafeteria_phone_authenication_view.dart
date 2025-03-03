@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
@@ -9,8 +10,7 @@ import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_phone_authenication_controller.dart';
 
-class CafeteriaPhoneAuthenicationView
-    extends GetView<CafeteriaPhoneAuthenicationController> {
+class CafeteriaPhoneAuthenicationView extends GetView<CafeteriaPhoneAuthenicationController> {
   const CafeteriaPhoneAuthenicationView({super.key});
 
   @override
@@ -35,8 +35,7 @@ class CafeteriaPhoneAuthenicationView
                     ),
                   ),
 
-                  const SizedBox(
-                      height: 20), // Space between heading and text field
+                  const SizedBox(height: 20), // Space between heading and text field
 
                   Text(
                     'Please Enter Your Phone Number',
@@ -47,8 +46,7 @@ class CafeteriaPhoneAuthenicationView
                     ),
                   ),
 
-                  const SizedBox(
-                      height: 50), // Space between heading and text field
+                  const SizedBox(height: 50), // Space between heading and text field
 
                   SimpleTextFieldWidget(
                     hintText: 'Mobile No',
@@ -57,18 +55,19 @@ class CafeteriaPhoneAuthenicationView
                     controller: controller.phoneController,
                   ),
 
-                  const SizedBox(
-                      height: 20), // Space between text field and button
+                  const SizedBox(height: 20), // Space between text field and button
                 ],
               ),
             ),
             // Custom button to submit the email
-            CustomButton(
-              text: 'CONTINUE AS CAFETERIA OWNER',
-              onPressed: () async => await controller.authenticatePhoneNumber(
-                true,
+            Obx(
+                  ()=> CustomButton1(
+                text: 'CONTINUE AS CAFETERIA OWNER',
+                onPressed: () async => await controller.authenticatePhoneNumber(
+                  true,
+                ),
+                isLoading: controller.isLoading.value,
               ),
-              isLoading: controller.isLoading,
             ),
 
             const SizedBox(
@@ -76,12 +75,15 @@ class CafeteriaPhoneAuthenicationView
             ),
 
             // Custom button to submit the email
-            CustomButton(
-              text: 'CONTINUE AS STAFF',
-              onPressed: () async => await controller.authenticatePhoneNumber(
-                false,
+            Obx(
+                  ()=> CustomButton1(
+                text: 'CONTINUE AS STAFF',
+                onPressed: () {
+                  Get.toNamed(Routes.STAFF_PHONE_VERIFICATION);
+                },
+
+                isLoading: controller.isLoading.value,
               ),
-              isLoading: controller.isLoading,
             ),
           ],
         ),

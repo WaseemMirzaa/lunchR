@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/cafeteria_add_staff/bindings/cafeteria_edit_staff_binding.dart';
+import 'package:luncher/app/modules/cafeteria_add_staff/views/cafeteria_edit_staff_view.dart';
 
 import '../modules/cafeteria/bindings/cafeteria_binding.dart';
 import '../modules/cafeteria/views/cafeteria_view.dart';
@@ -9,7 +11,7 @@ import '../modules/cafeteria_child_verification/views/cafeteria_child_verificati
 import '../modules/cafeteria_child_verification_home/bindings/cafeteria_child_verification_home_binding.dart';
 import '../modules/cafeteria_child_verification_home/views/cafeteria_child_verification_home_view.dart';
 import '../modules/cafeteria_detail/bindings/cafeteria_detail_binding.dart';
-import '../modules/cafeteria_detail/views/cafeteria_detail_view.dart';
+import '../modules/cafeteria_detail/views/cafeteria_meal_details_view.dart';
 import '../modules/cafeteria_history/bindings/cafeteria_history_binding.dart';
 import '../modules/cafeteria_history/views/cafeteria_history_view.dart';
 import '../modules/cafeteria_history_details/bindings/cafeteria_history_details_binding.dart';
@@ -109,7 +111,6 @@ import '../modules/staff_profile/views/staff_profile_view.dart';
 import '../modules/staff_settings/bindings/staff_settings_binding.dart';
 import '../modules/staff_settings/views/staff_settings_view.dart';
 
-// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -173,6 +174,7 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
+
     ),
     GetPage(
       name: _Paths.SETTINGS,
@@ -306,7 +308,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STAFF_PHONE_VERIFICATION,
-      page: () => const StaffPhoneVerificationView(),
+      page: () => const StaffPhoneAuthenticationView(),
       binding: StaffPhoneVerificationBinding(),
     ),
     GetPage(
@@ -366,8 +368,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA_ADD_STAFF,
-      page: () => const CafeteriaAddStaffView(),
+      page: () =>  CafeteriaAddStaffView(),
       binding: CafeteriaAddStaffBinding(),
+    ), GetPage(
+      name: _Paths.CAFETERIA_EDIT_STAFF,
+      page: () =>  CafeteriaEditStaffView(),
+      binding: CafeteriaEditStaffBinding(),
     ),
     GetPage(
       name: _Paths.CAFETERIA_STAFF_LIST,

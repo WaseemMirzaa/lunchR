@@ -13,61 +13,50 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 50),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: GestureDetector(
-                    onTap: () => Get.back(),
-                    child: Container(
-                      height: 35,
-                      width: 35,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            blurRadius: 4,
-                            spreadRadius: 2,
-                          ),
-                        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 50),
+            Align(
+              alignment: Alignment.topLeft,
+              child: GestureDetector(
+                onTap: () => Get.back(),
+                child: Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 4,
+                        spreadRadius: 2,
                       ),
-                      child: Center(
-                        child: Image.asset("assets/icon/back.png",
-                            height: 15, width: 10),
-                      ),
-                    ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Image.asset("assets/icon/back.png",
+                        height: 15, width: 10),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'MEAL DETAILS',
-                    style: AppTextStyles.MetropolisMedium.copyWith(
-                        color: const Color(0xFF434343), fontSize: 18),
-                  ),
-                ),
-                const SizedBox(height: 36),
-                SimpleTextFieldWithOutSuffixWidget(
-                    controller: controller.nameController,
-                    hintText: 'Meal Name'),
-                const SizedBox(height: 16),
-                SimpleTextFieldWithOutSuffixWidget(
-                    controller: controller.availabilityController,
-                    hintText: 'Availability'),
-                const SizedBox(height: 16),
-                SimpleTextFieldWithOutSuffixWidget(
-                    controller: controller.priceController, hintText: 'Price'),
-                const SizedBox(height: 16),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'MEAL DETAILS',
+                style: AppTextStyles.MetropolisMedium.copyWith(
+                    color: const Color(0xFF434343), fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 36),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(children: [
                 GestureDetector(
                   onTap: () => controller.pickImage(),
                   child: Obx(() {
@@ -88,45 +77,64 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
                       ),
                       child: ClipRRect(
                         borderRadius:
-                            BorderRadius.circular(20), // Apply radius to image
+                        BorderRadius.circular(20), // Apply radius to image
                         child: controller.selectedImage.value != null
                             ? Image.file(
-                                controller.selectedImage.value!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: 127,
-                              )
+                          controller.selectedImage.value!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 127,
+                        )
                             : controller.imageUrl.value.isNotEmpty
-                                ? Image.network(
-                                    controller.imageUrl.value,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: 127,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return _buildPlaceholder();
-                                    },
-                                  )
-                                : _buildPlaceholder(),
+                            ? Image.network(
+                          controller.imageUrl.value,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 127,
+                          loadingBuilder:
+                              (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return _buildPlaceholder();
+                          },
+                        )
+                            : _buildPlaceholder(),
                       ),
                     );
                   }),
                 ),
-              ],
+                const SizedBox(height: 16),
+
+                SimpleTextFieldWithOutSuffixWidget(
+                    controller: controller.nameController,
+                    hintText: 'Meal Name'),
+                const SizedBox(height: 16),
+                SimpleTextFieldWithOutSuffixWidget(
+                    controller: controller.availabilityController,
+                    hintText: 'Availability'),
+                const SizedBox(height: 16),
+                SimpleTextFieldWithOutSuffixWidget(
+                    controller: controller.priceController, hintText: 'Price'),
+
+                const SizedBox(height: 30),
+                // Wrapping the CustomButton with Obx to listen to controller's isLoading value
+                Obx(
+                      () =>
+                      CustomButton1(
+                          text: 'SUBMIT',
+                          onPressed: controller.submitMeal,
+                          isLoading: controller.isLoading.value  // Reactive loading indicator
+                      ),
+                ),
+              ],),
             ),
           ),
-          const SizedBox(height: 30),
-          CustomButton(
-            text: 'SUBMIT',
-            onPressed: controller.submitMeal,
-            isLoading: controller.isLoading,
-          ),
-        ],
+
+          ],
+        ),
       ),
     );
   }

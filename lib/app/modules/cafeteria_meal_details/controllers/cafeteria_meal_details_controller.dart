@@ -1,10 +1,14 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/models/meal_model.dart';
+import 'package:luncher/models/cefeteria_admin/meal_model.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/meal_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CafeteriaMealDetailsController extends GetxController {
   final MealService _mealService = MealService();
@@ -16,6 +20,8 @@ class CafeteriaMealDetailsController extends GetxController {
   RxString imageUrl = ''.obs; // Store the network image URL separately
   RxBool isLoading = false.obs;
   MealModel? meal;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final UserPreferences userPreferences = UserPreferences();
 
   @override
   void onInit() {
@@ -26,6 +32,10 @@ class CafeteriaMealDetailsController extends GetxController {
     }
   }
 
+  // Future<String?> getUserId() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getString('user_Id');
+  // }
   void _populateMealData() {
     if (meal != null) {
       nameController.text = meal!.name ?? "";
@@ -45,10 +55,11 @@ class CafeteriaMealDetailsController extends GetxController {
   }
 
   Future<void> submitMeal() async {
+    final userId = await userPreferences.getUserId();
+    print("user id is ${userId}");
     String name = nameController.text.trim();
     String availability = availabilityController.text.trim();
     String price = priceController.text.trim();
-
     if (name.isEmpty || availability.isEmpty || price.isEmpty) {
       Get.snackbar("Validation Error", "All fields are required");
       return;
@@ -59,6 +70,7 @@ class CafeteriaMealDetailsController extends GetxController {
       if (meal == null) {
         // Creating a new meal
         MealModel newMeal = MealModel(
+          userId: userId,
           name: name,
           availability: availability,
           price: price,
@@ -67,6 +79,8 @@ class CafeteriaMealDetailsController extends GetxController {
       } else {
         // Updating an existing meal
         await _mealService.updateMeal(meal!.id!, {
+          // Set the user id
+          "userId":userId,
           "name": name,
           "availability": availability,
           "price": price,
@@ -74,7 +88,7 @@ class CafeteriaMealDetailsController extends GetxController {
             "imageUrl": selectedImage.value!.path, // Upload new image if selected
         });
       }
-      Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
+      Get.offAndToNamed(Routes.CAFETERIA_LANDING_PAGE);
     } catch (e) {
       Get.snackbar("Error", "Failed to save meal. Please try again.");
     } finally {

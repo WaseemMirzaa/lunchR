@@ -8,7 +8,8 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
   final bool isReadOnly;
   final VoidCallback? onTap;
   final TextEditingController? controller;
-  final ValueChanged<String>? onChanged; // Optional onChanged callback
+  final ValueChanged<String>? onChanged;
+  final String? Function(String?)? validator;// Optional onChanged callback
 
   const SimpleTextFieldWithOutSuffixWidget({
     super.key,
@@ -17,7 +18,8 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.onTap,
     this.controller,
-    this.onChanged, // Optional onChanged callback
+    this.onChanged,
+    this.validator,// Optional onChanged callback
   });
 
   @override
@@ -40,7 +42,7 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: TextFormField(
+            child: TextFormField(validator: validator,
               controller: controller,
               style: AppTextStyles.MetropolisRegular.copyWith(
                 color: const Color(0xFF4A4B4D),

@@ -32,6 +32,7 @@ class LandingPageController extends GetxController {
     ),
     GetBuilder<HomeSettingsController>(
       init: HomeSettingsController(),
+      autoRemove: false,
       builder: (_) => const HomeSettingsView(),
     ),
   ];

@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
-import 'package:luncher/models/meal_model.dart';
+import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/services/meal_service.dart';
 import 'dart:io';
 
 class CafeteriaMenuPageController extends GetxController {
   final MealService _mealService = MealService();
   var meals = <MealModel>[].obs;
-  var filteredMeals = <MealModel>[].obs; // Filtered list for searching
+  var filteredMeals = <MealModel>[].obs;
+  var isdataFound = false.obs;// Filtered list for searching
   var isLoading = false.obs;
   var searchText = "".obs; // Observable for search text
 
@@ -16,26 +17,57 @@ class CafeteriaMenuPageController extends GetxController {
     super.onInit();
   }
 
+//   void fetchMeals() {
+//     isLoading.value = true;
+//
+//     meals.bindStream(_mealService.getMeals());
+//     ever(meals, (_) => filterMeals()); // Re-filter when meals update
+// print("sss# ${meals}");
+//     isLoading.value = false;
+//   }
   void fetchMeals() {
     isLoading.value = true;
 
+    // Bind the stream to the 'meals' list
     meals.bindStream(_mealService.getMeals());
-    ever(meals, (_) => filterMeals()); // Re-filter when meals update
 
-    isLoading.value = false;
-  }
+    // Re-filter meals and print when meals update
+    ever(meals, (_) {
+      filterMeals();
+    });
+
+    // Listen to the stream and set loading to false once data is received
+    _mealService.getMeals().listen((snapshot) {
+      if (snapshot.isNotEmpty) {
+        isLoading.value = false; // Set loading to false when data is received
+      }
+      isLoading.value = false; // Set loading to false when data is received
+
+    });  }
+
 
   void filterMeals() {
     if (searchText.value.isEmpty) {
+
       filteredMeals.assignAll(meals);
     } else {
+       // Print the updated value of meals
+      isdataFound.value = false;
       filteredMeals.assignAll(meals.where((meal) =>
           meal.name!.toLowerCase().contains(searchText.value.toLowerCase())));
+      if(searchText.value.isNotEmpty && filteredMeals.isEmpty){
+        print("empty");
+        isdataFound.value = true;
+
+      }
     }
   }
 
   void updateSearchText(String text) {
     searchText.value = text;
+    isdataFound.value = false;
+    print("sss# ${searchText.value}");
+
     filterMeals();
   }
 

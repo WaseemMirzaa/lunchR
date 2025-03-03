@@ -54,11 +54,11 @@ class PhoneAuthenticationView extends GetView<PhoneAuthenticationController> {
               const SizedBox(height: 30),
 
               // Continue button
-              CustomButton(
+              CustomButton1(
                 text: 'CONTINUE',
                 onPressed: () async =>
                     await controller.authenticatePhoneNumber(),
-                isLoading: controller.isLoading,
+                isLoading: controller.isLoading.value,
                 gradientColors: const [Colors.orange, Colors.red],
                 height: 60.0,
                 borderRadius: 12.0,

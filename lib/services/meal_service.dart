@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:luncher/models/meal_model.dart';
+import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/services/base_service.dart';
 
 class MealService extends BaseService {
@@ -24,6 +24,8 @@ class MealService extends BaseService {
     return FirebaseFirestore.instance.collection("meals").snapshots().map(
       (snapshot) {
         return snapshot.docs.map((doc) {
+          print("sss#ll ${doc.data()}");
+
           return MealModel.fromMap(doc.id, doc.data());
         }).toList();
       },

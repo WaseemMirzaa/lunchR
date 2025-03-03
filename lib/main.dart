@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/widgets/custom_dialog_schedule.dart';
 
+import 'app/modules/home_settings/controllers/home_settings_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
 
@@ -12,6 +13,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   Get.put(ScheduleDialogController());
+
   runApp(
     GetMaterialApp(
       title: "LunchR",

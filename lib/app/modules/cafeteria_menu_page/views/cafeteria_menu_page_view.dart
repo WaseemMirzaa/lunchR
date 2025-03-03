@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/models/meal_model.dart';
+import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
 
 import 'package:luncher/widgets/reuse_button.dart';
@@ -21,37 +21,57 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
     return Scaffold(
       backgroundColor: Colors.white, // Set the background color to white
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: GestureDetector(
+        onTap:(){
+          FocusScope.of(context).unfocus();
+        },
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          // color: Colors.red,
+          child: Stack(
+            children: [
+              ListView(
+                // mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                    height: 70,
-                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 70,
+                        ),
 
-                  // Settings Title
-                  Text(
-                    'SELECT MEAL', // Title text
-                    style: AppTextStyles.MetropolisMedium.copyWith(
-                      fontSize: 18,
-                      color: const Color(0xFF434343),
+                        // Settings Title
+                        Text(
+                          'SELECT MEAL', // Title text
+                          style: AppTextStyles.MetropolisMedium.copyWith(
+                            fontSize: 18,
+                            color: const Color(0xFF434343),
+                          ),
+                        ),
+                        const SizedBox(height: 42), // Spacing between title and list
+                        _buildSearchField(textController),
+                        const SizedBox(height: 30),
+                        _buildText(),
+                        const SizedBox(height: 32),
+
+                        _buildMenuList(),
+                        const SizedBox(height: 32),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 42), // Spacing between title and list
-                  _buildSearchField(textController),
-                  const SizedBox(height: 30),
-                  _buildText(),
-                  _buildMenuList(),
-                  const SizedBox(height: 12),
+                  // _buildBottomFixedButton(),
                 ],
               ),
-            ),
-            _buildBottomFixedButton(),
-          ],
+              Positioned(
+                bottom: 10,
+                left: 0,
+                right: 0,
+                child: _buildBottomFixedButton(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -86,27 +106,43 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
   Widget _buildMenuList() {
     return Obx(() => controller.isLoading.value
         ? const Center(child: CircularProgressIndicator())
-        : GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 8,
-              childAspectRatio: 100 / 170,
-            ),
-            itemCount: controller.searchText.value.isEmpty
-                ? controller.meals.length
-                : controller.filteredMeals.length,
-            itemBuilder: (context, index) {
-              return _buildMenuItem(controller.searchText.value.isEmpty
-                  ? controller.meals[index]
-                  : controller.filteredMeals[index]);
-            },
-          ));
+        :controller.isdataFound.value == true?Text(
+      'Data Not Found', // Replace with dynamic text
+      style: AppTextStyles.PoppinsBold.copyWith(
+        fontSize: 14,
+        color: AppColors.blackColor,
+      ),
+    ):controller.meals.value.isEmpty?Text(
+      'Meal Not Available', // Replace with dynamic text
+      style: AppTextStyles.PoppinsBold.copyWith(
+        fontSize: 14,
+        color: AppColors.blackColor,
+      ),
+    ): GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 100 / 170,
+                ),
+                itemCount: controller.searchText.value.isEmpty
+                    ? controller.meals.length
+                    : controller.filteredMeals.length,
+                itemBuilder: (context, index) {
+                  return _buildMenuItem(
+                    controller.searchText.value.isEmpty
+                        ? controller.meals[index]
+                        : controller.filteredMeals[index],
+                  );
+                },
+              ));
   }
 
-  Widget _buildMenuItem(MealModel meal) {
+  Widget _buildMenuItem(
+    MealModel meal,
+  ) {
     final _controller = ValueNotifier<bool>(meal.availability == 'available');
 
     return Container(
@@ -141,8 +177,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                   ),
 
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
+              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -197,9 +232,8 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                     width: 25,
                     onChanged: (value) {
                       if (meal.id != null) {
-                        controller.updateMeal(meal.id!, {
-                          'availability': value ? 'available' : 'unavailable'
-                        });
+                        controller.updateMeal(
+                            meal.id!, {'availability': value ? 'available' : 'unavailable'});
                       }
                     },
                   ),
@@ -227,8 +261,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
                         ],
                         borderRadius: BorderRadius.circular(32),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 3),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                       child: Text(
                         'Edit',
                         style: AppTextStyles.PoppinsRegular.copyWith(

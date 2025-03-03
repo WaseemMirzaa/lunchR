@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
 import 'package:luncher/app/modules/home_settings/controllers/home_settings_controller.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
@@ -14,7 +15,7 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     //create three textfield for name, email and mobile number
     TextEditingController nameController = TextEditingController();
-    final controller = Get.find<HomeSettingsController>();
+    final historyController = Get.find<CafeteriaHomeSettingsController>();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -32,13 +33,15 @@ class ProfileView extends GetView<ProfileController> {
               alignment: Alignment.topLeft,
               child: GestureDetector(
                 onTap: () {
-                  controller.updateSelectedIndex(0);
+                  // Get.back();
+                  historyController.updateSelectedIndex(0);
+                  // historyController.updateSelectedIndex(0);
+
                 },
                 child: Container(
                   height: 35,
                   width: 35,
-                  margin: const EdgeInsets.only(
-                      top: 16), // Add some margin if needed
+                  margin: const EdgeInsets.only(top: 16), // Add some margin if needed
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: [
@@ -75,11 +78,10 @@ class ProfileView extends GetView<ProfileController> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black
-                        .withOpacity(0.1), // Shadow color with opacity
+                    color: Colors.black.withOpacity(0.1), // Shadow color with opacity
                     blurRadius: 5, // Blur effect
                     spreadRadius: 2, // Spread radius
-                    offset: Offset(0, 1), // Position of the shadow (x, y)
+                    offset: const Offset(0, 1), // Position of the shadow (x, y)
                   ),
                 ],
               ),
@@ -96,13 +98,13 @@ class ProfileView extends GetView<ProfileController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+              const  Icon(
                   Icons.edit,
                   color: Color(0xFFFF9A0D),
                   size: 16,
                 ),
 
-                SizedBox(width: 5),
+               const SizedBox(width: 5),
 
                 // Edit Profile
                 GestureDetector(
@@ -112,7 +114,7 @@ class ProfileView extends GetView<ProfileController> {
                   child: Text(
                     "Edit Profile",
                     style: AppTextStyles.MetropolisMedium.copyWith(
-                      color: Color(0xFFFF9A0D),
+                      color: const Color(0xFFFF9A0D),
                       fontSize: 12,
                     ),
                   ),
@@ -130,8 +132,7 @@ class ProfileView extends GetView<ProfileController> {
               ),
             ),
             const SizedBox(height: 40),
-            const SimpleTextFieldWithOutSuffixWidget(
-                hintText: 'School/Collage Name')
+            const SimpleTextFieldWithOutSuffixWidget(hintText: 'School/Collage Name')
           ],
         ),
       ),

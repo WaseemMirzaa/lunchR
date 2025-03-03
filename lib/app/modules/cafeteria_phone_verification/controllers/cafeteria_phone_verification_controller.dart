@@ -4,6 +4,7 @@ import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/services/authentication_service.dart';
 import 'package:luncher/services/user_service.dart';
 import 'package:luncher/widgets/custom_snackbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CafeteriaPhoneVerificationController extends GetxController {
   final otpController = ''.obs; // Observable for OTP
@@ -42,4 +43,5 @@ class CafeteriaPhoneVerificationController extends GetxController {
       isLoading.value = false;
     }
   }
+
 }

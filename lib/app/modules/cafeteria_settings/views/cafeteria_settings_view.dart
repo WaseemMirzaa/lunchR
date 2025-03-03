@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
+import 'package:luncher/app/modules/cafeteria_settings/views/cafeteria_setting_widget.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 
@@ -42,7 +43,7 @@ class CafeteriaSettingsView extends GetView<CafeteriaSettingsController> {
                 color: const Color(0xFF434343),
               ),
             ),
-            const SizedBox(height: 56), // Spacing between title and list
+            // const SizedBox(height: 56), // Spacing between title and list
 
             // ListView of Settings
             Expanded(
@@ -68,8 +69,7 @@ class CafeteriaSettingsView extends GetView<CafeteriaSettingsController> {
                     child: Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -82,14 +82,12 @@ class CafeteriaSettingsView extends GetView<CafeteriaSettingsController> {
                                 width: 10,
                                 height: 10,
                               ),
-                              const SizedBox(
-                                  width: 16), // Spacing between dot and text
+                              const SizedBox(width: 16), // Spacing between dot and text
                               // Title
                               Expanded(
                                 child: Text(
                                   settings[index],
-                                  style:
-                                      AppTextStyles.MetropolisRegular.copyWith(
+                                  style: AppTextStyles.MetropolisRegular.copyWith(
                                     fontSize: 15,
                                     color: Colors.black,
                                   ),
@@ -114,6 +112,29 @@ class CafeteriaSettingsView extends GetView<CafeteriaSettingsController> {
                 },
               ),
             ),
+            // define the row of setting page
+            const SizedBox(height: 40), // Spacing between title and list
+            // CafeteriaSettingWidget(
+            //   labelName: "Profile",
+            //   onTap: () {
+            //    Get.toNamed(Routes.PROFILE);
+            //   },
+            // ),
+            // CafeteriaSettingWidget(labelName: "Add Staff members",onTap: (){
+            //   print(" Pressed");
+            // },),
+            // CafeteriaSettingWidget(labelName: "History",onTap: (){
+            //   print("object Pressed");
+            // },),
+            // CafeteriaSettingWidget(labelName: "Privacy Policy",onTap: (){
+            //   print("object Pressed");
+            // },),
+            // CafeteriaSettingWidget(labelName: "Terms & Conditions",onTap: (){
+            //   print("object Pressed");
+            // },),
+            // CafeteriaSettingWidget(labelName: "Sign Out",onTap: (){
+            //   print("object Pressed");
+            // },),
           ],
         ),
       ),

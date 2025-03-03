@@ -46,4 +46,62 @@ abstract class BaseService {
       throw Exception("Image upload failed: $e");
     }
   }
+  Future<void> editDocuments(
+      String collectionPath,
+      String docId,
+      String userId, // Add userId as a parameter
+      Map<String, dynamic> data) async {
+
+    try {
+      // Fetch the document to ensure it belongs to the correct userId
+      var docSnapshot = await _firestore.collection(collectionPath).doc(docId).get();
+
+      // Check if the document exists and the userId matches
+      if (docSnapshot.exists && docSnapshot.data()?['userId'] == userId) {
+        // If userId matches, update the document with the provided data
+        await _firestore.collection(collectionPath).doc(docId).update(data);
+        print("Document updated successfully.");
+      } else {
+        print("Document not found or userId mismatch.");
+      }
+    } catch (e) {
+      print("Error updating document: $e");
+    }
+  }
+  /// ✅ Generic method to edit documents with user verification
+  Future<void> editStaffDocuments(
+      String collectionPath,
+      String docId,
+      String userId, // User ID to verify authorization
+      Map<String, dynamic> data) async {
+    try {
+      // Fetch the document
+      var docSnapshot = await _firestore.collection(collectionPath).doc(docId).get();
+
+      // Ensure document exists and belongs to the correct user
+      if (docSnapshot.exists && docSnapshot.data()?['userId'] == userId) {
+        await _firestore.collection(collectionPath).doc(docId).update(data);
+        print("✅ Document updated successfully.");
+      } else {
+        print("⚠️ Document not found.");
+      }
+    } catch (e) {
+      print("❌ Error updating document: $e");
+    }
+  }
+  // Check if a document with a specific field value exists
+  Future<bool> isDocumentExists(String collectionPath, String field, String value) async {
+    try {
+      var querySnapshot = await _firestore
+          .collection(collectionPath)
+          .where(field, isEqualTo: value)
+          .get();
+
+      return querySnapshot.docs.isNotEmpty; // Returns true if document exists
+    } catch (e) {
+      print("Error checking document: $e");
+      return false; // Assume not found in case of error
+    }
+  }
+
 }
