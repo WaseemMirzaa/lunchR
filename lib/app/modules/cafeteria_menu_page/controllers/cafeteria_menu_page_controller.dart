@@ -53,10 +53,6 @@ class CafeteriaMenuPageController extends GetxController {
 
   void filterMeals() {
 
-    var user = FirebaseAuth.instance.currentUser;
-
-    var userId = user?.uid ?? '';
-
     if (searchText.value.isEmpty) {
 
       filteredMeals.assignAll(meals);
@@ -64,13 +60,12 @@ class CafeteriaMenuPageController extends GetxController {
     } else {
        // Print the updated value of meals
       isdataFound.value = false;
+
       filteredMeals.assignAll(meals.where((meal) =>
-      ( meal.name!.toLowerCase().contains(searchText.value.toLowerCase()) && meal.userId
-       == userId)));
+       meal.name!.toLowerCase().contains(searchText.value.toLowerCase().trim())));
       if(searchText.value.isNotEmpty && filteredMeals.isEmpty){
         print("empty");
         isdataFound.value = true;
-
       }
     }
   }
@@ -92,12 +87,17 @@ class CafeteriaMenuPageController extends GetxController {
 
     _mealService.getMeals().listen((snapshot) {
       if (snapshot.isNotEmpty) {
+
+        filteredMeals.value = snapshot;
+        meals.value = snapshot;
         isLoading.value = false;
+
       }
     });
   }
 
   Future<void> updateMeal(String mealId, bool isAvailable) async {
+
     await _mealService.updateMeal(mealId, {'availability': isAvailable ? 'available' : 'unavailable'});
 
     // ✅ Update the switch state immediately in UI
@@ -111,7 +111,14 @@ class CafeteriaMenuPageController extends GetxController {
     isdataFound.value = false;
     print("sss# ${searchText.value}");
 
-    filterMeals();
+    if(text.isEmpty) {
+
+      fetchMeals();
+    } else {
+
+      filterMeals();
+
+    }
   }
 
   Future<void> addMeal(MealModel meal, File? imageFile) async {
