@@ -27,9 +27,11 @@ class CafeteriaStaffListView extends StatelessWidget {
             init: CafeteriaAddStaffController(),
             builder: (addStaffController) {
               return Obx(
-                () => addStaffController.isLoading.value
+                () =>
+                addStaffController.isLoading.value
                     ? const Center(child: CircularProgressIndicator())
-                    : Column(
+                    :
+                Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),

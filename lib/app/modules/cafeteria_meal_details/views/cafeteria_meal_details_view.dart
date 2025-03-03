@@ -117,7 +117,7 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
                     hintText: 'Availability'),
                 const SizedBox(height: 16),
                 SimpleTextFieldWithOutSuffixWidget(
-                    controller: controller.priceController, hintText: 'Price'),
+                    controller: controller.priceController, hintText: 'Price', keyboardType: TextInputType.phone,),
 
                 const SizedBox(height: 30),
                 // Wrapping the CustomButton with Obx to listen to controller's isLoading value
