@@ -57,6 +57,7 @@ class _SearchTextFieldWidgetState extends State<SearchTextFieldWidget> {
           inputFormatters: widget.inputFormatters,
           onChanged: widget.onChanged,
           onTap: widget.onTap,
+
           onSubmitted: widget.onSubmit != null ? (_) => widget.onSubmit!() : null,
           textInputAction: TextInputAction.search,
           style: AppTextStyles.PoppinsRegular.copyWith(

@@ -150,13 +150,15 @@ class CafeteriaPhoneVerificationView
                 ),
               ),
 
-              CustomButton(
-                text: 'VERIFY',
-                onPressed: () async {
+              Obx(
+                ()=> CustomButton1(
+                  text: 'VERIFY',
+                  onPressed: () async {
 
-                  await controller.verifyOTP();
-                },
-                isLoading: false.obs, // RxBool for loading state
+                    await controller.verifyOTP();
+                  },
+                  isLoading:controller.isLoading.value, // RxBool for loading state
+                ),
               ),
             ],
           ),

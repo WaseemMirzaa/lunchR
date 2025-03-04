@@ -22,17 +22,8 @@ class CafeteriaPhoneVerificationController extends GetxController {
     required this.phoneNumber,
   });
 
-  @override
-  void onInit() {
-    super.onInit();
-    // You can now use verificationId and phoneNumber in your controller
-    print('Verification ID: $verificationId');
-    print('Phone Number: $phoneNumber');
-  }
-
   // Handle OTP verification
   Future<void> verifyOTP() async {
-
     if (otpController.value.isEmpty || otpController.value.length < 6) {
       showCustomSnack("Please enter a valid OTP");
       return;
@@ -41,9 +32,7 @@ class CafeteriaPhoneVerificationController extends GetxController {
     try {
       isLoading.value = true;
 
-      final result =
-          await _authService.verifyOTP(verificationId, otpController.value);
-
+      final result = await _authService.verifyOTP(verificationId, otpController.value);
       if (result.success) {
         final user = UserModel(
           phoneNumber: phoneNumber,
@@ -51,28 +40,32 @@ class CafeteriaPhoneVerificationController extends GetxController {
           userAccountCreatedTime: DateTime.now(),
         );
 
-
-        bool newUserCreated = await _userService.createUser(user);
-
-        if(newUserCreated || user.cafeteriaName == null || (user.cafeteriaName != null && user.cafeteriaName!.isEmpty)) {
+        UserModel newUserCreated = await _userService.createUser(user);
+        print(
+            "new user is ${newUserCreated.cafeteriaName},${newUserCreated.phoneNumber},${newUserCreated.cafeteriaLogo}");
+        if(newUserCreated.cafeteriaName==null || newUserCreated.cafeteriaLogo==null || newUserCreated.schoolName==null) {
+          print("User  new Status is $result");
 
           Get.toNamed(Routes.CAFETERIA_DETAIL);
 
         } else {
+          print("User old Status is $result");
 
           Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
 
         }
-
-
+        // if (newUserCreated || user.cafeteriaName == null || user.cafeteriaName!.isEmpty) {
+        //   print("User is new or cafeteriaName is empty. Navigating to CAFETERIA_DETAIL.");
+        //   // Get.toNamed(Routes.CAFETERIA_DETAIL);
+        // } else {
+        //   print("User already exists. Navigating to CAFETERIA_LANDING_PAGE.");
+        //   // Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
+        // }
       } else {
-
         showCustomSnack(result.message);
-
       }
     } finally {
       isLoading.value = false;
     }
   }
-
 }

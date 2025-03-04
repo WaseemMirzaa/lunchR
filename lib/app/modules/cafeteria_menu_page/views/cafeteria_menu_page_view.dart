@@ -91,6 +91,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
     // );
     return SearchTextFieldWidget(
       hintText: 'Search Meal',
+
       textController: textController,
       onChanged: (value) => controller.updateSearchText(value),
     );

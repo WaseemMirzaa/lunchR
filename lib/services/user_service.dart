@@ -11,7 +11,7 @@ import 'base_service.dart';
 class UserService extends BaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<bool> createUser(UserModel user) async {
+  Future<UserModel> createUser(UserModel user) async {
     // Get the currently authenticated user's UID
     String? userId = _auth.currentUser?.uid;
     final UserPreferences userPreferences = UserPreferences();
@@ -41,10 +41,12 @@ class UserService extends BaseService {
         userId,
         updatedUser.toJson(),
       );
-
+return updatedUser;
     }
 
-    return !snapshot.exists;
+   else{
+      return UserModel.fromJson(snapshot.data()!);
+    }
   }
 
   Future<bool> addCafeteriaInfo(String name, String logo, String college) async {
