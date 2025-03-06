@@ -14,6 +14,8 @@ class UserKey {
   static var CAFETERIA_LOGO = 'cafeteriaLogo';
 
   static var SCHOOL_NAME= 'schoolName';
+  static var PARENTS_NAME= 'parentsName';
+  static var PARENTS_LOGO= 'parentsLogo';
 
   static var CAFETERIA_NAME='cafeteriaName';
 }

@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
   final bool isForcedTextColor;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.height = 56.0,
@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
     this.fontSize = 16.0,
     required this.isLoading, // Made required since we need the RxBool instance
     this.isBackColor = true, // Default value for isBackColor is true
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +108,7 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-
+// this is my code
 class CustomButton1 extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

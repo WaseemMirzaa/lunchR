@@ -59,6 +59,7 @@ abstract class Routes {
   static const STAFF_SETTINGS = _Paths.STAFF_SETTINGS;
   static const STAFF_HOME_SETTINGS = _Paths.STAFF_HOME_SETTINGS;
   static const STAFF_PROFILE = _Paths.STAFF_PROFILE;
+  static const PARENT_PROFILE = _Paths.STAFF_PROFILE;
   static const CAFETERIA_ADD_STAFF = _Paths.CAFETERIA_ADD_STAFF;
   static const CAFETERIA_Edit_STAFF = _Paths.CAFETERIA_EDIT_STAFF;
   static const CAFETERIA_STAFF_LIST = _Paths.CAFETERIA_STAFF_LIST;
@@ -121,6 +122,7 @@ abstract class _Paths {
   static const STAFF_SETTINGS = '/staff-settings';
   static const STAFF_HOME_SETTINGS = '/staff-home-settings';
   static const STAFF_PROFILE = '/staff-profile';
+  static const PARENT__PROFILE = '/parent-profile';
   static const CAFETERIA_ADD_STAFF = '/cafeteria-add-staff';
   static const CAFETERIA_EDIT_STAFF = '/cafeteria-Edit-staff';
   static const CAFETERIA_STAFF_LIST = '/cafeteria-staff-list';

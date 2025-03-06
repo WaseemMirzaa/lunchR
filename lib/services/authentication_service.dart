@@ -86,15 +86,17 @@ class AuthenticationService extends GetxService {
         String staffId = snapshot.docs.first.id;
         userPreferences.saveUserId(staffId);
 
-        final newStaffData = StaffDataModel.fromMap({
-          'id': staffId,
-          'name': staffData["staffName"],
-          'phone': staffData["staffPhone"],
-          'password': staffData["staffPassword"],
-          'cafeteriaId': staffData["userId"],
-        });
+        final newStaffData = StaffModel(
+          id: staffId,
+          staffName: staffData["staffName"],
+          staffPhone: staffData["staffPhone"],
+            staffPassword: staffData["staffPassword"],
+            staffEmail:staffData["staffEmail"],
+            userId:staffData["userId"],
+            imageUrl: staffData["imageUrl"]
+        );
 
-        await userPreferences.saveStaffData(newStaffData);
+        await userPreferences.saveStaffDataPreference(newStaffData);
         return StaffModel.fromMap(staffId, staffData);
       } else {
         print("Invalid phone number or password");

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/cafeteria_settings/views/cafeteria_setting_widget.dart';
 import 'package:luncher/app/modules/profile/views/profile_view.dart';
 import 'package:luncher/app/modules/staff_history_calender/views/staff_history_calender_view.dart';
 import 'package:luncher/app/modules/staff_profile/views/staff_profile_view.dart';
+import 'package:luncher/app/modules/staff_settings/controllers/staff_settings_controller.dart';
 import 'package:luncher/app/modules/staff_settings/views/staff_settings_view.dart';
+import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/config/app_text_style.dart';
 
 import '../controllers/staff_home_settings_controller.dart';
 
@@ -14,25 +18,93 @@ class StaffHomeSettingsView extends GetView<StaffHomeSettingsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Expanded(
-          child: Obx(
-            () => IndexedStack(
-              index: controller
-                  .selectedIndex.value, // Bind the selected index to controller
-              children: const [
-                // First child
-                StaffSettingsView(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: GetBuilder<StaffSettingsController>(
+            init: StaffSettingsController(),
+            builder: (controller) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 70,
+                  ),
 
-                // Third child
-                StaffProfileView(),
+                  // Settings Title
+                  Text(
+                    'SETTINGS', // Title text
+                    style: AppTextStyles.MetropolisMedium.copyWith(
+                      fontSize: 18,
+                      color: const Color(0xFF434343),
+                    ),
+                  ),
+                  // const SizedBox(height: 56), // Spacing between title and list
 
-                StaffHistoryCalenderView(),
-              ],
-            ),
-          ),
+                  // define the row of setting page
+                  const SizedBox(height: 40), // Spacing between title and list
+                  CafeteriaSettingWidget(
+                    labelName: "Profile",
+                    onTap: () {
+                      Get.toNamed(Routes.STAFF_HOME_SETTINGS);
+                    },
+                  ),
+                  CafeteriaSettingWidget(
+                    labelName: "Upcoming",
+                    onTap: () {
+                      // Get.toNamed(Routes.CAFETERIA_ADD_STAFF, arguments: true);
+                      // Get.toNamed(Routes.CAFETERIA_STAFF_LIST);
+                    },
+                  ),
+                  // CafeteriaSettingWidget(
+                  //   labelName: "Privacy Policy",
+                  //   onTap: () {
+                  //     print("object Pressed");
+                  //   },
+                  // ),
+                  CafeteriaSettingWidget(
+                    labelName: "Privacy Policy",
+                    onTap: () {
+                      print("object Pressed");
+                    },
+                  ),
+                  CafeteriaSettingWidget(
+                    labelName: "Terms & Conditions",
+                    onTap: () {
+                      print("object Pressed");
+                    },
+                  ),
+                  CafeteriaSettingWidget(
+                    labelName: "Sign Out",
+                    onTap: () {
+                      controller.removeUserId();
+                      Get.offAllNamed(Routes.SPLASH);
+                      print("object Pressed");
+                    },
+                  ),
+                ],
+              );
+            }
         ),
-      ]),
+      )
+      // Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      //   Expanded(
+      //     child: Obx(
+      //       () => IndexedStack(
+      //         index: controller
+      //             .selectedIndex.value, // Bind the selected index to controller
+      //         children: const [
+      //           // First child
+      //           StaffSettingsView(),
+      //
+      //           // Third child
+      //           StaffProfileView(),
+      //
+      //           StaffHistoryCalenderView(),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ]),
     );
   }
 }

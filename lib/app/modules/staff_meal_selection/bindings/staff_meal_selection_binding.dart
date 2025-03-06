@@ -7,6 +7,9 @@ class StaffMealSelectionBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<StaffMealSelectionController>(
       () => StaffMealSelectionController(),
+      fenix: true
     );
+    // Get.put(StaffMealSelectionController()); // Force initialization
+
   }
 }

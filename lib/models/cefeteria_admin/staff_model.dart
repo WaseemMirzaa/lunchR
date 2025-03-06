@@ -32,7 +32,7 @@ class StaffModel {
     }
 
     // Factory constructor that creates a StaffModel from a Map
-    factory StaffModel.fromMap(String staffId, Map<String, dynamic> data) {
+    factory StaffModel.fromMap(String? staffId, Map<String, dynamic> data) {
         return StaffModel(
             staffPassword: data["staffPassword"], // Staff password
             staffEmail: data["staffEmail"], // Staff email

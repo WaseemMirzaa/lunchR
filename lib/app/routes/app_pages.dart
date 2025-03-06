@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/bindings/cafeteria_edit_staff_binding.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/views/cafeteria_edit_staff_view.dart';
+import 'package:luncher/app/modules/parents_profile/binding/parent_profile_binding.dart';
+import 'package:luncher/app/modules/parents_profile/view/parent_profile_view.dart';
 
 import '../modules/cafeteria/bindings/cafeteria_binding.dart';
 import '../modules/cafeteria/views/cafeteria_view.dart';
@@ -365,6 +367,12 @@ class AppPages {
       name: _Paths.STAFF_PROFILE,
       page: () => const StaffProfileView(),
       binding: StaffProfileBinding(),
+    ),
+
+    GetPage(
+      name: _Paths.PARENT__PROFILE,
+      page: () => const ParentsProfileView(),
+      binding: ParentsProfileBinding(),
     ),
     GetPage(
       name: _Paths.CAFETERIA_ADD_STAFF,

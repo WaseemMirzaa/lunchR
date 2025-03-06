@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/models/cefeteria_admin/staff_model.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/authentication_service.dart';
 import 'package:luncher/widgets/custom_snackbar.dart';
 
@@ -10,9 +12,10 @@ class StaffPhoneVerificationController extends GetxController {
   final passwordController = TextEditingController();
 
   final AuthenticationService _authService = AuthenticationService();
-
+final UserPreferences preferences = UserPreferences();
   // Handle login
   Future<void> staffLogin() async {
+
     isLoading.value = true;
     String staffPhone = phoneController.text.trim();
     String staffPassword = passwordController.text.trim();
@@ -35,6 +38,7 @@ class StaffPhoneVerificationController extends GetxController {
       final staff = await _authService.staffLogin(staffPhone, staffPassword);
       if (staff != null) {
         Get.offAllNamed(Routes.STAFF_LANDING_PAGE); // Navigate on success
+       preferences.saveStaffDataPreference(staff);
         phoneController.clear();
         passwordController.clear();
       } else {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_home_settings/controllers/staff_home_settings_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 
 import '../controllers/staff_settings_controller.dart';
 
@@ -55,7 +56,10 @@ class StaffSettingsView extends GetView<StaffSettingsController> {
                         controller.updateSelectedIndex(1);
                       } else if (index == 4) {
                         Get.toNamed(Routes.SPLASH);
+                        UserPreferences preference = UserPreferences();
+                        preference.removeStaffDataPreference();
                       } else if (index == 1) {
+
                         controller.updateSelectedIndex(2);
                       }
                       //else if (index == 3) {

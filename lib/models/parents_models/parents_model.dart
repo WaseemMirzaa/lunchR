@@ -1,27 +1,22 @@
 import 'package:luncher/config/app_const.dart';
 
-class UserModel {
+class ParentsModel {
   final String? userID;
   final String? phoneNumber;
   final String? role;
   final DateTime? userAccountCreatedTime;
-   String? cafeteriaName;
-   String? schoolName;
-   String? cafeteriaLogo;
-   String? parentsName;
-   String? parentsLogo;
+  String? cafeteriaName;
+  String? schoolName;
+  String? cafeteriaLogo;
 
 
-  UserModel({
+  ParentsModel({
     this.userID,
     this.phoneNumber,
     this.role,
     this.userAccountCreatedTime,
     this.cafeteriaName,
     this.schoolName,
-    this.parentsName,
-    this.parentsLogo,
-
     this.cafeteriaLogo,
   });
 
@@ -31,17 +26,15 @@ class UserModel {
       UserKey.PHONE_NUMBER: phoneNumber,
       UserKey.ROLE: role,
       UserKey.USER_ACCOUNT_CREATED_TIME:
-          userAccountCreatedTime?.toIso8601String(),
+      userAccountCreatedTime?.toIso8601String(),
       UserKey.CAFETERIA_LOGO: cafeteriaLogo,
       UserKey.SCHOOL_NAME: schoolName,
-      UserKey.PARENTS_NAME: parentsName,
-      UserKey.PARENTS_NAME: parentsLogo,
       UserKey.CAFETERIA_NAME: cafeteriaName,
     };
   }
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
+  factory ParentsModel.fromJson(Map<String, dynamic> json) {
+    return ParentsModel(
       userID: json[UserKey.USER_ID] as String?,
       phoneNumber: json[UserKey.PHONE_NUMBER] as String?,
       role: json[UserKey.ROLE] as String?,
@@ -50,8 +43,6 @@ class UserModel {
           : null,
       cafeteriaLogo: json[UserKey.CAFETERIA_LOGO] as String?,
       schoolName: json[UserKey.SCHOOL_NAME] as String?,
-      parentsName: json[UserKey.PARENTS_NAME] as String?,
-      parentsLogo: json[UserKey.PARENTS_LOGO] as String?,
       cafeteriaName: json[UserKey.CAFETERIA_NAME] as String?,
     );
   }
