@@ -370,7 +370,7 @@ class AppPages {
     ),
 
     GetPage(
-      name: _Paths.PARENT__PROFILE,
+      name: _Paths.PARENT_PROFILE,
       page: () => const ParentsProfileView(),
       binding: ParentsProfileBinding(),
     ),

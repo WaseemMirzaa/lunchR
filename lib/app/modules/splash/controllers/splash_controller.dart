@@ -26,6 +26,7 @@ class SplashController extends GetxController {
     print("user value is on splash ${user?.phoneNumber}");
     if (user == null) {
       // No user logged in, navigate to selection screen
+      // CHECK THE STAFF IS LOGED IN OR NOT
       if (staffModel != null) {
         Get.offAllNamed(Routes.STAFF_LANDING_PAGE);
         return;
@@ -45,6 +46,14 @@ class SplashController extends GetxController {
     }
 
     final role = userDoc.data()?['role'] as String?;
+
+    // CHECK THE PARENTS PROFILE COMPLETED OR NOT
+    if (userDoc.data() != null && userDoc.data()!.containsKey('parentsName') && role == "parents") {
+     return Get.offNamed(Routes.PARENT_PROFILE);
+    }
+
+
+
 
     if (role == null) {
       Get.offNamed(Routes.SELECTION);
