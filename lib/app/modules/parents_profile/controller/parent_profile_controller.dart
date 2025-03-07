@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/services/parents/parenents_services.dart';
 import 'package:luncher/widgets/custom_snackbar.dart';
 
@@ -30,11 +32,13 @@ class ParentsProfileController extends GetxController {
       if (selectedImage.value != null && userId != null) {
 
 
-        imageUrl.value = await uploadImage(selectedImage.value!, "cafeteria_details", userId);
+        imageUrl.value = await uploadImage(selectedImage.value!, "parents_details", userId);
 
         print('Uploaded Image Url  🔴🔴🔴🔴🔴🔴${imageUrl.value}');
 
-        ParentsServices().addParentsInfo(parentN, imageUrl.value);
+        ParentsServices().addParentsInfo(parentN, imageUrl.value).then((val){
+          // Get.offAllNamed(Routes.LANDING_PAGE);
+        });
 
       }
 
@@ -55,20 +59,27 @@ class ParentsProfileController extends GetxController {
       throw Exception("Image upload failed: $e");
     }
   }
-
+  Future<void> pickImage() async {
+    final pickedFile =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      print('PickedFile Path${pickedFile.path}');
+      selectedImage.value = File(pickedFile.path);
+    }
+  }
   bool validate() {
 
     var parentName = parentNameController.text;
 
     if(selectedImage.value == null) {
 
-      showCustomSnack('Cafeteria photo is required.');
+      showCustomSnack('Parents photo is required.');
 
       return false;
     }
     if(parentName.isEmpty) {
 
-      showCustomSnack('All fields are required.');
+      showCustomSnack('Name fields are required.');
 
       return false;
     }

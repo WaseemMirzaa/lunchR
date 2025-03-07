@@ -47,6 +47,7 @@ class ParentsServices extends BaseService {
 
   Future<bool> addParentsInfo(String name, String logo,) async {
     // Get the currently authenticated user's UID
+    print("parent name is $name and img path is ${logo}");
     String? userId = _auth.currentUser?.uid;
 
     if (userId == null) {
@@ -58,8 +59,8 @@ class ParentsServices extends BaseService {
 
     var user = UserModel.fromJson(snapshot.data()!);
 
-    user.cafeteriaName = name;
-    user.cafeteriaLogo = logo;
+    user.parentsName = name;
+    user.parentsPic = logo;
 
     await updateDocument(
       CollectionKey.USER_COLLECTION,

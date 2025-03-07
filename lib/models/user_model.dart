@@ -9,7 +9,7 @@ class UserModel {
    String? schoolName;
    String? cafeteriaLogo;
    String? parentsName;
-   String? parentsLogo;
+   String? parentsPic;
 
 
   UserModel({
@@ -20,7 +20,7 @@ class UserModel {
     this.cafeteriaName,
     this.schoolName,
     this.parentsName,
-    this.parentsLogo,
+    this.parentsPic,
 
     this.cafeteriaLogo,
   });
@@ -35,7 +35,7 @@ class UserModel {
       UserKey.CAFETERIA_LOGO: cafeteriaLogo,
       UserKey.SCHOOL_NAME: schoolName,
       UserKey.PARENTS_NAME: parentsName,
-      UserKey.PARENTS_NAME: parentsLogo,
+      UserKey.PARENTS_PIC: parentsPic,
       UserKey.CAFETERIA_NAME: cafeteriaName,
     };
   }
@@ -51,7 +51,7 @@ class UserModel {
       cafeteriaLogo: json[UserKey.CAFETERIA_LOGO] as String?,
       schoolName: json[UserKey.SCHOOL_NAME] as String?,
       parentsName: json[UserKey.PARENTS_NAME] as String?,
-      parentsLogo: json[UserKey.PARENTS_LOGO] as String?,
+      parentsPic: json[UserKey.PARENTS_PIC] as String?,
       cafeteriaName: json[UserKey.CAFETERIA_NAME] as String?,
     );
   }

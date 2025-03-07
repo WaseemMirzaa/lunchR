@@ -15,7 +15,7 @@ class UserKey {
 
   static var SCHOOL_NAME= 'schoolName';
   static var PARENTS_NAME= 'parentsName';
-  static var PARENTS_LOGO= 'parentsLogo';
+  static var PARENTS_PIC= 'parentsPic';
 
   static var CAFETERIA_NAME='cafeteriaName';
 }

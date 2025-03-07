@@ -47,10 +47,10 @@ class SplashController extends GetxController {
 
     final role = userDoc.data()?['role'] as String?;
 
-    // CHECK THE PARENTS PROFILE COMPLETED OR NOT
-    if (userDoc.data() != null && userDoc.data()!.containsKey('parentsName') && role == "parents") {
-     return Get.offNamed(Routes.PARENT_PROFILE);
-    }
+    // // CHECK THE PARENTS PROFILE COMPLETED OR NOT
+    // if (userDoc.data() != null && userDoc.data()!.containsKey('parentsName') && role == "parents") {
+    //  return Get.offNamed(Routes.PARENT_PROFILE);
+    // }
 
 
 

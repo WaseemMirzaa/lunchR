@@ -80,7 +80,7 @@ class PhoneAuthenticationView extends GetView<PhoneAuthenticationController> {
                       onChanged: (phone) {
                         controller.phoneController.text = phone.completeNumber;
                       },
-                    ),
+                      autovalidateMode:     AutovalidateMode.disabled     ),
                   ),
 
                   const SizedBox(height: 30),
