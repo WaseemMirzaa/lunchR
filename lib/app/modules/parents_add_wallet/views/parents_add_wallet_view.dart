@@ -114,15 +114,17 @@ class ParentsAddWalletView extends GetView<ParentsAddWalletController> {
           ),
 
           // Add Button
-          CustomButton(
-            text: 'Add',
-            onPressed: () {
-              print(
-                  "Monthly Reload Enabled: ${controller.isMonthlyReloadEnabled.value}");
-              print("Amount Entered: ${controller.amount.value}");
-              Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
-            },
-            isLoading: false.obs,
+          Obx(
+          ()=> CustomButton1(
+              text: 'Add',
+              onPressed: () {
+                print(
+                    "Monthly Reload Enabled: ${controller.isMonthlyReloadEnabled.value}");
+                print("Amount Entered: ${controller.amount.value}");
+                controller.saveWalletData();
+              },
+              isLoading: controller.isLoading.value,
+            ),
           ),
         ],
       ),

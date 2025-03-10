@@ -125,36 +125,37 @@ class ParentsChildrenDetailsView
                               const SizedBox(height: 16),
                               _buildTextFields(index),
 
-                              // Show "Add Menu Items" button conditionally
-                              if (allInSameSchool && !isMenuItemsAdded)
-                                const SizedBox(height: 12),
-                              if (allInSameSchool && !isMenuItemsAdded)
-                                CustomButton(
-                                  text: 'ADD MENU ITEMS',
-                                  onPressed: () {},
-                                  isLoading: false.obs,
-                                ),
 
-                              // Add the "School/College Name" text field conditionally
-                              if (!allInSameSchool)
-                                Column(
-                                  children: [
-                                    const SizedBox(height: 12),
-                                    _buildSchoolTextField(context),
-                                    const SizedBox(height: 12),
-                                    if (!isMenuItemsAdded)
-                                      CustomButton(
-                                        text: 'ADD MENU ITEMS',
-                                        onPressed: () {},
-                                        isLoading: false.obs,
-                                      ),
-                                  ],
-                                ),
                               const SizedBox(height: 16),
                             ],
                           ),
                         ),
                       ),
+                      // Show "Add Menu Items" button conditionally
+                      if (allInSameSchool && !isMenuItemsAdded)
+                        const SizedBox(height: 12),
+                      if (allInSameSchool && !isMenuItemsAdded)
+                        CustomButton(
+                          text: 'ADD MENU ITEMS',
+                          onPressed: () {},
+                          isLoading: false.obs,
+                        ),
+
+                      // Add the "School/College Name" text field conditionally
+                      if (!allInSameSchool)
+                        Column(
+                          children: [
+                            const SizedBox(height: 12),
+                            _buildSchoolTextField(context),
+                            const SizedBox(height: 12),
+                            if (!isMenuItemsAdded)
+                              CustomButton(
+                                text: 'ADD MENU ITEMS',
+                                onPressed: () {},
+                                isLoading: false.obs,
+                              ),
+                          ],
+                        ),
                       if (allInSameSchool) ...[
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
