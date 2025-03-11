@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
 
 class SchoolSelectorDialog extends StatefulWidget {
-  const SchoolSelectorDialog({super.key});
+  final List<String> schoolsList;
 
-  static Future<String?> show(BuildContext context) async {
+   const SchoolSelectorDialog({super.key,required this.schoolsList});
+
+  static Future<String?> show(BuildContext context,List<String> schoolsList) async {
     return await showDialog<String>(
       context: context,
-      builder: (BuildContext context) => const SchoolSelectorDialog(),
+      builder: (BuildContext context,) =>  SchoolSelectorDialog(schoolsList: schoolsList),
     );
   }
 
@@ -20,18 +23,21 @@ class SchoolSelectorDialog extends StatefulWidget {
 }
 
 class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
+  final ParentsChildrenDetailsController controller = Get.find<ParentsChildrenDetailsController>();
   final TextEditingController textController = TextEditingController();
-  final List<String> schools = [
-    'Cambridge International School',
-    'St. Patrick\'s High School',
-    'The American International Academy'
-  ];
+  // final List<String> schools = [
+  //   'Cambridge International School',
+  //   'St. Patrick\'s High School',
+  //   'The American International Academy'
+  // ];
   List<String> filteredSchools = [];
 
   @override
   void initState() {
     super.initState();
-    filteredSchools = List.from(schools);
+    print("Fetched School Names Dialog box: ${controller.schoolNamesList}");
+
+    filteredSchools = List.from(controller.schoolNamesList);
     textController.addListener(() {
       filterSchools();
     });
@@ -40,9 +46,9 @@ class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
   void filterSchools() {
     setState(() {
       if (textController.text.isEmpty) {
-        filteredSchools = List.from(schools);
+        filteredSchools = List.from(controller.schoolNamesList);
       } else {
-        filteredSchools = schools
+        filteredSchools = controller.schoolNamesList
             .where((school) => school
                 .toLowerCase()
                 .contains(textController.text.toLowerCase()))
@@ -119,7 +125,10 @@ class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Get.toNamed(Routes.CAFETERIA);
+                            print("Selected School gg Names: ${filteredSchools[index]}");
+                              controller.schoolNameController.text = filteredSchools[index];
+                              Get.back(result: filteredSchools[index]);
+                           Get.toNamed(Routes.CAFETERIA,arguments: filteredSchools[index]);
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 8),

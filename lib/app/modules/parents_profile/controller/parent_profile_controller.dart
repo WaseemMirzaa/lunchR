@@ -49,8 +49,8 @@ class ParentsProfileController extends GetxController {
   Future<String> uploadImage(
       File imageFile, String folderName, String docId) async {
     try {
-      final FirebaseStorage _storage = FirebaseStorage.instance;
-      Reference ref = _storage.ref().child('$folderName/$docId.jpg');
+      final FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child('$folderName/$docId.jpg');
       UploadTask uploadTask = ref.putFile(imageFile);
       TaskSnapshot snapshot = await uploadTask;
       return await snapshot.ref.getDownloadURL();

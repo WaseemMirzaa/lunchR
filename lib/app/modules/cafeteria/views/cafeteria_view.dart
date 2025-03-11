@@ -43,8 +43,7 @@ class CafeteriaView extends GetView<CafeteriaController> {
                       child: Container(
                         height: 35,
                         width: 35,
-                        margin: const EdgeInsets.only(
-                            top: 16), // Add some margin if needed
+                        margin: const EdgeInsets.only(top: 16), // Add some margin if needed
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
@@ -54,8 +53,7 @@ class CafeteriaView extends GetView<CafeteriaController> {
                               spreadRadius: 2,
                             ),
                           ],
-                          color: Colors
-                              .white, // Background color for the container
+                          color: Colors.white, // Background color for the container
                         ),
                         child: Center(
                           child: Image.asset(
@@ -97,120 +95,237 @@ class CafeteriaView extends GetView<CafeteriaController> {
   }
 
   Widget _buildCafeteriaList(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 3, // 3 items in the list
-      itemBuilder: (context, index) {
-        return Obx(() => _buildCafeteriaItem(
-            index, context)); // Wrap in Obx to listen for changes
-      },
-    );
-  }
+    return Obx(() => ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.cafeteriaL.length, // 3 items in the list
+          itemBuilder: (context, index) {
+            var cafeteria = controller.cafeteriaList[index];
 
-  Widget _buildCafeteriaItem(int index, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: GestureDetector(
-        onTap: () async {
-          // // Show the dialog and wait for the confirmation
-          // bool isConfirmed = await showDialog<bool>(
-          //       context: context,
-          //       builder: (BuildContext context) {
-          //         return ScheduleDialog(); // Your existing dialog
-          //       },
-          //     ) ??
-          //     false;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: GestureDetector(
+                onTap: () async {
+                  // // Show the dialog and wait for the confirmation
+                  // bool isConfirmed = await showDialog<bool>(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return ScheduleDialog(); // Your existing dialog
+                  //       },
+                  //     ) ??
+                  //     false;
 
-          // // If user confirms, toggle selection of the item
-          // if (isConfirmed) {
+                  // // If user confirms, toggle selection of the item
+                  // if (isConfirmed) {
 
-          // }
-          Get.toNamed(Routes.MENU_PAGE);
-        },
-        child: Container(
-          height: 127, // Adjusted height to fit all content comfortably
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: controller.selectedIndexes.contains(index)
-                ? const Color(0xFFFC6011)
-                    .withOpacity(0.2) // Background for selected item
-                : Colors.white, // Default background
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                blurRadius: 6,
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image on the left
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/hotel.png', // Replace with actual image path
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 16),
-
-              // Right section: Text Information and Divider
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Cafeteria Name and Call Icon
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Cafeteria Name', // Replace with dynamic data
-                            style: AppTextStyles.MetropolisMedium.copyWith(
-                              fontSize: 14,
-                              color: Colors.black,
-                            ),
-                            overflow:
-                                TextOverflow.ellipsis, // Handle long names
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        // Call Icon
-                        Image.asset(
-                          'assets/icon/call.png', // Replace with actual call image path
-                          width: 10,
-                          height: 10,
-                          fit: BoxFit.contain,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-
-                    // Collage/School Name
-                    Text(
-                      'Collage / School Name', // Replace with dynamic data
-                      style: AppTextStyles.MetropolisRegular.copyWith(
-                        fontSize: 12,
-                        color: const Color(0xFF858585),
+                  // }
+                  // Get.toNamed(Routes.MENU_PAGE);
+                },
+                child: Container(
+                  height: 127, // Adjusted height to fit all content comfortably
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: controller.selectedIndexes.contains(index)
+                        ? const Color(0xFFFC6011).withOpacity(0.2) // Background for selected item
+                        : Colors.white, // Default background
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 6,
+                        spreadRadius: 2,
                       ),
-                    ),
-                    const Spacer(),
-                  ],
+                    ],
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Image on the left
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: controller.cafeteriaL[index].cafeteriaLogo == null
+                            ? Image.asset(
+                                'assets/images/hotel.png', // Replace with actual image path
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                controller.cafeteriaL[index]
+                                    .cafeteriaLogo!, // Replace with actual image path
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                            color: const Color(0xFFFC6011).withOpacity(0.2))),
+                                  );
+                                },
+                              ),
+                      ),
+                      const SizedBox(width: 16),
+
+                      // Right section: Text Information and Divider
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Cafeteria Name and Call Icon
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    controller.cafeteriaL[index].cafeteriaName ??
+                                        "", // Replace with dynamic data
+                                    style: AppTextStyles.MetropolisMedium.copyWith(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    overflow: TextOverflow.ellipsis, // Handle long names
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                // Call Icon
+                                Image.asset(
+                                  'assets/icon/call.png', // Replace with actual call image path
+                                  width: 10,
+                                  height: 10,
+                                  fit: BoxFit.contain,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+
+                            // Collage/School Name
+                            Text(
+                              controller.cafeteriaL[index].schoolName!, // Replace with dynamic data
+                              style: AppTextStyles.MetropolisRegular.copyWith(
+                                fontSize: 12,
+                                color: const Color(0xFF858585),
+                              ),
+                            ),
+                            const Spacer(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ); // Wrap in Obx to listen for changes
+          },
+        ));
   }
+
+  // Widget _buildCafeteriaItem(int index, BuildContext context) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 15),
+  //     child: GestureDetector(
+  //       onTap: () async {
+  //         // // Show the dialog and wait for the confirmation
+  //         // bool isConfirmed = await showDialog<bool>(
+  //         //       context: context,
+  //         //       builder: (BuildContext context) {
+  //         //         return ScheduleDialog(); // Your existing dialog
+  //         //       },
+  //         //     ) ??
+  //         //     false;
+  //
+  //         // // If user confirms, toggle selection of the item
+  //         // if (isConfirmed) {
+  //
+  //         // }
+  //         Get.toNamed(Routes.MENU_PAGE);
+  //       },
+  //       child: Container(
+  //         height: 127, // Adjusted height to fit all content comfortably
+  //         margin: const EdgeInsets.only(bottom: 16),
+  //         padding: const EdgeInsets.all(12),
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(12),
+  //           color: controller.selectedIndexes.contains(index)
+  //               ? const Color(0xFFFC6011)
+  //                   .withOpacity(0.2) // Background for selected item
+  //               : Colors.white, // Default background
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: Colors.grey.withOpacity(0.2),
+  //               blurRadius: 6,
+  //               spreadRadius: 2,
+  //             ),
+  //           ],
+  //         ),
+  //         child: Row(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             // Image on the left
+  //             ClipRRect(
+  //               borderRadius: BorderRadius.circular(8),
+  //               child: Image.asset(
+  //                 'assets/images/hotel.png', // Replace with actual image path
+  //                 width: 100,
+  //                 height: 100,
+  //                 fit: BoxFit.cover,
+  //               ),
+  //             ),
+  //             const SizedBox(width: 16),
+  //
+  //             // Right section: Text Information and Divider
+  //             Expanded(
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   // Cafeteria Name and Call Icon
+  //                   Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                     children: [
+  //                       Expanded(
+  //                         child: Text(
+  //                           'Cafeteria Name', // Replace with dynamic data
+  //                           style: AppTextStyles.MetropolisMedium.copyWith(
+  //                             fontSize: 14,
+  //                             color: Colors.black,
+  //                           ),
+  //                           overflow:
+  //                               TextOverflow.ellipsis, // Handle long names
+  //                         ),
+  //                       ),
+  //                       const SizedBox(width: 8),
+  //                       // Call Icon
+  //                       Image.asset(
+  //                         'assets/icon/call.png', // Replace with actual call image path
+  //                         width: 10,
+  //                         height: 10,
+  //                         fit: BoxFit.contain,
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   const SizedBox(height: 8),
+  //
+  //                   // Collage/School Name
+  //                   Text(
+  //                     'Collage / School Name', // Replace with dynamic data
+  //                     style: AppTextStyles.MetropolisRegular.copyWith(
+  //                       fontSize: 12,
+  //                       color: const Color(0xFF858585),
+  //                     ),
+  //                   ),
+  //                   const Spacer(),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // Search TextField Widget (moved slightly down)
   Widget _buildSearchField(TextEditingController textController) {

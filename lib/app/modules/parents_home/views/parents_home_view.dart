@@ -99,7 +99,7 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
             CustomButton(
                 text: 'ADD CHILD',
                 onPressed: () {
-                  Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
+                   Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
                 },
                 isLoading: false.obs),
             const SizedBox(height: 16),

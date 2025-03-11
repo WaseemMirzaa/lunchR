@@ -7,6 +7,7 @@ class ParentsChildrenDetailsBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<ParentsChildrenDetailsController>(
       () => ParentsChildrenDetailsController(),
+      fenix: true,
     );
   }
 }

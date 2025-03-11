@@ -31,7 +31,7 @@ class ParentsServices extends BaseService {
     userPreferences.saveUserId(userId);
 
     var snapshot = await getDocument( CollectionKey.USER_COLLECTION,userId);
-
+print("parent exist or not ${snapshot.exists}");
     if(!snapshot.exists) {
 
       await createDocument(

@@ -45,7 +45,7 @@ class PhoneVerificationController extends GetxController {
         );
         bool newParentsCreated = await _parentsService.createUser(user);
         // Get.offAllNamed(Routes.LANDING_PAGE);
-        if (newParentsCreated || user.schoolName == null || user.schoolName!.isEmpty) {
+        if ( user.schoolName == null || user.schoolName!.isEmpty) {
           // Get.toNamed(Routes.CAFETERIA_DETAIL);
           Get.toNamed(Routes.PARENT_PROFILE);
         } else {
