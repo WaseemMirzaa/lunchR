@@ -1,14 +1,18 @@
 class MealSheduleModel {
   String mealId;
   String userId;
-  String? sheduleId;
+  String? scheduleId;
+  String? repeatCount;
+  String? repeatEvery;
   List<String> availableAt;
   List<String> repeatOn;
 
   MealSheduleModel({
     required this.mealId,
     required this.userId,
-    this.sheduleId,
+    this.scheduleId,
+    this.repeatCount,
+    this.repeatEvery,
     required this.availableAt,
     required this.repeatOn,
   });
@@ -18,9 +22,10 @@ class MealSheduleModel {
     return {
       'mealId': mealId,
       'userId': userId,
-      'sheduleId': sheduleId,
+      'scheduleId': scheduleId,
+      'repeatCount': repeatCount,
+      'repeatEvery': repeatEvery,
       'availableAt': availableAt,
-
       'repeatOn': repeatOn,
     };
   }
@@ -30,7 +35,9 @@ class MealSheduleModel {
     return MealSheduleModel(
       mealId: map['mealId'] ?? '',
       userId: map['userId'] ?? '',
-      sheduleId: map['sheduleId'] ?? '',
+      scheduleId: map['scheduleId'] ?? '',
+      repeatCount: map['repeatCount'] ?? '',
+      repeatEvery: map['repeatEvery'] ?? '',
       availableAt: List<String>.from(map['availableAt'] ?? []),
       repeatOn: List<String>.from(map['repeatOn'] ?? []),
     );

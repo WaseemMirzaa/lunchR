@@ -92,59 +92,61 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/services/parents/add_children_service.dart';
+import 'package:luncher/widgets/custom_snackbar.dart';
 
 class ParentsChildrenDetailsController extends GetxController {
   final AddChildrenService addChildrenService = AddChildrenService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Observable for selected option for classroom delivery
   RxString selectedClassRoomDeliveryOption = 'No'.obs;
 
   // Initialize with 0 children
   RxInt numberOfChildren = 0.obs;
-  RxBool allChildrenSameSchool = true.obs; // Default to true
-
+  RxBool allChildrenSameSchool = false.obs; // Default to true
 
   // List of controllers for child-specific data
   RxList<TextEditingController> nameControllers = <TextEditingController>[].obs;
   RxList<TextEditingController> idControllers = <TextEditingController>[].obs;
-  RxList<File?> images = <File?>[].obs;// List to store images
+  RxList<File?> images = <File?>[].obs; // List to store images
   // var imagesUrl = [].obs;
+  RxList<String> cafeteriaNameList = <String>[].obs;
+  // for single and list of schools
   RxList<TextEditingController> schoolNameControllerList = <TextEditingController>[].obs;
-
   final TextEditingController schoolNameController = TextEditingController();
+  // for single and list of schools  end
+
   RxList<String> schoolNamesList = <String>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchSchoolNames();
-    // initializeControllers(numberOfChildren.value);
-
-    // No initial controllers - they'll be added when incrementChildren is called
   }
-  // void initializeControllers(int numberOfChildren) {
-  //   nameControllers.clear();
-  //   idControllers.clear();
-  //   images.clear(); // Clear images list
-  //
-  //   for (int i = 0; i < numberOfChildren; i++) {
-  //     nameControllers.add(TextEditingController());
-  //     idControllers.add(TextEditingController());
-  //     images.add(null); // Initialize images list with null
-  //   }
-  // }
 
-  void printChildrenData() {
-    print("---- Children Data ----");
-    for (int i = 0; i < nameControllers.length; i++) {
-      print("Child ${i + 1}: Name = ${nameControllers[i].text}, School ID = ${idControllers[i].text}, School Name = ${schoolNameControllerList[i].text}");
-      print("  Image = ${images[i]?.path ?? "No Image Selected"}");
+  // FOR CHECK THE PARENTS HAVE CHILDREN OR NOT
+  Future<bool> doesParentHaveChildren() async {
+    final currentUser = _auth.currentUser;
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+        .collection("parentsChildren") // Collection Name
+        .where("parentId", isEqualTo: currentUser!.uid) // Filter by parentId
+        .limit(1) // Optimize query to check only one document
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      showCustomSnack('Please Add Children.');
+
+    } else {
+      Get.offAllNamed(Routes.LANDING_PAGE);
 
     }
+    return querySnapshot.docs.isEmpty; // Returns true if at least one document exists
   }
 
   Future<void> pickImage(int index) async {
@@ -153,7 +155,7 @@ class ParentsChildrenDetailsController extends GetxController {
       // Ensure list has enough elements before assigning
       while (images.length <= index) {
         images.add(null);
-       // imagesUrl.add(null);
+        // imagesUrl.add(null);
       }
 
       images[index] = File(pickedFile.path); // Assign image safely
@@ -162,6 +164,7 @@ class ParentsChildrenDetailsController extends GetxController {
       update(); // Update UI
     }
   }
+
   // Fetch school names and update observable list
   Future<void> fetchSchoolNames() async {
     List<String> schools = await addChildrenService.getSchoolNames();
@@ -200,6 +203,7 @@ class ParentsChildrenDetailsController extends GetxController {
     var nameController = TextEditingController();
     var idController = TextEditingController();
     var schoolNameController = TextEditingController();
+    String cafeteriaNameController = '';
 
     File? imageFile; // Nullable File object
     // Add listener to the new ID controller
@@ -214,6 +218,7 @@ class ParentsChildrenDetailsController extends GetxController {
     nameControllers.add(nameController);
     idControllers.add(idController);
     schoolNameControllerList.add(schoolNameController);
+    cafeteriaNameList.add(cafeteriaNameController);
     // Add image file if it's not null
     if (imageFile != null) {
       images.add(imageFile);
@@ -237,6 +242,10 @@ class ParentsChildrenDetailsController extends GetxController {
         schoolNameControllerList.last.dispose();
         schoolNameControllerList.removeLast();
       }
+      if (cafeteriaNameList.isNotEmpty) {
+        // cafeteriaNameList.last.dispose();
+        cafeteriaNameList.removeLast();
+      }
       // if (images.isNotEmpty) {
       //   images.last?.delete();
       //   images.removeLast();
@@ -256,6 +265,7 @@ class ParentsChildrenDetailsController extends GetxController {
     for (var controller in schoolNameControllerList) {
       controller.dispose();
     }
+
     images.clear();
 
     super.onClose();

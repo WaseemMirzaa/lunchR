@@ -134,6 +134,7 @@ class CafeteriaMealDetailsView extends GetView<CafeteriaMealDetailsController> {
                       onTap: () {
                         showDialog(
                           context: context,
+
                           builder: (context) {
                             return CustomScheduleDialog(
                               onScheduleSelected: (String selectedSchedule) {

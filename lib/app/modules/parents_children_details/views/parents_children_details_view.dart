@@ -5,6 +5,7 @@ import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_dialog.dart';
 import 'package:luncher/widgets/custom_selectable_options.dart';
+import 'package:luncher/widgets/custom_snackbar.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
@@ -20,14 +21,12 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
 
   @override
   Widget build(BuildContext context) {
-    // Override the default value with the argument if provided
-    // final bool isMenuItemsAdded = Get.arguments?['isAddedMenuItems'] ?? isAddedMenuItems;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Obx(() {
           final int numberOfChildren = controller.numberOfChildren.value;
-          final bool allInSameSchool = controller.selectedClassRoomDeliveryOption.value == 'Yes';
+          final bool allInSameSchool = controller.allChildrenSameSchool.value;
 
           // if (numberOfChildren == 0) {
           //   // If no children are selected, show only the Continue button
@@ -172,8 +171,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                 isBackColor: true,
                 text: 'CONTINUE',
                 onPressed: () {
-                  controller.printChildrenData();
-                  // Get.offAllNamed(Routes.LANDING_PAGE);
+                  controller.doesParentHaveChildren();
                 },
                 isLoading: RxBool(false),
               ),
@@ -191,8 +189,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
     return SelectableOptions(
       title: 'All Children are in same School?',
       options: const ['No', 'Yes'],
-      selectedOption:
-          controller.selectedClassRoomDeliveryOption, // Pass the observable to SelectableOptions
+      selectedOption: controller.selectedClassRoomDeliveryOption,
       isRowLayout: true,
     );
   }
@@ -226,24 +223,22 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
           child: ClipOval(
             // Ensures the image stays within the circular shape
             child: (controller.images.isNotEmpty &&
-                controller.images[index] != null &&
-                controller.images[index]!.existsSync())
+                    controller.images[index] != null &&
+                    controller.images[index]!.existsSync())
                 ? Image.file(
-              controller.images[index]!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
-                );
-              },
-            )
+                    controller.images[index]!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+                      );
+                    },
+                  )
                 : Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
-            ),
-
-
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+                  ),
           ),
         ),
       ),
@@ -409,7 +404,11 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
             onTap: () async {
               // controller.fetchSchoolNames();
               print("Fetched School Names: ${controller.schoolNamesList}");
-
+              if (controller.nameControllers[index].value.text.isEmpty &&
+                  controller.idControllers[index].value.text.isEmpty) {
+                showCustomSnack("Please Enter a Child Name and School ID");
+                return ;
+              }
               final selectedSchool =
                   await SchoolSelectorDialog.show(context, controller.schoolNamesList);
               print("Selected School Names: $selectedSchool");

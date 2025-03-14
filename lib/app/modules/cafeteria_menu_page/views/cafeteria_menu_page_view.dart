@@ -118,7 +118,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
         fontSize: 14,
         color: AppColors.blackColor,
       ),
-    ):controller.meals.value.isEmpty?Text(
+    ):controller.meals.isEmpty?Text(
       'Meal Not Available', // Replace with dynamic text
       style: AppTextStyles.PoppinsBold.copyWith(
         fontSize: 14,
@@ -200,11 +200,14 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
               height: 100,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  'assets/images/gravy.png',
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                );
+                return const SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Icon(
+                      Icons.image_not_supported_outlined,
+                      size: 50,
+                      color: Colors.grey,
+                    ));
               },
             )
                 : Image.asset(

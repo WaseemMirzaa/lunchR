@@ -9,10 +9,16 @@ class CafeteriaController extends GetxController {
   //TODO: Implement CafeteriaController
 
   var selectedIndexes = <int>{}.obs;
-  RxList<Map<String, dynamic>> cafeteriaList = <Map<String, dynamic>>[].obs;
-  RxList<UserModel> cafeteriaL = <UserModel>[].obs;
+var  cafeteriaL = <UserModel>[].obs;
+  var filteredCafeteriaL = <UserModel>[].obs;
+
   var schoolName = ''.obs; // Store the school name
-  RxList<String> filteredCafeteria = <String>[].obs;
+  TextEditingController searchTextController = TextEditingController();
+  var isLoading = false.obs;
+  var isDataFound = false.obs;
+  var searchText = "".obs;
+
+
   final TextEditingController textController = TextEditingController();
 
   @override
@@ -26,33 +32,65 @@ class CafeteriaController extends GetxController {
     fetchSchoolCafeteria();
   }
 
+  void fetchSchoolCafeteria() async {
+    isLoading.value = true;
 
-  Future<void> fetchSchoolCafeteria() async {
-    cafeteriaList.value = await addChildrenService.getCafeteriaSchool(schoolName.value);
-    // schoolNamesList.assignAll(schools);
-    convertToUserModel(); // Convert after fetching
+    // Ensure getCafeteriaSchool returns a Stream
+    cafeteriaL.bindStream(addChildrenService.getCafeteriaSchool(schoolName.value));
 
-    // Print the fetched list
-    print("Fetched School Names: ${cafeteriaList[0]}");
+    cafeteriaL.listen((_) {
+      print("Fetched School Data: $cafeteriaL");
+      filterCafeteria();
+      isLoading.value = false; // Set loading to false only after data loads
+    });
   }
-  void convertToUserModel() {
-    cafeteriaL.assignAll(cafeteriaList.map((e) => UserModel.fromJson(e)).toList());
-  }
 
-  void filterSchools() {
-    if (textController.text.isEmpty) {
-      filteredCafeteria.value =
-          cafeteriaList.map((e) => e['cafeteriaName'] as String).toList();
+  void filterCafeteria() {
+    if (searchText.value.isEmpty) {
+      filteredCafeteriaL.assignAll(cafeteriaL);
+      isDataFound.value = false;
     } else {
-      filteredCafeteria.value = cafeteriaList
-          .where((cafeteria) =>
-      cafeteria['cafeteriaName'] != null &&
-          (cafeteria['cafeteriaName'] as String)
-              .toLowerCase()
-              .contains(textController.text.toLowerCase()))
-          .map((e) => e['cafeteriaName'] as String)
-          .toList();
+      filteredCafeteriaL.assignAll(
+          cafeteriaL.where((cafeteria) =>
+          (cafeteria.cafeteriaName?.toLowerCase().contains(searchText.value.toLowerCase()) ?? false)
+          )
+      );
+      isDataFound.value = filteredCafeteriaL.isEmpty;
     }
   }
 
+//
+//   void fetchSchoolCafeteria() async {
+//     isLoading.value = true;
+//     // cafeteriaList.value = await addChildrenService.getCafeteriaSchool(schoolName.value);
+//     // schoolNamesList.assignAll(schools);
+//     // convertToUserModel(); // Convert after fetching
+//     cafeteriaL.bindStream(addChildrenService.getCafeteriaSchool(schoolName.value));
+//
+//     // Print the fetched list
+//     print("Fetched School Data is : ");
+//     filterCafeteria();
+//
+//     isLoading.value = false;
+//   }
+//
+//
+//   void filterCafeteria() {
+//     print("yws");
+//     if (searchText.value.isEmpty) {
+//       print("yes");
+//
+//       filteredCafeteriaL.assignAll(cafeteriaL);
+//       isDataFound.value = false;
+//     } else {
+//       print("no");
+//
+//       filteredCafeteriaL.assignAll(cafeteriaL.where((cafeteria) => cafeteria.cafeteriaName!.toLowerCase().contains(searchText.value.toLowerCase())));
+//       isDataFound.value = filteredCafeteriaL.isEmpty;
+//     }
+// }
+  void updateSearchText(String text) {
+    searchText.value = text;
+    filterCafeteria();
+  }
 }

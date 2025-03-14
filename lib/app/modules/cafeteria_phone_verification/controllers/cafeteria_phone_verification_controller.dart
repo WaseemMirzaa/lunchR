@@ -32,7 +32,6 @@ class CafeteriaPhoneVerificationController extends GetxController {
 
   // Handle OTP verification
   Future<void> verifyOTP() async {
-
     if (otpController.value.isEmpty || otpController.value.length < 6) {
       showCustomSnack("Please enter a valid OTP");
       return;
@@ -41,8 +40,7 @@ class CafeteriaPhoneVerificationController extends GetxController {
     try {
       isLoading.value = true;
 
-      final result =
-          await _authService.verifyOTP(verificationId, otpController.value);
+      final result = await _authService.verifyOTP(verificationId, otpController.value);
 
       if (result.success) {
         final user = UserModel(
@@ -51,28 +49,23 @@ class CafeteriaPhoneVerificationController extends GetxController {
           userAccountCreatedTime: DateTime.now(),
         );
 
-
         bool newUserCreated = await _userService.createUser(user);
+        print("asdf $newUserCreated");
 
-        if(newUserCreated || user.cafeteriaName == null || (user.cafeteriaName != null && user.cafeteriaName!.isEmpty)) {
-
-          Get.toNamed(Routes.CAFETERIA_DETAIL);
+        if (!newUserCreated) {
+           Get.toNamed(Routes.CAFETERIA_DETAIL);
+          print("if $newUserCreated if ${user.cafeteriaName}");
 
         } else {
+          print("else $newUserCreated else ${user.cafeteriaName}");
 
-          Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
-
+            Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
         }
-
-
       } else {
-
         showCustomSnack(result.message);
-
       }
     } finally {
       isLoading.value = false;
     }
   }
-
 }

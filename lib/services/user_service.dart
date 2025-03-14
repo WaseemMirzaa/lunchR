@@ -30,21 +30,37 @@ class UserService extends BaseService {
 // saving user Id
 //     final SharedPreferences prefs = await SharedPreferences.getInstance();
 //     prefs.setString('user_Id', userId);
-    userPreferences.saveUserId(userId);
 
-    var snapshot = await getDocument( CollectionKey.USER_COLLECTION,userId);
-
-    if(!snapshot.exists) {
-
+    var snapshot = await getDocument(CollectionKey.USER_COLLECTION, userId);
+// If the snapshot exists, print the data
+    var data = snapshot.data() as Map<String, dynamic>; // Convert to a Map
+    String? cafeteriaName = data['cafeteriaName']; // Get cafeteriaName
+    String? cafeteriaLogo = data['cafeteriaLogo'];
+    print("Document????????: $cafeteriaName");
+    print("Document????????: $cafeteriaLogo");
+// Get cafeteriaLogo
+    if (snapshot.exists) {
+      print("Snapshot data: ${snapshot.data()}");
+    } else {
+      print("Document does not exist for userId: $userId");
+    }
+    if (!snapshot.exists) {
       await createDocument(
         CollectionKey.USER_COLLECTION,
         userId,
         updatedUser.toJson(),
       );
-
     }
+    userPreferences.saveUserId(userId);
+    if (cafeteriaName == null && cafeteriaLogo == null) {
+      print("Document ========false: ${!snapshot.exists}");
 
-    return !snapshot.exists;
+      return false;
+    } else {
+      print("Document ========true: ${snapshot.exists}");
+
+      return true;
+    }
   }
 
   Future<bool> addCafeteriaInfo(String name, String logo, String college) async {
@@ -55,8 +71,7 @@ class UserService extends BaseService {
       throw Exception("User not authenticated");
     }
 
-    var snapshot = await getDocument( CollectionKey.USER_COLLECTION,userId);
-
+    var snapshot = await getDocument(CollectionKey.USER_COLLECTION, userId);
 
     var user = UserModel.fromJson(snapshot.data()!);
 
@@ -64,13 +79,13 @@ class UserService extends BaseService {
     user.cafeteriaLogo = logo;
     user.schoolName = college;
 
-      await updateDocument(
-        CollectionKey.USER_COLLECTION,
-        userId,
-        user.toJson(),
-      );
+    await updateDocument(
+      CollectionKey.USER_COLLECTION,
+      userId,
+      user.toJson(),
+    );
 
-      print('User Data 📈📈📈📈📈${user.toJson()}');
+    print('User Data 📈📈📈📈📈${user.toJson()}');
 
     Get.offAllNamed(Routes.CAFETERIA_LANDING_PAGE);
 

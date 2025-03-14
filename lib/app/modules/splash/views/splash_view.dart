@@ -36,7 +36,7 @@ class SplashView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'LunchR',
+                        'Snack Tag',
                         style: AppTextStyles.MetropolisRegularItalic.copyWith(
                           color: AppColors.whiteColor,
                           fontSize: 45,

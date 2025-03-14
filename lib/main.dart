@@ -21,7 +21,7 @@ void main() async {
 
   runApp(
     GetMaterialApp(
-      title: "LunchR",
+      title: "Snack Tag",
       debugShowCheckedModeBanner: false,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,

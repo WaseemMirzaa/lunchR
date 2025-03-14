@@ -14,119 +14,121 @@ class ParentsAddWalletView extends GetView<ParentsAddWalletController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 80),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Add Amount To Wallet',
-                    style: AppTextStyles.MetropolisBold.copyWith(
-                      color: const Color(0xFF434343),
-                      fontSize: 16,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 80),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Add Amount To Wallet',
+                      style: AppTextStyles.MetropolisBold.copyWith(
+                        color: const Color(0xFF434343),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 40),
-
-                // Amount TextField
-                Obx(
-                  () => SimpleTextFieldWithOutSuffixWidget(
-                    hintText: 'Type Amount',
-                    keyboardType: TextInputType.number,
-                    controller: TextEditingController()
-                      ..text = controller.amount.value
-                      ..selection = TextSelection.collapsed(
-                          offset: controller.amount.value.length),
-                    onChanged: controller.clearSelectionOnTyping,
+                  const SizedBox(height: 40),
+        
+                  // Amount TextField
+                  Obx(
+                    () => SimpleTextFieldWithOutSuffixWidget(
+                      hintText: 'Type Amount',
+                      keyboardType: TextInputType.number,
+                      controller: TextEditingController()
+                        ..text = controller.amount.value
+                        ..selection = TextSelection.collapsed(
+                            offset: controller.amount.value.length),
+                      onChanged: controller.clearSelectionOnTyping,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-
-                // Peso Selector
-                Obx(
-                  () => buildPesoSelector(
-                    selectedIndex: controller.selectedIndex.value,
-                    onSelect: (index, amount) =>
-                        controller.selectPeso(index, amount),
+                  const SizedBox(height: 20),
+        
+                  // Peso Selector
+                  Obx(
+                    () => buildPesoSelector(
+                      selectedIndex: controller.selectedIndex.value,
+                      onSelect: (index, amount) =>
+                          controller.selectPeso(index, amount),
+                    ),
                   ),
-                ),
-
-                // Checkbox
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () => controller.isMonthlyReloadEnabled.toggle(),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Enable Monthly Reload?',
-                            style: AppTextStyles.MetropolisMedium.copyWith(
-                              fontSize: 14,
+        
+                  // Checkbox
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => controller.isMonthlyReloadEnabled.toggle(),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Enable Monthly Reload?',
+                              style: AppTextStyles.MetropolisMedium.copyWith(
+                                fontSize: 14,
+                              ),
                             ),
-                          ),
-                          Obx(
-                                () => Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () => controller.isMonthlyReloadEnabled.toggle(),
-                                borderRadius: BorderRadius.circular(4),
-                                child: Container(
-                                  width: 30, // Increased tap area
-                                  height: 30,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 2,
+                            Obx(
+                                  () => Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () => controller.isMonthlyReloadEnabled.toggle(),
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: Container(
+                                    width: 30, // Increased tap area
+                                    height: 30,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(4),
                                     ),
-                                    borderRadius: BorderRadius.circular(4),
+                                    child: controller.isMonthlyReloadEnabled.value
+                                        ? const Icon(
+                                      Icons.check,
+                                      size: 18,
+                                      color: Colors.black,
+                                    )
+                                        : null,
                                   ),
-                                  child: controller.isMonthlyReloadEnabled.value
-                                      ? const Icon(
-                                    Icons.check,
-                                    size: 18,
-                                    color: Colors.black,
-                                  )
-                                      : null,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-
-                ),
-              ],
+                    )
+        
+                  ),
+                ],
+              ),
             ),
-          ),
-
-          // Add Button
-          Obx(
-          ()=> CustomButton1(
-              text: 'Add',
-              onPressed: () {
-                print(
-                    "Monthly Reload Enabled: ${controller.isMonthlyReloadEnabled.value}");
-                print("Amount Entered: ${controller.amount.value}");
-                controller.saveWalletData();
-              },
-              isLoading: controller.isLoading.value,
+        
+            // Add Button
+            Obx(
+            ()=> CustomButton1(
+                text: 'Add',
+                onPressed: () {
+                  print(
+                      "Monthly Reload Enabled: ${controller.isMonthlyReloadEnabled.value}");
+                  print("Amount Entered: ${controller.amount.value}");
+                  controller.saveWalletData();
+                },
+                isLoading: controller.isLoading.value,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -34,7 +34,7 @@ class SelectionView extends GetView<SelectionController> {
               const Spacer(flex: 8), // Keeps LUNCH R centered at the top
               Center(
                 child: Text(
-                  'LunchR',
+                  'Snack Tag',
                   style: AppTextStyles.MetropolisRegularItalic.copyWith(
                       color: AppColors.whiteColor,
                       fontSize: 45,

@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/models/cefeteria_admin/meal_model.dart';
+import 'package:luncher/models/parents_models/parent_selected_meals.dart';
+import 'package:luncher/services/parents/school_cafaterias_model.dart';
 import 'package:luncher/widgets/custom_selectable_options.dart';
 
 import 'package:luncher/widgets/reuse_button.dart';
@@ -10,7 +13,6 @@ import '../controllers/children_details_controller.dart';
 
 class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   const ChildrenDetailsView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +22,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: 42, bottom: 12),
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 42, bottom: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -35,8 +36,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                       child: Container(
                         height: 35,
                         width: 35,
-                        margin: const EdgeInsets.only(
-                            top: 16), // Add some margin if needed
+                        margin: const EdgeInsets.only(top: 16), // Add some margin if needed
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
@@ -46,8 +46,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                               spreadRadius: 2,
                             ),
                           ],
-                          color: Colors
-                              .white, // Background color for the container
+                          color: Colors.white, // Background color for the container
                         ),
                         child: Center(
                           child: Image.asset(
@@ -71,7 +70,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                     ),
                   ),
                   const SizedBox(
-                    height: 36,
+                    height: 30,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -80,19 +79,17 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                       children: [
                         _buildSelectCafeteria(),
                         const SizedBox(height: 16),
-                        _buildCafeteriaDetails(),
+                        _buildCafeteriaDetails(controller.cafeModel[0]),
                         const SizedBox(height: 12),
                         _buildSelectMeal(),
-                        const SizedBox(height: 16),
-                        _selectMealDeals(),
+                        _selectMealDeals(controller.selectedMealData),
                         const SizedBox(height: 8),
                         Align(
-                          alignment: Alignment
-                              .centerRight, // Aligns content to the right
+                          alignment: Alignment.centerRight, // Aligns content to the right
                           child: GestureDetector(
                             onTap: () {
                               // Add your logic here
-                              Get.toNamed(Routes.MENU_PAGE);
+                              Get.back();
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize
@@ -124,19 +121,17 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                 ],
               ),
             ),
-            CustomButton(
-                fontSize: 16,
-                isBackColor: true,
-                text: 'SUBMIT',
-                onPressed: () {
-                  Get.offAllNamed(
-                    Routes.PARENTS_CHILDREN_DETAILS,
-                    arguments: {
-                      'isAddedMenuItems': true, // Pass the parameter here
-                    },
-                  );
-                },
-                isLoading: RxBool(false)),
+            Obx(
+                ()=> CustomButton1(
+                  fontSize: 16,
+                  isBackColor: true,
+                  text: 'SUBMIT',
+                  onPressed: () {
+                    controller.addChildren();
+
+                  },
+                  isLoading: controller.isLoading.value),
+            ),
             const SizedBox(height: 16),
           ],
         ),
@@ -152,8 +147,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
       isSingleRow: true,
       title: 'Classroom Delivery?',
       options: const ['No', 'Yes'],
-      selectedOption: controller
-          .selectedClassRoomDeliveryOption, // Pass the observable to SelectableOptions
+      selectedOption:
+          controller.selectedClassRoomDeliveryOption, // Pass the observable to SelectableOptions
       isRowLayout: true,
     );
   }
@@ -163,8 +158,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
     return SelectableOptions(
       title: 'Duration',
       options: const ['Weekly', 'Monthly'],
-      selectedOption: controller
-          .selectedDurationOption, // Reuse the same observable if needed
+      selectedOption: controller.selectedDurationOption, // Reuse the same observable if needed
     );
   }
 
@@ -206,44 +200,32 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   builder: (BuildContext context, Widget? child) {
                     return Theme(
                       data: ThemeData.light().copyWith(
-                        primaryColor: const Color(
-                            0xFFE65100), // Dark orange for primary color
+                        primaryColor: const Color(0xFFE65100), // Dark orange for primary color
                         buttonTheme: const ButtonThemeData(
-                          textTheme:
-                              ButtonTextTheme.primary, // Button text color
+                          textTheme: ButtonTextTheme.primary, // Button text color
                         ),
                         // Customizing time picker button colors
                         timePickerTheme: const TimePickerThemeData(
-                          backgroundColor:
-                              Color(0xFFFFE0B2), // Light orange background
-                          dialBackgroundColor:
-                              Color(0xFFFF7043), // Dark orange dial background
-                          dialHandColor:
-                              Color(0xFFE65100), // Dark orange dial hand
-                          dialTextColor: Color.fromARGB(
-                              255, 255, 255, 255), // Lighter orange dial text
-                          entryModeIconColor:
-                              Color(0xFFE65100), // Dark orange entry mode icon
+                          backgroundColor: Color(0xFFFFE0B2), // Light orange background
+                          dialBackgroundColor: Color(0xFFFF7043), // Dark orange dial background
+                          dialHandColor: Color(0xFFE65100), // Dark orange dial hand
+                          dialTextColor:
+                              Color.fromARGB(255, 255, 255, 255), // Lighter orange dial text
+                          entryModeIconColor: Color(0xFFE65100), // Dark orange entry mode icon
                         ),
-                        cardColor: const Color(
-                            0xFFFFA726), // Light orange for selection card background
-                        dialogBackgroundColor:
-                            const Color(0xFFFFE0B2), // Light orange for dialogs
+                        cardColor:
+                            const Color(0xFFFFA726), // Light orange for selection card background
+                        dialogBackgroundColor: const Color(0xFFFFE0B2), // Light orange for dialogs
                         textTheme: const TextTheme(
-                          bodyLarge: TextStyle(
-                              color: Color(0xFFE65100)), // Dark orange text
-                          bodyMedium: TextStyle(
-                              color: Color(0xFFFF7043)), // Darker orange text
+                          bodyLarge: TextStyle(color: Color(0xFFE65100)), // Dark orange text
+                          bodyMedium: TextStyle(color: Color(0xFFFF7043)), // Darker orange text
                         ),
                         colorScheme: const ColorScheme.light(
                           primary: Color(0xFFE65100), // Dark orange primary
-                          onPrimary: Color(
-                              0xFFFFE0B2), // Light orange for text on primary
-                          secondary:
-                              Color(0xFFFF7043), // Secondary as darker orange
+                          onPrimary: Color(0xFFFFE0B2), // Light orange for text on primary
+                          secondary: Color(0xFFFF7043), // Secondary as darker orange
                           onSecondary: Color(0xFFFFE0B2), // Text on secondary
-                          background:
-                              Color(0xFFFFCC80), // Light orange background
+                          background: Color(0xFFFFCC80), // Light orange background
                           onBackground: Color(0xFFE65100), // Text on background
                         ),
                       ),
@@ -314,7 +296,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
   }
 
   // Cafeteria details container
-  Widget _buildCafeteriaDetails() {
+  Widget _buildCafeteriaDetails(CafeteriaDetailsParents cafeDetails) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: Container(
@@ -333,21 +315,37 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
         height: 62, // Set the height to 62
         child: Row(
           children: [
-            Container(
-              width: 43, // Set the width to 43
-              height: 43, // Set the height to 43
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                color: Colors.grey[300],
-                image: const DecorationImage(
-                  image: AssetImage(
-                    'assets/images/restr.png', // Replace with your image
+            cafeDetails.img.isEmpty
+                ? const Icon(
+                    Icons.image_outlined,
+                    size: 30,
+                    color: Colors.grey,
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.network(
+                      cafeDetails.img, // Replace with actual image path
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Center(
+                              child: CircularProgressIndicator(
+                                  color: const Color(0xFFFC6011).withOpacity(0.2))),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.image_not_supported_outlined,
+                          size: 30,
+                          color: Colors.grey,
+                        );
+                      },
+                    ),
                   ),
-                  fit: BoxFit
-                      .cover, // Ensure the image fits inside the container
-                ),
-              ),
-            ),
             const SizedBox(width: 12),
             // Expanded Row for Cafeteria Name + Call icon and College Name
             Expanded(
@@ -358,7 +356,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Cafeteria Name",
+                        cafeDetails.cafeteriaName,
                         style: AppTextStyles.MetropolisMedium.copyWith(
                           fontSize: 11,
                           color: Colors.black,
@@ -374,7 +372,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "College / School Name",
+                    cafeDetails.schoolName,
                     style: AppTextStyles.MetropolisRegular.copyWith(
                       fontSize: 9,
                       color: const Color(0xFF858585),
@@ -389,117 +387,147 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
     );
   }
 
-  Widget _selectMealDeals() {
-    return Container(
-      height: 100,
-      padding:
-          const EdgeInsets.all(8), // Optional: for padding inside the container
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color of the container
-        borderRadius:
-            BorderRadius.circular(12), // Rounded corners for the container
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2), // Shadow color with opacity
-            blurRadius: 6, // Blur effect for the shadow
-            spreadRadius: 2, // Spread of the shadow
-            offset: const Offset(0, 2), // Shadow offset (vertical)
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Container(
-              width: 70,
-              height: 81,
-              decoration: BoxDecoration(
-                color: Colors.grey[300], // Placeholder for image or content
-                borderRadius: BorderRadius.circular(12),
-                image: const DecorationImage(
-                  image: AssetImage(
-                      'assets/images/gravy.png'), // Replace with your image
-                  fit: BoxFit.cover,
-                ),
+  Widget _selectMealDeals(RxList<ParentSelectedMeals> parentSelectedMeals) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: parentSelectedMeals.length,
+     separatorBuilder: (context, index)=>const SizedBox(height: 12),
+
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          height: 100,
+          padding: const EdgeInsets.all(8), // Optional: for padding inside the container
+          decoration: BoxDecoration(
+            color: Colors.white, // Background color of the container
+            borderRadius: BorderRadius.circular(12), // Rounded corners for the container
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2), // Shadow color with opacity
+                blurRadius: 6, // Blur effect for the shadow
+                spreadRadius: 2, // Spread of the shadow
+                offset: const Offset(0, 2), // Shadow offset (vertical)
               ),
-            ),
+            ],
           ),
-          const SizedBox(
-            width: 8,
-          ),
-          // "Chicken Gravy" text with ellipsis to prevent wrapping
-          Column(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    parentSelectedMeals[index].imageUrl!, // ✅ Safe access
+                    width: 70,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                color: const Color(0xFFFC6011).withOpacity(0.2))),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return const SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Icon(
+                            Icons.image_not_supported_outlined,
+                            size: 50,
+                            color: Colors.grey,
+                          ));
+                    },
+                  ),
+                ),
+              ),
               const SizedBox(
-                height: 8,
+                width: 8,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 2),
-                child: Text(
-                  "Chicken Gravy",
-                  maxLines: 1, // Ensure text stays in one line
-                  overflow:
-                      TextOverflow.ellipsis, // Prevents text from wrapping
-                  style: AppTextStyles.MetropolisMedium.copyWith(
-                    fontSize: 13,
-                    color: Colors.black,
+              // "Chicken Gravy" text with ellipsis to prevent wrapping
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 8,
                   ),
-                ),
-              ),
-              const SizedBox(height: 2),
-              // "$35" text with ellipsis as well
-              Padding(
-                padding: const EdgeInsets.only(left: 2),
-                child: Text(
-                  "\$35",
-                  textAlign: TextAlign.left,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.MetropolisMedium.copyWith(
-                    fontSize: 11,
-                    color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Text(
+                      parentSelectedMeals[index].mealName!, // ✅ Safe access
+                      maxLines: 1, // Ensure text stays in one line
+                      overflow: TextOverflow.ellipsis, // Prevents text from wrapping
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 13,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 2),
-              // product description
-              // Obx(() {
-              //   final selectedTimes = controller.scheduleController.selectedTimes
-              //       .asMap()
-              //       .entries
-              //       .where((entry) => entry.value)
-              //       .map((entry) => controller.scheduleController.availableTimes[entry.key]) // Map the index to the actual time value
-              //       .join(', ');
-              //
-              //
-              //   final selectedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-              //       .asMap()
-              //       .entries
-              //       .where((entry) => controller.scheduleController.selectedDays[entry.key]) // Only take the selected (true) days
-              //       .map((entry) => entry.value)
-              //       .join(', ');
-              //
-              //   if (selectedTimes.isEmpty || selectedDays.isEmpty) {
-              //     return const SizedBox.shrink();
-              //   }
-              //
-              //   return Text(
-              //     'Your order is scheduled for $selectedTimes to repeat on $selectedDays every ${controller.scheduleController.repeatUnit.value}',
-              //     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12),
-              //   );
-              // }),
+                  const SizedBox(height: 2),
+                  // "$35" text with ellipsis as well
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Text(
+                      "\$${parentSelectedMeals[index].mealPrice}", // Replace with actual price
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 11,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  // product description
+                  // Obx(() {
+                  //   final selectedTimes = controller.scheduleController.selectedTimes
+                  //       .asMap()
+                  //       .entries
+                  //       .where((entry) => entry.value)
+                  //       .map((entry) => controller.scheduleController.availableTimes[entry.key]) // Map the index to the actual time value
+                  //       .join(', ');
+                  //
+                  //
+                  //   final selectedDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                  //       .asMap()
+                  //       .entries
+                  //       .where((entry) => controller.scheduleController.selectedDays[entry.key]) // Only take the selected (true) days
+                  //       .map((entry) => entry.value)
+                  //       .join(', ');
+                  //
+                  //   if (selectedTimes.isEmpty || selectedDays.isEmpty) {
+                  //     return const SizedBox.shrink();
+                  //   }
+                  //
+                  //   return Text(
+                  //     'Your order is scheduled for $selectedTimes to repeat on $selectedDays every ${controller.scheduleController.repeatUnit.value}',
+                  //     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12),
+                  //   );
+                  // }),
 
-              Text('Your order is scheduled at 12am \nevery week.', style: AppTextStyles.PoppinsMedium.copyWith(
-                fontSize: 11,
-                color: Colors.black,
-              ),)
+                  SizedBox(
+                    // color: Colors.red,
+                    width: MediaQuery.of(context).size.width * 0.52,
+                    child: Text(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      parentSelectedMeals[index].scheduleStatement!,
+                      style: AppTextStyles.PoppinsMedium.copyWith(
+                        fontSize: 11,
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              )
             ],
-          )
-        ],
-      ),
+          ),
+        ); // Wrap in Obx to listen for changes
+      },
     );
   }
 
@@ -526,8 +554,7 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
 
         // Right side: Wallet Balance Text inside its own container
         Container(
-          padding:
-              const EdgeInsets.only(right: 16), // Optional padding for spacing
+          padding: const EdgeInsets.only(right: 16), // Optional padding for spacing
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

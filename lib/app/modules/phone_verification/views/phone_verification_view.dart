@@ -128,6 +128,7 @@ class PhoneVerificationView extends GetView<PhoneVerificationController> {
                   focusedPinTheme: focusedPinTheme,
                   submittedPinTheme: submittedPinTheme,
                   length: 6,
+                  autofocus: true,
                   pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                   showCursor: true,
                   obscureText: true,

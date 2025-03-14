@@ -30,17 +30,28 @@ class ParentsServices extends BaseService {
 //     prefs.setString('user_Id', userId);
     userPreferences.saveUserId(userId);
 
-    var snapshot = await getDocument( CollectionKey.USER_COLLECTION,userId);
-print("parent exist or not ${snapshot.exists}");
-    if(!snapshot.exists) {
+    var snapshot = await getDocument(CollectionKey.USER_COLLECTION, userId);
 
+    print("Parent exists or not: ${snapshot.exists}");
+
+// Print full snapshot data
+    if (snapshot.exists) {
+      print("Document Data: ${snapshot.data()}");
+    } else {
+      print("No document found for userId: $userId");
+    }
+
+    if (!snapshot.exists) {
       await createDocument(
         CollectionKey.USER_COLLECTION,
         userId,
         updatedUser.toJson(),
       );
 
-    }
+      print("New document created for userId: $userId");
+
+
+  }
 
     return !snapshot.exists;
   }
@@ -68,9 +79,7 @@ print("parent exist or not ${snapshot.exists}");
       user.toJson(),
     );
 
-    print('User Data 📈📈📈📈📈${user.toJson()}');
-
-    Get.offAllNamed(Routes.LANDING_PAGE);
+    // Get.offAllNamed(Routes.LANDING_PAGE);
 
     return !snapshot.exists;
   }

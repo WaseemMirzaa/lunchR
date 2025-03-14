@@ -164,7 +164,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MENU_PAGE,
-      page: () => const MenuPageView(),
+      page: () =>  MenuPageView(),
       binding: MenuPageBinding(),
     ),
     GetPage(

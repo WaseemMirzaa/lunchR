@@ -9,8 +9,7 @@ import 'package:pinput/pinput.dart';
 
 import '../controllers/cafeteria_phone_verification_controller.dart';
 
-class CafeteriaPhoneVerificationView
-    extends GetView<CafeteriaPhoneVerificationController> {
+class CafeteriaPhoneVerificationView extends GetView<CafeteriaPhoneVerificationController> {
   const CafeteriaPhoneVerificationView({super.key});
 
   @override
@@ -49,8 +48,7 @@ class CafeteriaPhoneVerificationView
       borderRadius: BorderRadius.circular(40), // Maintain rounded corners
       boxShadow: [
         BoxShadow(
-          color: Colors.black
-              .withOpacity(0.3), // Slightly stronger shadow on focus
+          color: Colors.black.withOpacity(0.3), // Slightly stronger shadow on focus
           blurRadius: 8, // Increase blur radius for the shadow
           offset: const Offset(0, 4), // Shadow offset for focus state
         ),
@@ -61,8 +59,7 @@ class CafeteriaPhoneVerificationView
       color: Colors.white, // Maintain white background
       boxShadow: [
         BoxShadow(
-          color: Colors.black
-              .withOpacity(0.2), // Consistent shadow for submitted state
+          color: Colors.black.withOpacity(0.2), // Consistent shadow for submitted state
           blurRadius: 6,
           offset: const Offset(0, 3),
         ),
@@ -107,8 +104,7 @@ class CafeteriaPhoneVerificationView
                       ),
                     ),
 
-                    const SizedBox(
-                        height: 20), // Space between heading and text field
+                    const SizedBox(height: 20), // Space between heading and text field
 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -122,15 +118,14 @@ class CafeteriaPhoneVerificationView
                       ),
                     ),
 
-                    const SizedBox(
-                        height: 40), // Space between text and OTP field
+                    const SizedBox(height: 40), // Space between text and OTP field
 
                     Pinput(
                       length: 6, // Number of digits in the PIN
                       defaultPinTheme: defaultPinTheme,
                       focusedPinTheme: focusedPinTheme,
                       submittedPinTheme: submittedPinTheme,
-
+                      autofocus: true,
                       validator: (s) {
                         // return( s != null &&  s.length < 6) ?  '' : ;
                       },
@@ -140,21 +135,18 @@ class CafeteriaPhoneVerificationView
                       onCompleted: (pin) {
                         controller.otpController.value = pin;
                       },
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceEvenly, // Adds even spacing between boxes
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly, // Adds even spacing between boxes
                     ),
 
-                    const SizedBox(
-                        height: 20), // Space between OTP field and button
+                    const SizedBox(height: 20), // Space between OTP field and button
                   ],
                 ),
               ),
-
               Obx(
-                ()=> CustomButton1(
+                () => CustomButton1(
                   text: 'VERIFY',
                   onPressed: () async {
-
                     await controller.verifyOTP();
                   },
                   isLoading: controller.isLoading.value, // RxBool for loading state
