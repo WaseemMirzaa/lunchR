@@ -27,8 +27,8 @@ class CustomButton extends StatelessWidget {
     this.forcedTextColor = AppColors.blackColor,
     this.width = double.infinity,
     this.gradientColors = const [
-      Colors.red,
-      Colors.orange,
+      AppColors.gradientStartColor,
+      AppColors.gradientEndColor,
     ],
     this.borderRadius = 8.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
@@ -133,8 +133,8 @@ class CustomButton1 extends StatelessWidget {
     this.forcedTextColor = AppColors.blackColor,
     this.width = double.infinity,
     this.gradientColors = const [
-      Colors.red,
-      Colors.orange,
+      AppColors.gradientStartColor,
+      AppColors.gradientEndColor,
     ],
     this.borderRadius = 8.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),

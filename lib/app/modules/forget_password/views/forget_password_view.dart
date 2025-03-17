@@ -76,7 +76,7 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
                     Get.toNamed(Routes.EMAIL_VERIFICATION);
                   },
                   isLoading: false.obs, // RxBool for loading state
-                  gradientColors: const [Colors.orange, Colors.red],
+                 // gradientColors: const [Colors.orange, Colors.red],
                   height: 60.0,
                   borderRadius: 12.0,
                   fontSize: 18.0,

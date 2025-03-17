@@ -35,13 +35,14 @@ class SplashView extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'Snack Tag',
-                        style: AppTextStyles.MetropolisRegularItalic.copyWith(
-                          color: AppColors.whiteColor,
-                          fontSize: 45,
-                        ),
-                      ),
+                      // Text(
+                      //   'Snack Tag',
+                      //   style: AppTextStyles.MetropolisRegularItalic.copyWith(
+                      //     color: AppColors.whiteColor,
+                      //     fontSize: 45,
+                      //   ),
+                      // ),
+                      Image.asset("assets/images/Snacktag_logo.png",height: 100,),
                       Text(
                         'Tasty & Healthy',
                         style: AppTextStyles.MetropolisRegular.copyWith(

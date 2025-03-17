@@ -92,7 +92,7 @@ class PhoneAuthenticationView extends GetView<PhoneAuthenticationController> {
                       onPressed: () async =>
                           await controller.authenticatePhoneNumber(),
                       isLoading: controller.isLoading.value,
-                      gradientColors: const [Colors.orange, Colors.red],
+                    //  gradientColors: const [Colors.orange, Colors.red],
                       height: 60.0,
                       borderRadius: 12.0,
                       fontSize: 18.0,

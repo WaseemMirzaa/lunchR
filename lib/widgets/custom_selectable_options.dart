@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 class SelectableOptions extends StatelessWidget {
@@ -71,7 +72,7 @@ class SelectableOptions extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: selectedOption.value == option
-                                ? Colors.orange // Selected state
+                                ? AppColors.gradientStartColor // Selected state
                                 : Colors.transparent, // Unselected state
                             border: Border.all(
                               color: selectedOption.value == option
@@ -135,7 +136,7 @@ class SelectableOptions extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: selectedOption.value == option
-                                ? Colors.orange // Selected state
+                                ? AppColors.gradientStartColor // Selected state
                                 : Colors.transparent, // Unselected state
                             border: Border.all(
                               color: selectedOption.value == option

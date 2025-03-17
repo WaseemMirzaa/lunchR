@@ -45,7 +45,7 @@ class CafeteriaHistorySelectDateView
                           width: 5,
                           height: 5,
                           decoration: const BoxDecoration(
-                            color: Color(0xFFFF0031),
+                            color: AppColors.gradientEndColor,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -179,7 +179,7 @@ class CafeteriaHistorySelectDateView
           Expanded(
               child: ListView.builder(
             itemCount: 3, // Hardcoded number of items
-            padding: EdgeInsets.only(top: 0),
+            padding:const EdgeInsets.only(top: 0),
             itemBuilder: (context, index) {
               return _buildOrderCard(context,
                   historyController); // Call the method to build each order card
@@ -206,14 +206,14 @@ Widget _buildOrderCard(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // First column: Takes 10% of container width
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.1,
             child: Center(
               child: Container(
                 width: 8.0, // Size of the dot
                 height: 8.0, // Size of the dot
                 decoration: const BoxDecoration(
-                  color: Color(0xFFFF0031), // Dot color
+                  color: AppColors.gradientStartColor, // Dot color
                   shape: BoxShape.circle, // Makes the container circular
                 ),
               ),
@@ -286,7 +286,7 @@ Widget _buildOrderCard(
           // Third column: Takes 15% of container width
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.25,
               child: Column(
                 children: [

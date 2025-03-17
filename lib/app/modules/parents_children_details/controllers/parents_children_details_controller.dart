@@ -131,6 +131,8 @@ class ParentsChildrenDetailsController extends GetxController {
     fetchSchoolNames();
   }
 
+  // FETCH CHILDREN DATA
+
   // FOR CHECK THE PARENTS HAVE CHILDREN OR NOT
   Future<bool> doesParentHaveChildren() async {
     final currentUser = _auth.currentUser;

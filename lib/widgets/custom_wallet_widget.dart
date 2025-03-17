@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 import '../app/routes/app_pages.dart';
@@ -304,13 +305,13 @@ class GradientButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50), // Rounded corners
           gradient: const LinearGradient(
-            colors: [Colors.red, Colors.orange], // Gradient colors
+            colors: [AppColors.gradientStartColor, AppColors.gradientEndColor], // Gradient colors
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.red.withOpacity(0.3), // Shadow color
+              color: AppColors.gradientStartColor.withOpacity(0.3), // Shadow color
               blurRadius: 8,
               offset: const Offset(0, 4), // Shadow position
             ),

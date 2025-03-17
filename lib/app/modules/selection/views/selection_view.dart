@@ -32,15 +32,17 @@ class SelectionView extends GetView<SelectionController> {
           child: Column(
             children: [
               const Spacer(flex: 8), // Keeps LUNCH R centered at the top
-              Center(
-                child: Text(
-                  'Snack Tag',
-                  style: AppTextStyles.MetropolisRegularItalic.copyWith(
-                      color: AppColors.whiteColor,
-                      fontSize: 45,
-                  ),
-                ),
-              ),
+              // Center(
+              //   child: Text(
+              //     'Snack Tag',
+              //     style: AppTextStyles.MetropolisRegularItalic.copyWith(
+              //         color: AppColors.whiteColor,
+              //         fontSize: 45,
+              //     ),
+              //   ),
+              // ),
+              Image.asset("assets/images/Snacktag_logo.png",height: 100,),
+
               const Spacer(flex: 8), // Push "TYPE SELECTION" further down
 
               Text(

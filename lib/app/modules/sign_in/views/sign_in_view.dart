@@ -88,7 +88,7 @@ class SignInView extends GetView<SignInController> {
                     // Handle login action here
                   },
                   isLoading: false.obs, // RxBool for loading state
-                  gradientColors: const [Colors.orange, Colors.red],
+                 // gradientColors: const [Colors.orange, Colors.red],
                   height: 60.0,
                   borderRadius: 12.0,
                   fontSize: 18.0,

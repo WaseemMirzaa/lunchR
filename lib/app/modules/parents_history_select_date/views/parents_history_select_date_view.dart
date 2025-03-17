@@ -43,7 +43,7 @@ class ParentsHistorySelectDateView
                           width: 5,
                           height: 5,
                           decoration: const BoxDecoration(
-                            color: Color(0xFFFF0031),
+                            color:AppColors.gradientEndColor,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -184,7 +184,7 @@ class ParentsHistorySelectDateView
           Expanded(
               child: ListView.builder(
             itemCount: 3, // Hardcoded number of items
-            padding: EdgeInsets.only(top: 0),
+            padding:const EdgeInsets.only(top: 0),
 
             itemBuilder: (context, index) {
               return _buildOrderCard(context,
@@ -206,20 +206,20 @@ Widget _buildOrderCard(
     child: Container(
       height: 72, // Fixed height for each item
       width: double.infinity, // Infinite width
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin:const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // First column: Takes 10% of container width
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.1,
             child: Center(
               child: Container(
                 width: 8.0, // Size of the dot
                 height: 8.0, // Size of the dot
-                decoration: BoxDecoration(
-                  color: Color(0xFFFF0031), // Dot color
+                decoration:const BoxDecoration(
+                  color:  AppColors.gradientEndColor, // Dot color
                   shape: BoxShape.circle, // Makes the container circular
                 ),
               ),
@@ -237,7 +237,7 @@ Widget _buildOrderCard(
                   color: Colors.grey.withOpacity(0.3),
                   blurRadius: 6.0,
                   spreadRadius: 2.0,
-                  offset: Offset(2, 2),
+                  offset:const Offset(2, 2),
                 ),
               ],
             ),
@@ -246,14 +246,14 @@ Widget _buildOrderCard(
                 // Left side image (50x50) and Name + Subtitle
                 Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  const  EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: Container(
                     width: 43, // Adjust width for more rectangular shape
                     height: 43, // Adjust height for more rectangular shape
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                           8.0), // Optional: for rounded corners
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage(
                             'assets/images/gra.png'), // Image asset path
                         fit: BoxFit.cover, // Fit the image inside the container
@@ -262,7 +262,7 @@ Widget _buildOrderCard(
                   ),
                 ),
 
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,11 +275,11 @@ Widget _buildOrderCard(
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text("Wednesday",
                         style: AppTextStyles.RobotoRegular.copyWith(
                           fontSize: 12,
-                          color: Color(0xFFBFBFBF),
+                          color:const Color(0xFFBFBFBF),
                         )), // Hardcoded subtitle
                   ],
                 ),
@@ -287,12 +287,12 @@ Widget _buildOrderCard(
             ),
           ),
 
-          Spacer(),
+          const Spacer(),
 
           // Third column: Takes 15% of container width
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -305,13 +305,13 @@ Widget _buildOrderCard(
                     ),
                   ),
 
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
 
                   // Right Arrow Icon inside a black container
                   Container(
                     height: 30,
                     width: 30,
-                    padding: EdgeInsets.all(4.0),
+                    padding:const EdgeInsets.all(4.0),
                     decoration: BoxDecoration(
                       color: Colors.black, // Black background
                       shape:

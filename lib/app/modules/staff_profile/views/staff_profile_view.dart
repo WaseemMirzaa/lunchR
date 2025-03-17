@@ -76,7 +76,7 @@ class StaffProfileView extends GetView<StaffProfileController> {
                         .withOpacity(0.1), // Shadow color with opacity
                     blurRadius: 5, // Blur effect
                     spreadRadius: 2, // Spread radius
-                    offset: Offset(0, 1), // Position of the shadow (x, y)
+                    offset:const Offset(0, 1), // Position of the shadow (x, y)
                   ),
                 ],
               ),
@@ -93,13 +93,13 @@ class StaffProfileView extends GetView<StaffProfileController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.edit,
                   color: Color(0xFFFF9A0D),
                   size: 16,
                 ),
 
-                SizedBox(width: 5),
+               const SizedBox(width: 5),
 
                 // Edit Profile
                 GestureDetector(
@@ -109,7 +109,7 @@ class StaffProfileView extends GetView<StaffProfileController> {
                   child: Text(
                     "Edit Profile",
                     style: AppTextStyles.MetropolisMedium.copyWith(
-                      color: Color(0xFFFF9A0D),
+                      color:const Color(0xFFFF9A0D),
                       fontSize: 12,
                     ),
                   ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_history_detail/views/staff_history_detail_view.dart';
 import 'package:luncher/app/modules/staff_history_list/views/staff_history_list_view.dart';
 import 'package:luncher/app/modules/staff_preparing/views/staff_preparing_view.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 import '../controllers/staff_history_controller.dart';
@@ -39,7 +40,7 @@ class StaffHistoryView extends GetView<StaffHistoryController> {
                           borderRadius: BorderRadius.circular(20),
                           gradient: controller.selectedIndex.value == 0
                               ? const LinearGradient(
-                                  colors: [Colors.red, Colors.orange],
+                                  colors: [AppColors.gradientStartColor, AppColors.gradientEndColor],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                 )
@@ -77,7 +78,7 @@ class StaffHistoryView extends GetView<StaffHistoryController> {
                           borderRadius: BorderRadius.circular(20),
                           gradient: controller.selectedIndex.value == 1
                               ? const LinearGradient(
-                                  colors: [Colors.red, Colors.orange],
+                                  colors: [AppColors.gradientStartColor, AppColors.gradientEndColor],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                 )

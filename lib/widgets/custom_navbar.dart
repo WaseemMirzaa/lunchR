@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:luncher/config/app_colors.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -57,7 +58,8 @@ class CustomBottomNavBar extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: selectedIndex == index
                               ? const LinearGradient(
-                            colors: [Colors.pink, Colors.orange],
+                            colors: [  AppColors.gradientStartColor,
+                              AppColors.gradientEndColor,],
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           )

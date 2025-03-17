@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
@@ -33,7 +34,7 @@ class ParentsAddWalletView extends GetView<ParentsAddWalletController> {
                     ),
                   ),
                   const SizedBox(height: 40),
-        
+
                   // Amount TextField
                   Obx(
                     () => SimpleTextFieldWithOutSuffixWidget(
@@ -41,86 +42,81 @@ class ParentsAddWalletView extends GetView<ParentsAddWalletController> {
                       keyboardType: TextInputType.number,
                       controller: TextEditingController()
                         ..text = controller.amount.value
-                        ..selection = TextSelection.collapsed(
-                            offset: controller.amount.value.length),
+                        ..selection =
+                            TextSelection.collapsed(offset: controller.amount.value.length),
                       onChanged: controller.clearSelectionOnTyping,
                     ),
                   ),
                   const SizedBox(height: 20),
-        
+
                   // Peso Selector
                   Obx(
                     () => buildPesoSelector(
                       selectedIndex: controller.selectedIndex.value,
-                      onSelect: (index, amount) =>
-                          controller.selectPeso(index, amount),
+                      onSelect: (index, amount) => controller.selectPeso(index, amount),
                     ),
                   ),
-        
+
                   // Checkbox
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => controller.isMonthlyReloadEnabled.toggle(),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Enable Monthly Reload?',
-                              style: AppTextStyles.MetropolisMedium.copyWith(
-                                fontSize: 14,
+                      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => controller.isMonthlyReloadEnabled.toggle(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Enable Monthly Reload?',
+                                style: AppTextStyles.MetropolisMedium.copyWith(
+                                  fontSize: 14,
+                                ),
                               ),
-                            ),
-                            Obx(
-                                  () => Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () => controller.isMonthlyReloadEnabled.toggle(),
-                                  borderRadius: BorderRadius.circular(4),
-                                  child: Container(
-                                    width: 30, // Increased tap area
-                                    height: 30,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 2,
+                              Obx(
+                                () => Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () => controller.isMonthlyReloadEnabled.toggle(),
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: Container(
+                                      width: 30, // Increased tap area
+                                      height: 30,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(4),
                                       ),
-                                      borderRadius: BorderRadius.circular(4),
+                                      child: controller.isMonthlyReloadEnabled.value
+                                          ? const Icon(
+                                              Icons.check,
+                                              size: 18,
+                                              color: Colors.black,
+                                            )
+                                          : null,
                                     ),
-                                    child: controller.isMonthlyReloadEnabled.value
-                                        ? const Icon(
-                                      Icons.check,
-                                      size: 18,
-                                      color: Colors.black,
-                                    )
-                                        : null,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-        
-                  ),
+                      )),
                 ],
               ),
             ),
-        
+
             // Add Button
             Obx(
-            ()=> CustomButton1(
+              () => CustomButton1(
                 text: 'Add',
                 onPressed: () {
-                  print(
-                      "Monthly Reload Enabled: ${controller.isMonthlyReloadEnabled.value}");
+                  print("Monthly Reload Enabled: ${controller.isMonthlyReloadEnabled.value}");
                   print("Amount Entered: ${controller.amount.value}");
                   controller.saveWalletData();
                 },
@@ -168,7 +164,7 @@ class ParentsAddWalletView extends GetView<ParentsAddWalletController> {
                 borderRadius: BorderRadius.circular(30),
                 gradient: selectedIndex == index
                     ? const LinearGradient(
-                        colors: [Colors.red, Colors.orange],
+                        colors: [AppColors.gradientStartColor, AppColors.gradientEndColor],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       )
