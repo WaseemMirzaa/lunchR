@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/services/parents/school_cafaterias_model.dart';
 import 'package:luncher/widgets/Custom_search_textfield.dart';
 import 'package:luncher/widgets/custom_dialog_schedule.dart';
@@ -130,23 +133,31 @@ class CafeteriaView extends GetView<CafeteriaController> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: controller.filteredCafeteriaL.length, // 3 items in the list
                     itemBuilder: (context, index) {
-                      var cafeteria = controller.filteredCafeteriaL[index];
                       print(
                           "Cafeteria Name: ${controller.filteredCafeteriaL[index].cafeteriaName}");
 
-                      final ParentsChildrenDetailsController parentController =
-                          Get.find<ParentsChildrenDetailsController>();
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: GestureDetector(
                           onTap: () async {
-                            // Add selected name to the list of main ParentsChildrenDetailsController
-                            // String selectedCafeteria =
-                            //     controller.filteredCafeteriaL[index].cafeteriaName!;
-                            // parentController.cafeteriaNameList.add(selectedCafeteria);
-                            // parentController.printChildrenData();
-                            var cafeModel = <CafeteriaDetailsParents>[]; // Initialize list
+                            // print(
+                            //     "child Name cafe screen : ${controller.childData.childName}");
+                            final parentController = Get.find<ParentsChildrenDetailsController>();
+                            print(
+                                "child jjj  Name: ${controller.filteredCafeteriaL[index].schoolName!}");
+                            print("child jjj  Name: ${parentController.schoolNameController}");
+                            print(
+                                "child jjj  Name: ${parentController.allChildrenSameSchool.value}");
 
+                            var cafeModel = <CafeteriaDetailsParents>[]; // Initialize list
+                            final ParentsAddChildren parentsAddChildren = ParentsAddChildren(
+                              childName: parentController.nameControllers[index].text,
+                              childSchoolID: parentController.idControllers[index].text,
+                              childImageUrl: parentController.images[index]!.path,
+                              schoolName: parentController.allChildrenSameSchool.value == 'Yes'
+                                  ? parentController.schoolNameController.text
+                                  : controller.filteredCafeteriaL[index].schoolName!,
+                            );
 // Create an instance of CafeteriaDetailsParents and add it to the list
                             cafeModel.add(
                               CafeteriaDetailsParents(
@@ -158,26 +169,16 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                     : controller.filteredCafeteriaL[index].cafeteriaLogo!,
                               ),
                             );
-
-
-                            // // Show the dialog and wait for the confirmation
-                            // bool isConfirmed = await showDialog<bool>(
-                            //       context: context,
-                            //       builder: (BuildContext context) {
-                            //         return ScheduleDialog(); // Your existing dialog
-                            //       },
-                            //     ) ??
-                            //     false;
-
-                            // // If user confirms, toggle selection of the item
-                            // if (isConfirmed) {
-
-                            // }
+                            print(
+                                " Index out of range :  ,,,, value ${parentController.images[index]!.path}");
                             Get.toNamed(
                               Routes.MENU_PAGE,
                               arguments: {
-                                "userID": controller.filteredCafeteriaL[index].userID,
-                                "cafeModel": cafeModel,
+                                "cafeId": controller.filteredCafeteriaL[index].userID,
+                                "childData": parentsAddChildren,
+                                "cafeData": cafeModel,
+                                "imageFile": File(
+                                    parentController.images[index]!.path), // Passing the image file
                               },
                             );
 
@@ -210,13 +211,13 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                   borderRadius: BorderRadius.circular(8),
                                   child: controller.filteredCafeteriaL[index].cafeteriaLogo == null
                                       ? const SizedBox(
-                                      width: 100,
-                                      height: 100,
-                                      child: Icon(
-                                        Icons.image_not_supported_outlined,
-                                        size: 50,
-                                        color: Colors.grey,
-                                      ))
+                                          width: 100,
+                                          height: 100,
+                                          child: Icon(
+                                            Icons.image_not_supported_outlined,
+                                            size: 50,
+                                            color: Colors.grey,
+                                          ))
                                       : Image.network(
                                           controller.filteredCafeteriaL[index]
                                               .cafeteriaLogo!, // Replace with actual image path

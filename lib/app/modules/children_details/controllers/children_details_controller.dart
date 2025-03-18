@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
@@ -26,7 +29,7 @@ class ChildrenDetailsController extends GetxController {
   var scheduleData = <MealSheduleModel>[].obs;
   var selectedMealData = <ParentSelectedMeals>[].obs;
   // ============ main model for saving children data ============
-  ParentsAddChildren parentsAddChildren = ParentsAddChildren();
+  var parentsAddChild = ParentsAddChildren();
 // ============ main model for saving children data ============
 // ============ Getting Data From Parent Controller  ============
   final ParentsChildrenDetailsController parentController =
@@ -35,20 +38,23 @@ class ChildrenDetailsController extends GetxController {
   var allChildrenAreInSameSchool = false.obs;
 
   // ============ Getting Data From Parent Controller  ============
+  File? childImageFile;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-  if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
+    if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
+      var receivedImageFile = Get.arguments["imageFile"] as File?;
       // Assign arguments to existing observable lists
       var receivedSchedule = Get.arguments['scheduleModel'] as List<MealSheduleModel>?;
       var receivedCafe = Get.arguments['cafeModel'] as List<CafeteriaDetailsParents>?;
+      var receivedChildData = Get.arguments['childData'] as ParentsAddChildren;
       var receivedMeal = Get.arguments['mealList'] as List<MealModel>?;
 
       // ✅ Fix: Retrieve selectedMealData as a list
       var receivedSelectedMeal = Get.arguments['selectedMealData'] as List<ParentSelectedMeals>?;
-
+      parentsAddChild = receivedChildData;
       if (receivedSelectedMeal != null) {
         selectedMealData.assignAll(receivedSelectedMeal); // Assign data to observable list
       }
@@ -63,6 +69,9 @@ class ChildrenDetailsController extends GetxController {
       if (receivedMeal != null) {
         meals.assignAll(receivedMeal);
       }
+      if (receivedImageFile != null) {
+        childImageFile = receivedImageFile;
+      }
     }
     scheduleController = Get.find<ScheduleDialogController>();
   }
@@ -73,39 +82,41 @@ class ChildrenDetailsController extends GetxController {
     final User? user = auth.currentUser;
     print("user id is ${user!.uid}");
     print("user id is ${parentController.allChildrenSameSchool.value}");
-    print("parentController.cafeteriaNameList[0] id is ${parentController.cafeteriaNameList[0]}");
+    print("parentController.cafeteriaNameList[0] id is ${parentsAddChild.cafeteriaName}");
     var isSuccess = false.obs;
 
     isLoading.value = true;
-    parentsAddChildren = ParentsAddChildren(
+    ParentsAddChildren parentsAddChildren = ParentsAddChildren(
       parentId: user.uid,
-      classroomDelivery:selectedClassRoomDeliveryOption.value ,
+      classroomDelivery: selectedClassRoomDeliveryOption.value,
       numberOfChildren: parentController.numberOfChildren.value.toString(),
-      allChildrenAreInSameSchool: parentController.selectedClassRoomDeliveryOption.value,
+      allChildrenAreInSameSchool: parentController.allChildrenSameSchool.value,
       childId: DateTime.now().millisecondsSinceEpoch.toString(),
-      childName: parentController.nameControllers[0].text,
-      childSchoolID: parentController.idControllers[0].text,
-      childImageUrl: parentController.images[0].toString(),
-      schoolName: parentController.schoolNameController.text,
-      cafeteriaName: parentController.cafeteriaNameList[0],
+      childName: parentsAddChild.childName,
+      childSchoolID: parentsAddChild.childSchoolID,
+      childImageUrl: parentsAddChild.childImageUrl,
+      schoolName: parentsAddChild.schoolName,
+      cafeteriaName: cafeModel[0].cafeteriaName,
       selectedMealMenuData: selectedMealData.isNotEmpty ? selectedMealData : null,
     );
-    isSuccess.value = await addChildrenService.addChildren(parentsAddChildren);
+    // print(" Index out of range :  ,,,, value ${parentsAddChildren.childImageUrl}");
+
+    isSuccess.value = await addChildrenService.addChildren(parentsAddChildren, parentsAddChild.childImageUrl);
     isLoading.value = false;
 
     if (isSuccess.value) {
-      Get.offAllNamed(
-        Routes.PARENTS_CHILDREN_DETAILS,
-        arguments: {
-          'isAddedMenuItems': true, // Pass the parameter here
-        },
-      );
+      print(
+          " Index out of range :  ,,,, value ${parentController.isChildrenAddedSuccessfully.length}");
+
+      parentController.updateLastChildStatus(true);
+      // parentController.isChildrenAddedSuccessfully[index] = true; // or false
+      Get.until((route) => route.settings.name == Routes.PARENTS_CHILDREN_DETAILS);
+
       Get.snackbar("Success", "Child added successfully!");
     } else {
       Get.snackbar("Error", "Failed to add child. Please try again.");
     }
     isLoading.value = false;
-
   }
 
   // Update the selected option
@@ -120,7 +131,6 @@ class ChildrenDetailsController extends GetxController {
   void updateDurationOption(String option) {
     selectedDurationOption.value = option;
   }
-
 
   // Update the selected option
   void updateClassRoomDeliveryOption(String option) {

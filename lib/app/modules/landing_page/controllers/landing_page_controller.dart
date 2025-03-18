@@ -18,10 +18,7 @@ class LandingPageController extends GetxController {
   ];
 
   final List<Widget> screens = [
-    GetBuilder<ParentsHomeController>(
-      init: ParentsHomeController(),
-      builder: (_) => const ParentsHomeView(),
-    ),
+    const ParentsHomeView(),
     GetBuilder<ParentsHistoryController>(
       init: ParentsHistoryController(),
       builder: (_) => const ParentsHistoryView(),

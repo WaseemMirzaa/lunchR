@@ -13,6 +13,8 @@ var  cafeteriaL = <UserModel>[].obs;
   var filteredCafeteriaL = <UserModel>[].obs;
 
   var schoolName = ''.obs; // Store the school name
+  var childName = ''.obs; // Store the school name
+  var childId = ''.obs; // Store the school name
   TextEditingController searchTextController = TextEditingController();
   var isLoading = false.obs;
   var isDataFound = false.obs;
@@ -27,6 +29,7 @@ var  cafeteriaL = <UserModel>[].obs;
     super.onInit();
     if (Get.arguments != null && Get.arguments is String) {
       schoolName.value = Get.arguments;
+      childName.value = Get.arguments;
    }
 
     fetchSchoolCafeteria();

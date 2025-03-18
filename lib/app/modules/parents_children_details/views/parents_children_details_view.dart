@@ -26,7 +26,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
       body: SingleChildScrollView(
         child: Obx(() {
           final int numberOfChildren = controller.numberOfChildren.value;
-          final bool allInSameSchool = controller.allChildrenSameSchool.value;
+          // final bool allInSameSchool = controller.allChildrenSameSchool.value;
 
           // if (numberOfChildren == 0) {
           //   // If no children are selected, show only the Continue button
@@ -104,12 +104,19 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                     const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: _buildClassRoomDelivery(),
+                      child: _buildChildrenAreInSameSchool(),
                     ),
+
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       child: Divider(color: Color(0xFFE9E9E9), thickness: 1),
                     ),
+                    // IF ALL CHILDREN ARE IN SAME SCHOOL THEN
+                    if (controller.allChildrenSameSchool.value == "Yes") ...[
+                      _buildSchoolTextField(context),
+                      const SizedBox(height: 20),
+// Single School/College Name field
+                    ],
                     const SizedBox(height: 4),
                     Column(
                       children: List.generate(
@@ -118,8 +125,35 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                           children: [
                             _buildCenterImage(index), // Center Image
                             const SizedBox(height: 16),
-                            _buildTextFields(context, index, allInSameSchool),
+                            _buildTextFields(
+                                context, index, controller.allChildrenSameSchool.value),
 
+                            // for space
+                            if (controller.allChildrenSameSchool.value == "Yes")
+                              const SizedBox(height: 12),
+
+                            // if (allInSameSchool)
+                            if (controller.allChildrenSameSchool.value == "Yes")
+                              CustomButton(
+                                text: 'ADD MENU ITEMS',
+                                onPressed: () {
+                                  if (controller.nameControllers[index].value.text.isEmpty ||
+                                      controller.idControllers[index].value.text.isEmpty ||
+                                      controller.schoolNameController.text.isEmpty) {
+                                    showCustomSnack(
+                                        "Please Enter a School Name, Child Name and School ID");
+                                    return;
+                                  }
+                                  print(
+                                      "Selected School Name for Child $index: ${controller.nameControllers[index].text}");
+                                  print(
+                                      "Selected School id for Child $index: ${controller.idControllers[index].text}");
+
+                                  Get.toNamed(Routes.CAFETERIA,
+                                      arguments: controller.schoolNameController.text);
+                                },
+                                isLoading: false.obs,
+                              ),
                             const SizedBox(height: 16),
                           ],
                         ),
@@ -128,40 +162,41 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                     // Show "Add Menu Items" button conditionally
                     // if (allInSameSchool && !isMenuItemsAdded) const SizedBox(height: 12),
                     // if (allInSameSchool && !isMenuItemsAdded)
-                    if (allInSameSchool) const SizedBox(height: 12),
-                    if (allInSameSchool)
-                      CustomButton(
-                        text: 'ADD MENU ITEMS',
-                        onPressed: () {},
-                        isLoading: false.obs,
-                      ),
+                    // if (controller.allChildrenSameSchool.value== "Yes") const SizedBox(height: 12),
+                    // // if (allInSameSchool)
+                    //   CustomButton(
+                    //     text: 'ADD MENU ITEMS',
+                    //     onPressed: () {},
+                    //     isLoading: false.obs,
+                    //   ),
 
                     // Add the "School/College Name" text field conditionally
-                    if (!allInSameSchool)
-                      Column(
-                        children: [
-                          const SizedBox(height: 12),
-                          if (allInSameSchool) _buildSchoolTextField(context),
-                          const SizedBox(height: 12),
-                          // if (!isMenuItemsAdded)
-                          CustomButton(
-                            text: 'ADD MENU ITEMS',
-                            onPressed: () {
-                              print(
-                                  "same school ${allInSameSchool} and  menu item added is ${"isMenuItemsAdded"}");
-                            },
-                            isLoading: false.obs,
-                          ),
-                        ],
-                      ),
-                    if (allInSameSchool) ...[
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Divider(color: Color(0xFFE9E9E9), thickness: 1),
-                      ),
-                      const SizedBox(height: 20),
-                      _buildSchoolTextField(context), // Single School/College Name field
-                    ],
+                    // if (controller.allChildrenSameSchool.value== "No")
+                    //   Column(
+                    //     children: [
+                    //       const SizedBox(height: 12),
+                    //       if (controller.allChildrenSameSchool.value== "Yes") _buildSchoolTextField(context),
+                    //       const SizedBox(height: 12),
+                    //       // if (!isMenuItemsAdded)
+                    //       CustomButton(
+                    //         text: 'ADD MENU ITEMS',
+                    //         onPressed: () {
+                    //           print(
+                    //               "same school ${controller.allChildrenSameSchool.value} and  menu item added is ${"isMenuItemsAdded"}");
+                    //         },
+                    //         isLoading: false.obs,
+                    //       ),
+                    //     ],
+                    //   ),
+                    //// IF ALL SCHOOL ARE IN SAME SCHOOL THEN
+                    // if (controller.allChildrenSameSchool.value== "Yes") ...[
+                    //   const Padding(
+                    //     padding: EdgeInsets.symmetric(horizontal: 12),
+                    //     child: Divider(color: Color(0xFFE9E9E9), thickness: 1),
+                    //   ),
+                    //   const SizedBox(height: 20),
+                    //   _buildSchoolTextField(context), // Single School/College Name field
+                    // ],
                   ],
                 ),
               ),
@@ -171,7 +206,9 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                 isBackColor: true,
                 text: 'CONTINUE',
                 onPressed: () {
+
                   controller.doesParentHaveChildren();
+
                 },
                 isLoading: RxBool(false),
               ),
@@ -185,64 +222,143 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
   }
 
   // Type of Payment
-  Widget _buildClassRoomDelivery() {
+  Widget _buildChildrenAreInSameSchool() {
     return SelectableOptions(
       title: 'All Children are in same School?',
       options: const ['No', 'Yes'],
-      selectedOption: controller.selectedClassRoomDeliveryOption,
+      selectedOption: controller.allChildrenSameSchool,
       isRowLayout: true,
     );
+    // Listen to changes in selectedOption
   }
 
   // Center circular image
   Widget _buildCenterImage(int index) {
     print("index image is $index");
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          controller.pickImage(index);
-        },
-        child: Container(
-          width: 53,
-          height: 53,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.white, // White border color
-              width: 3, // Border width
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25), // Shadow color with transparency
-                blurRadius: 8, // Spread of the shadow
-                offset: const Offset(0, 4), // Position of the shadow (x, y)
-              ),
-            ],
-          ),
-          child: ClipOval(
-            // Ensures the image stays within the circular shape
-            child: (controller.images.isNotEmpty &&
-                    controller.images[index] != null &&
-                    controller.images[index]!.existsSync())
-                ? Image.file(
-                    controller.images[index]!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
-                      );
-                    },
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+    return Stack(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                controller.pickImage(index);
+              },
+              child: Container(
+                width: 53,
+                height: 53,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.white, // White border color
+                    width: 3, // Border width
                   ),
-          ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25), // Shadow color with transparency
+                      blurRadius: 8, // Spread of the shadow
+                      offset: const Offset(0, 4), // Position of the shadow (x, y)
+                    ),
+                  ],
+                ),
+                child: ClipOval(
+                  // Ensures the image stays within the circular shape
+                  child: (controller.images.isNotEmpty &&
+                          controller.images[index] != null &&
+                          controller.images[index]!.existsSync())
+                      ? Image.file(
+                          controller.images[index]!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+                            );
+                          },
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+                        ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
+        Positioned(
+            top: 10,
+            right: 30,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // border: Border.all(
+                //   color: AppColors.gradientEndColor, // White border color
+                //   width: 1, // Border width
+                // ),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.black.withOpacity(0.25), // Shadow color with transparency
+                //     blurRadius: 8, // Spread of the shadow
+                //     offset: const Offset(0, 4), // Position of the shadow (x, y)
+                //   ),
+                // ],
+              ),
+              child: Icon(
+                Icons.check,
+                color: controller.isChildrenAddedSuccessfully[index] != true
+                    ? Colors.white
+                    : AppColors.gradientEndColor,
+              ),
+            ))
+      ],
     );
+    // return Center(
+    //   child: GestureDetector(
+    //     onTap: () {
+    //       controller.pickImage(index);
+    //     },
+    //     child: Container(
+    //       width: 53,
+    //       height: 53,
+    //       decoration: BoxDecoration(
+    //         shape: BoxShape.circle,
+    //         color: Colors.white,
+    //         border: Border.all(
+    //           color: Colors.white, // White border color
+    //           width: 3, // Border width
+    //         ),
+    //         boxShadow: [
+    //           BoxShadow(
+    //             color: Colors.black.withOpacity(0.25), // Shadow color with transparency
+    //             blurRadius: 8, // Spread of the shadow
+    //             offset: const Offset(0, 4), // Position of the shadow (x, y)
+    //           ),
+    //         ],
+    //       ),
+    //       child: ClipOval(
+    //         // Ensures the image stays within the circular shape
+    //         child: (controller.images.isNotEmpty &&
+    //                 controller.images[index] != null &&
+    //                 controller.images[index]!.existsSync())
+    //             ? Image.file(
+    //                 controller.images[index]!,
+    //                 fit: BoxFit.cover,
+    //                 errorBuilder: (context, error, stackTrace) {
+    //                   return Padding(
+    //                     padding: const EdgeInsets.all(10.0),
+    //                     child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+    //                   );
+    //                 },
+    //               )
+    //             : Padding(
+    //                 padding: const EdgeInsets.all(10.0),
+    //                 child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+    //               ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   // Method returning a Widget
@@ -377,7 +493,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
 
   // Reusable text fields
 // Modify the _buildTextFields() method in ParentsChildrenDetailsView
-  Widget _buildTextFields(BuildContext context, int index, bool allInSameSchool) {
+  Widget _buildTextFields(BuildContext context, int index, String allChildrenInSameSchool) {
     // Check if controllers exist for this index
     if (index >= controller.nameControllers.length || index >= controller.idControllers.length) {
       return const SizedBox(); // Return empty widget if controllers don't exist
@@ -395,7 +511,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
           controller: controller.idControllers[index],
         ),
         const SizedBox(height: 12),
-        if (!allInSameSchool)
+        if (allChildrenInSameSchool == "No")
           SimpleTextFieldWithOutSuffixWidget(
             hintText: 'School/Collage Name',
             isReadOnly: true,
@@ -407,7 +523,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
               if (controller.nameControllers[index].value.text.isEmpty &&
                   controller.idControllers[index].value.text.isEmpty) {
                 showCustomSnack("Please Enter a Child Name and School ID");
-                return ;
+                return;
               }
               final selectedSchool =
                   await SchoolSelectorDialog.show(context, controller.schoolNamesList);
@@ -417,6 +533,10 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                     selectedSchool; // ✅ Correct way to assign value
                 print(
                     "Selected School Name for Child $index: ${controller.schoolNameControllerList[index].text}");
+                print(
+                    "Selected School Name for Child $index: ${controller.nameControllers[index].text}");
+                print(
+                    "Selected School id for Child $index: ${controller.idControllers[index].text}");
               }
 
               // if (selectedSchool != null) {

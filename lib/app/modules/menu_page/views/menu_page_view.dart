@@ -19,6 +19,7 @@ class MenuPageView extends GetView<MenuPageController> {
   var mealsList = <MealModel>[].obs;
   var schedulwModel = <Schedule>[].obs;
   var parentSelectedMeals = <ParentSelectedMeals>[].obs;
+
   ParentSelectedMeals selectedMeals = ParentSelectedMeals();
 
   @override
@@ -414,39 +415,28 @@ class MenuPageView extends GetView<MenuPageController> {
                   print(
                       "Meal ID: ${meal.mealId}, Repeat Every: ${meal.repeatEvery}, Available At: ${meal.availableAt}, Repeat On: ${meal.repeatOn}");
                 }
-                // Schedule schedule = Schedule(
-                //     availableAt: controller.scheduleModel
-                //         .where((e) => e.availableAt != null) // Filter out null values
-                //         .expand((e) => e.availableAt) // Flatten the list
-                //         .toList(),
-                //     repeatOn:  controller.scheduleModel
-                //         .where((e) => e.repeatOn != null) // Filter out null values
-                //         .expand((e) => e.repeatOn) // Flatten the list
-                //         .toList(),
-                //     repeatCount: controller.scheduleModel.first.repeatCount,
-                //     repeatEvery: controller.repeatUnit.value);
-                // ParentSelectedMeals selectedMeals = ParentSelectedMeals(
-                //   mealNames: mealsList.map((e) => e.name!).toList(),
-                //   mealPrices: mealsList.map((e) => e.price!).toList(),
-                //   schedules: scheduleParentSelected,
-                //   scheduleStatements: controller.scheduleStatementList,
-                //   imageUrls: mealsList.map((e) => e.imageUrl!).toList(),
-                // );
-                if(controller.selectedIndexes.isEmpty ) {
-                  Get.snackbar('Error', 'Please select a meal');
-                }
-                else{
-                  Get.toNamed(
-                        Routes.CHILDREN_DETAILS,
-                        arguments: {
-                          'scheduleModel': controller.scheduleModel,
-                          'cafeModel': controller.cafeModel,
-                          'mealList': mealsList,
-                          'selectedMealData': parentSelectedMeals,
-                        },
-                      );
-                }
 
+                if (controller.selectedIndexes.isEmpty) {
+                  Get.snackbar('Error', 'Please select a meal');
+                } else {
+                  // print(
+                  //   "Meal ID: ${controller.cafeModel});");
+                  print(
+                      "parentController.cafeteriaNameList[0] id is ${controller.cafeModel[0].cafeteriaName}");
+
+                  Get.toNamed(
+                    Routes.CHILDREN_DETAILS,
+                    arguments: {
+                      'scheduleModel': controller.scheduleModel,
+                      'cafeModel': controller.cafeModel,
+                      'mealList': mealsList,
+                      'selectedMealData': parentSelectedMeals,
+                      'childData': controller.childData,
+                      "imageFile": controller.childImageFile, // Passing the image file
+
+                    },
+                  );
+                }
               },
               isLoading: controller.isLoading.value),
         ));

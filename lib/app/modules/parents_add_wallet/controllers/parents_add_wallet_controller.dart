@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/parents_home/controllers/parents_home_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
 import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/parents/parent_add_wallet_service.dart';
+import 'package:luncher/widgets/custom_snackbar.dart';
 
 class ParentsAddWalletController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,6 +20,7 @@ class ParentsAddWalletController extends GetxController {
 
   // Amount entered
   var amount = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -55,13 +58,29 @@ class ParentsAddWalletController extends GetxController {
     isLoading.value = true;
 
     await ParentAddWalletService().addOrUpdateWalletAmount(wallet).then((val) {
-      Get.snackbar("Success", "Data saved Successfully");
-      Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
+      Get.snackbar("Success", "Balance Added Successfully");
+      doesParentHaveChildren();
       isLoading.value = false;
     }).catchError((error) {
       print("Add Amount to wallet ${error.toString()}");
     });
     isLoading.value = false;
+  }
+
+  // FOR CHECK THE PARENTS HAVE CHILDREN OR NOT
+  Future<bool> doesParentHaveChildren() async {
+    final currentUser = _auth.currentUser;
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+        .collection("parentsChildren") // Collection Name
+        .where("parentId", isEqualTo: currentUser!.uid) // Filter by parentId
+        .limit(1) // Optimize query to check only one document
+        .get();
+    if (querySnapshot.docs.isEmpty) {
+      Get.toNamed(Routes.PARENTS_CHILDREN_DETAILS);
+    } else {
+      Get.offAllNamed(Routes.LANDING_PAGE);
+    }
+    return querySnapshot.docs.isEmpty; // Returns true if at least one document exists
   }
 
   // Clears peso selection when the user types manually

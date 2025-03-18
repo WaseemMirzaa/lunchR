@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/models/parents_models/add_children.dart';
 
 import '../app/routes/app_pages.dart';
 
@@ -19,10 +20,11 @@ class WalletBalanceCard extends StatelessWidget {
   final bool isDelivered;
   final bool isDeliveredBy;
   final bool isNoImage;
+  final ParentsAddChildren? childList;
 
   // Constructor with default value for isEdit
   const WalletBalanceCard(
-      {Key? key,
+      {super.key,
       this.isEdit = true,
       this.isType = true,
       this.isDeliveredBy = true,
@@ -34,8 +36,8 @@ class WalletBalanceCard extends StatelessWidget {
       this.walletDesc = 'Wallet balance',
       this.image = 'assets/icon/scan.png',
       this.price = '\$25',
-      this.isShowScan = true})
-      : super(key: key);
+      this.childList,
+      this.isShowScan = true});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,11 +77,32 @@ class WalletBalanceCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const CircleAvatar(
-                  radius: 30,
-                  backgroundImage: const AssetImage(
-                      'assets/images/icecream.png'), // Replace with your image asset
-                ),
+                child: childList!.childImageUrl != null && childList!.childImageUrl!.isNotEmpty
+                    ? ClipOval(
+                      child: Image.network(
+                          childList!.childImageUrl!,
+                          width: double.infinity,
+                          height: 100,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ));
+                          },
+                        ),
+                    )
+                    : ClipOval(
+                      child: Image.asset(
+                          'assets/images/profile_emoji.png',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                    ),
               ),
             ],
           ),
@@ -94,15 +117,15 @@ class WalletBalanceCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Children Name",
+                      childList!.childName!,
                       style: AppTextStyles.MetropolisMedium.copyWith(
                         fontSize: 14,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     if (isEdit)
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Get.toNamed(Routes.CAFETERIA);
                         },
                         child: Text(
@@ -113,7 +136,7 @@ class WalletBalanceCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     if (!isShowScan)
                       Image.asset(
                         'assets/icon/delete.png',
@@ -123,12 +146,12 @@ class WalletBalanceCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "Collage / School Name",
+                  childList!.schoolName!,
                   style: AppTextStyles.MetropolisRegular.copyWith(
                       fontSize: 12, color: const Color(0xFF858585)),
                 ),
                 Text(
-                  "Child School ID",
+                  childList!.childSchoolID!,
                   style: AppTextStyles.MetropolisRegular.copyWith(
                       fontSize: 12, color: const Color(0xFF858585)),
                 ),
@@ -192,7 +215,7 @@ class WalletBalanceCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 if (isPreparing)
                   Align(
                     alignment: Alignment.centerRight,
@@ -227,7 +250,7 @@ class WalletBalanceCard extends StatelessWidget {
                   color: Colors.black.withOpacity(0.1),
                   margin: const EdgeInsets.only(left: 6, right: 10),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
 
           // Wallet Balance Section
           isShowScan && !isNoImage
@@ -260,7 +283,7 @@ class WalletBalanceCard extends StatelessWidget {
                     ),
                   ],
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
 
           isNoImage
               ? Column(
@@ -276,7 +299,7 @@ class WalletBalanceCard extends StatelessWidget {
                     ),
                   ],
                 )
-              : SizedBox.shrink()
+              : const SizedBox.shrink()
         ],
       ),
     );
@@ -289,11 +312,11 @@ class GradientButton extends StatelessWidget {
   final double width; // Width of the button
 
   const GradientButton({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.height,
     required this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

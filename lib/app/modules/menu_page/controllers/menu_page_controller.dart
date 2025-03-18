@@ -1,71 +1,62 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/models/cefeteria_admin/meal_shedule_model.dart';
+import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/services/parents/add_children_service.dart';
 import 'package:luncher/services/parents/school_cafaterias_model.dart';
 
 class MenuPageController extends GetxController {
   //TODO: Implement CafeteriaController
-final AddChildrenService addChildrenService = AddChildrenService();
+  final AddChildrenService addChildrenService = AddChildrenService();
   var selectedIndexes = <int>{}.obs;
   var scheduleModel = <MealSheduleModel>[].obs;
   var cafeteriaId = ''.obs;
   var isLoading = false.obs;
   var meals = <MealModel>[].obs;
-var searchText = "".obs;
-var filteredMeals = <MealModel>[].obs;
-var isDataFound = false.obs;
-var cafeModel = <CafeteriaDetailsParents>[];
-var scheduleStatementList = <String>[].obs;
+  var searchText = "".obs;
+  var filteredMeals = <MealModel>[].obs;
+  var isDataFound = false.obs;
+  File? childImageFile;
+  var scheduleStatementList = <String>[].obs;
 // Initialize list
-
-
+  var childData = ParentsAddChildren();
+  var cafeModel = <CafeteriaDetailsParents>[]; // Initialize list
+  File? imageFile;
   TextEditingController searchTextController = TextEditingController();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
-      cafeteriaId.value = Get.arguments['userID']; // Retrieve userID
-      cafeModel = List<CafeteriaDetailsParents>.from(
-          Get.arguments['cafeModel'] ?? []);
+
+    // Get arguments from previous screen
+    final Map<String, dynamic>? args = Get.arguments;
+
+    if (args != null) {
+      // Retrieve cafeId
+      String cafeId = args["cafeId"];
+      cafeteriaId.value = cafeId;
+      cafeModel = args["cafeData"] as List<CafeteriaDetailsParents>;
+      // Retrieve childData and cast it properly
+      childData = args["childData"] as ParentsAddChildren;
+
+      // Retrieve image file
+       imageFile = args["imageFile"] as File?;
+
     }
-    for (var cafe in cafeModel) {
-      print("Cafeteria Details:");
-      print("ID: ${cafe.id}");
-      print("School Name: ${cafe.schoolName}");
-      print("Cafeteria Name: ${cafe.cafeteriaName}");
-      print("Image URL: ${cafe.img}");
-      print("-----------------------------");
-    }
-print("cafeteria user id: ${cafeteriaId.value}");
-    fetchMeals();
+    print("cafeteria user id: ${cafeteriaId.value}");
+    fetchMeals(cafeteriaId.value);
   }
-  void fetchMeals() {
+
+  void fetchMeals(String cafeId) {
     isLoading.value = true;
-    // String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
 
-    // if (userId.isEmpty) {
-    //   print("User not logged in");
-    //   isLoading.value = false;
-    //   return;
-    // }
+    meals.bindStream(addChildrenService.getMealsByCafeteriaUser(cafeId));
 
-    meals.bindStream(addChildrenService.getMealsByCafeteriaUser(cafeteriaId.value));
-
-    // ever(meals, (_) {
-    //   for (var meal in meals) {
-    //     if (!switchControllers.containsKey(meal.id)) {
-    //       switchControllers[meal.id!] = ValueNotifier<bool>(meal.availability == 'available');
-    //     } else {
-    //       switchControllers[meal.id]!.value = meal.availability == 'available';
-    //     }
-    //   }
-    //   filterMeals();
-    // });
     meals.listen((_) {
       print("Fetched School Data: $meals");
       filterMeals();
@@ -80,13 +71,14 @@ print("cafeteria user id: ${cafeteriaId.value}");
       filteredMeals.assignAll(meals);
       isDataFound.value = false;
     } else {
-      filteredMeals.assignAll(meals.where((meal) => meal.name!.toLowerCase().contains(searchText.value.toLowerCase())));
+      filteredMeals.assignAll(
+          meals.where((meal) => meal.name!.toLowerCase().contains(searchText.value.toLowerCase())));
       isDataFound.value = filteredMeals.isEmpty;
     }
   }
 
-void updateSearchText(String text) {
-  searchText.value = text;
-  filterMeals();
-}
+  void updateSearchText(String text) {
+    searchText.value = text;
+    filterMeals();
+  }
 }

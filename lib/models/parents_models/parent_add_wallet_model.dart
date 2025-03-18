@@ -22,12 +22,12 @@ class ParentAddWalletModel {
   }
 
   // Factory method to create an instance from Firebase
-  factory ParentAddWalletModel.fromJson(String? id,Map<String, dynamic> json) {
+  factory ParentAddWalletModel.fromJson(String? id, Map<String, dynamic> json) {
     return ParentAddWalletModel(
-      id: json['userId'],
-      amount: json['amount'].toDouble(),
-      enableMonthlyReload: json['enableMonthlyReload'] ?? false,
-      parrentId: json['parentId'] ?? false,
+      id: id ?? json['userId'], // Use passed ID if available
+      amount: (json['amount'] ?? 0).toDouble(), // Ensure double type
+      enableMonthlyReload: json['enableMonthlyReload'] ?? false, // Default to false
+      parrentId: json['parentId']?.toString() ?? '', // Ensure it's a string
     );
   }
 }

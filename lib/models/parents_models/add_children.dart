@@ -1,21 +1,21 @@
 import 'package:luncher/models/parents_models/parent_selected_meals.dart';
 
 class ParentsAddChildren {
-  final String? id;
-  final String? parentId;
-  final String? numberOfChildren;
-  final String? allChildrenAreInSameSchool;
-  final String? classroomDelivery;
+   String? id;
+   String? parentId;
+   String? numberOfChildren;
+   String? allChildrenAreInSameSchool;
+   String? classroomDelivery;
 
-  final String? childId;
-  final String? childName;
-  final String? childSchoolID;
-  final String? childImageUrl;
+   String? childId;
+   String? childName;
+   String? childSchoolID;
+   String? childImageUrl;
 
-  final String? schoolName;
-  final String? cafeteriaName;
+   String? schoolName;
+   String? cafeteriaName;
 
-  final List<ParentSelectedMeals>? selectedMealMenuData; // Changed to List
+   List<ParentSelectedMeals>? selectedMealMenuData; // Changed to List
 
   ParentsAddChildren({
     this.id,

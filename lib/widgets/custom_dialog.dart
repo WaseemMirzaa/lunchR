@@ -9,12 +9,15 @@ import 'package:luncher/widgets/custom_textfeild.dart';
 class SchoolSelectorDialog extends StatefulWidget {
   final List<String> schoolsList;
 
-   const SchoolSelectorDialog({super.key,required this.schoolsList});
+  const SchoolSelectorDialog({super.key, required this.schoolsList});
 
-  static Future<String?> show(BuildContext context,List<String> schoolsList) async {
+  static Future<String?> show(BuildContext context, List<String> schoolsList) async {
     return await showDialog<String>(
       context: context,
-      builder: (BuildContext context,) =>  SchoolSelectorDialog(schoolsList: schoolsList),
+      builder: (
+        BuildContext context,
+      ) =>
+          SchoolSelectorDialog(schoolsList: schoolsList),
     );
   }
 
@@ -49,9 +52,7 @@ class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
         filteredSchools = List.from(controller.schoolNamesList);
       } else {
         filteredSchools = controller.schoolNamesList
-            .where((school) => school
-                .toLowerCase()
-                .contains(textController.text.toLowerCase()))
+            .where((school) => school.toLowerCase().contains(textController.text.toLowerCase()))
             .toList();
       }
     });
@@ -124,12 +125,17 @@ class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
                       itemCount: filteredSchools.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
-                            print("Selected School gg Names: ${filteredSchools[index]}");
-                              controller.schoolNameController.text = filteredSchools[index];
-                              Get.back(result: filteredSchools[index]);
-                           Get.toNamed(Routes.CAFETERIA,arguments: filteredSchools[index]);
-                          },
+                          onTap: controller.allChildrenSameSchool.value == "Yes"
+                              ? () {
+                            controller.schoolNameController.text = filteredSchools[index];
+                            Get.back();
+                          }
+                              : () {
+                                  print("Selected School gg Names: ${filteredSchools[index]}");
+                                  controller.schoolNameController.text = filteredSchools[index];
+                                  Get.back(result: filteredSchools[index]);
+                                  Get.toNamed(Routes.CAFETERIA, arguments: filteredSchools[index]);
+                                },
                           child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             padding: const EdgeInsets.all(16),

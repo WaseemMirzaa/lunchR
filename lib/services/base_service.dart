@@ -34,6 +34,27 @@ abstract class BaseService {
       throw Exception("Image deletion failed: $e");
     }
   }
+  Future<String> uploadChildImage(File imageFile, String folder, String docId) async {
+    try {
+      // Create reference to Firebase Storage
+      Reference storageRef = FirebaseStorage.instance
+          .ref()
+          .child("$folder/$docId.jpg"); // Save with document ID as filename
+
+      // Upload file
+      UploadTask uploadTask = storageRef.putFile(imageFile);
+      TaskSnapshot snapshot = await uploadTask;
+
+      // Get the download URL
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      print("Image uploaded successfully: $downloadUrl");
+
+      return downloadUrl; // Return the URL to store in Firestore
+    } catch (e) {
+      print("Error uploading image: $e");
+      return ""; // Return empty string if upload fails
+    }
+  }
 
   Future<String> uploadImage(
       File imageFile, String folderName, String docId) async {
