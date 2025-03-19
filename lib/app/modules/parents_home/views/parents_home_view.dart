@@ -63,7 +63,9 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                 parentController.toggleMonthlyReload(val);
                               },
                               initialValue: parentController
-                                      .parentAddWalletModel.value?.enableMonthlyReload ??
+                                      .parentAddWalletModel
+                                      .value
+                                      ?.enableMonthlyReload ??
                                   false,
                             )
                           ],
@@ -75,9 +77,12 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                     // Two Wallet Balance Cards
                     Expanded(
                         child: ListView.separated(
-                            itemCount: parentController.childrenList.length, // Display 4 items
-                            padding: const EdgeInsets.only(top: 8), // Reduce the top padding
-                            separatorBuilder: (context, index) => const SizedBox(
+                            itemCount: parentController
+                                .childrenList.length, // Display 4 items
+                            padding: const EdgeInsets.only(
+                                top: 8), // Reduce the top padding
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
                                   height: 16,
                                 ),
                             itemBuilder: (context, index) {
@@ -91,16 +96,18 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                         color: Colors.grey.withOpacity(0.4),
                                         spreadRadius: 1,
                                         blurRadius: 6,
-                                        offset: const Offset(0, 6), // changes position of shadow
+                                        offset: const Offset(
+                                            0, 6), // changes position of shadow
                                       ),
                                     ],
                                   ),
-                                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 16),
                                   child: Row(children: [
                                     // Profile image wrapped with Container
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start, // Align image to top
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start, // Align image to top
                                       children: [
                                         Container(
                                           width: 55,
@@ -108,34 +115,46 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             shape: BoxShape.circle,
-                                            border: Border.all(color: Colors.white, width: 3),
+                                            border: Border.all(
+                                                color: Colors.white, width: 3),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.grey.withOpacity(0.3),
+                                                color: Colors.grey
+                                                    .withOpacity(0.3),
                                                 spreadRadius: 2,
                                                 blurRadius: 6,
-                                                offset: const Offset(0, 3), // shadow position
+                                                offset: const Offset(
+                                                    0, 3), // shadow position
                                               ),
                                             ],
                                           ),
-                                          child: parentController.childrenList.value[index]
+                                          child: parentController
+                                                          .childrenList
+                                                          .value[index]
                                                           .childImageUrl !=
                                                       null &&
-                                                  parentController.childrenList.value[index]
-                                                      .childImageUrl!.isNotEmpty
+                                                  parentController
+                                                      .childrenList
+                                                      .value[index]
+                                                      .childImageUrl!
+                                                      .isNotEmpty
                                               ? ClipOval(
                                                   child: Image.network(
                                                     parentController
-                                                        .childrenList.value[index].childImageUrl!,
+                                                        .childrenList
+                                                        .value[index]
+                                                        .childImageUrl!,
                                                     width: double.infinity,
                                                     height: 100,
                                                     fit: BoxFit.cover,
-                                                    errorBuilder: (context, error, stackTrace) {
+                                                    errorBuilder: (context,
+                                                        error, stackTrace) {
                                                       return const SizedBox(
                                                           width: 100,
                                                           height: 100,
                                                           child: Icon(
-                                                            Icons.image_not_supported_outlined,
+                                                            Icons
+                                                                .image_not_supported_outlined,
                                                             size: 50,
                                                             color: Colors.grey,
                                                           ));
@@ -157,15 +176,18 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                     // Details Column
                                     Expanded(
                                         child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                parentController
-                                                    .childrenList.value[index].childName!,
-                                                style: AppTextStyles.MetropolisMedium.copyWith(
+                                                parentController.childrenList
+                                                    .value[index].childName!,
+                                                style: AppTextStyles
+                                                    .MetropolisMedium.copyWith(
                                                   fontSize: 14,
                                                 ),
                                               ),
@@ -174,13 +196,22 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                               GestureDetector(
                                                 onTap: () {
                                                   // Get.toNamed(Routes.CAFETERIA);
-                                                  Get.toNamed(Routes.PARENTS_CHILDREN_EDIT);
+                                                  Get.toNamed(
+                                                      Routes
+                                                          .PARENTS_CHILDREN_EDIT,
+                                                      arguments:
+                                                          parentController
+                                                                  .childrenList[
+                                                              index]);
                                                 },
                                                 child: Text(
                                                   "Edit",
-                                                  style: AppTextStyles.MetropolisRegular.copyWith(
+                                                  style: AppTextStyles
+                                                          .MetropolisRegular
+                                                      .copyWith(
                                                     fontSize: 12,
-                                                    color: const Color(0xFFFF9A0D),
+                                                    color:
+                                                        const Color(0xFFFF9A0D),
                                                   ),
                                                 ),
                                               ),
@@ -189,11 +220,16 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                               GestureDetector(
                                                 onTap: () {
                                                   // final homeController = Get.find<ParentsAddWalletController>();
-                                                  ParentsHomeController().deleteChildrenById(
-                                                      parentController
-                                                          .childrenList.value[index].parentId!,
-                                                      parentController
-                                                          .childrenList.value[index].childId!);
+                                                  ParentsHomeController()
+                                                      .deleteChildrenById(
+                                                          parentController
+                                                              .childrenList
+                                                              .value[index]
+                                                              .parentId!,
+                                                          parentController
+                                                              .childrenList
+                                                              .value[index]
+                                                              .childId!);
                                                 },
                                                 child: Image.asset(
                                                   'assets/icon/delete.png',
@@ -204,15 +240,24 @@ class ParentsHomeView extends GetView<ParentsHomeController> {
                                             ],
                                           ),
                                           Text(
-                                            parentController.childrenList.value[index].schoolName!,
-                                            style: AppTextStyles.MetropolisRegular.copyWith(
-                                                fontSize: 12, color: const Color(0xFF858585)),
+                                            parentController.childrenList
+                                                .value[index].schoolName!,
+                                            style:
+                                                AppTextStyles.MetropolisRegular
+                                                    .copyWith(
+                                                        fontSize: 12,
+                                                        color: const Color(
+                                                            0xFF858585)),
                                           ),
                                           Text(
-                                            parentController
-                                                .childrenList.value[index].childSchoolID!,
-                                            style: AppTextStyles.MetropolisRegular.copyWith(
-                                                fontSize: 12, color: const Color(0xFF858585)),
+                                            parentController.childrenList
+                                                .value[index].childSchoolID!,
+                                            style:
+                                                AppTextStyles.MetropolisRegular
+                                                    .copyWith(
+                                                        fontSize: 12,
+                                                        color: const Color(
+                                                            0xFF858585)),
                                           )
                                           // if (isType)
                                         ]))

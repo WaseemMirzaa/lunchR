@@ -17,7 +17,8 @@ class AddChildrenService extends BaseService {
 
       List<String> schoolNames = snapshot.docs
           .map((doc) => doc['schoolName'] as String?)
-          .where((name) => name != null && name.isNotEmpty) // Filter out null & empty values
+          .where((name) =>
+              name != null && name.isNotEmpty) // Filter out null & empty values
           .cast<String>()
           .toList();
 
@@ -56,15 +57,17 @@ class AddChildrenService extends BaseService {
   }
 
   // Fetch all children for a specific parent ID
-  Future<List<ParentsAddChildren>> fetchChildrenByParentId(String parentId) async {
+  Future<List<ParentsAddChildren>> fetchChildrenByParentId(
+      String parentId) async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
           .collection("parentsChildren")
           .where("parentId", isEqualTo: parentId)
           .get();
 
-      List<ParentsAddChildren> childrenList =
-          querySnapshot.docs.map((doc) => ParentsAddChildren.fromJson(doc.data())).toList();
+      List<ParentsAddChildren> childrenList = querySnapshot.docs
+          .map((doc) => ParentsAddChildren.fromJson(doc.data()))
+          .toList();
 
       return childrenList;
     } catch (e) {
@@ -86,7 +89,8 @@ class AddChildrenService extends BaseService {
     });
   }
 
-  Future<List<MealSheduleModel>> getPMealShedule(String userId, String mealId) async {
+  Future<List<MealSheduleModel>> getPMealShedule(
+      String userId, String mealId) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection("meal_schedules")
@@ -108,46 +112,75 @@ class AddChildrenService extends BaseService {
 
   // ========= adding children =========
   /// **Add a Child to Firestore**
-//   Future<bool> addOrUpdateChild(ParentsAddChildren childData) async {
-//     final FirebaseFirestore firestore = FirebaseFirestore.instance;
-//
-//     try {
-//       // Query Firestore for a child with the same `name` and `schoolId`
-//       QuerySnapshot querySnapshot = await firestore
-//           .collection('parentsChildren')
-//           .where('childName', isEqualTo: childData.childName)
-//           .where('childSchoolID', isEqualTo: childData.childSchoolID)
-//           .get();
-//
-// // Print each document data
-//       for (var doc in querySnapshot.docs) {
-//         print("Document ID: ${doc.id}");
-//         print("Data: ${doc.data()}");
-//       }
-//       if (querySnapshot.docs.isNotEmpty) {
-//         print("Child data exist : //... ");
-//
-//         // If child exists, update the existing document
-//         String existingChildId = querySnapshot.docs.first.id;
-//         await firestore.collection('parentsChildren').doc(existingChildId).update(childData.toJson());
-//
-//         print("Child updated successfully: $existingChildId");
-//       } else {
-//         // If child doesn't exist, create a new one
-//         DocumentReference childRef = firestore.collection('parentsChildren').doc();
-//         Map<String, dynamic> childJson = childData.toJson();
-//         childJson['id'] = childRef.id; // Store Firestore-generated ID in the model
-//
-//         await childRef.set(childJson);
-//         print("New child added: ${childRef.id}");
-//       }
-//
-//       return true; // Success
-//     } catch (e) {
-//       print("Error adding/updating child: $e");
-//       return false; // Failure
-//     }
-//   }
+  Future<bool> addOrUpdateChild(
+      ParentsAddChildren childData, String? imgUrl) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    print("Parent ID: ${childData.parentId}, Child ID: ${childData.childId}");
+
+    try {
+      // Query Firestore for an existing child
+      QuerySnapshot querySnapshot = await firestore
+          .collection('parentsChildren')
+          .where('parentId', isEqualTo: childData.parentId)
+          .where('childId', isEqualTo: childData.childId)
+          .get();
+
+      // Print all matched documents
+      for (var doc in querySnapshot.docs) {
+        print("Document ID: ${doc.id}");
+        print("Data: ${doc.data()}");
+      }
+
+      if (querySnapshot.docs.isNotEmpty) {
+        print("Child data exists, updating...");
+
+        // Get the existing document ID
+        String existingChildId = querySnapshot.docs.first.id;
+        DocumentReference childDocRef =
+            firestore.collection('parentsChildren').doc(existingChildId);
+
+        // If a new image is provided, upload it and update Firestore
+        if (imgUrl != null && imgUrl.isNotEmpty) {
+          File imageFile = File(imgUrl);
+          String imageUrl = await uploadChildImage(imageFile,
+              "parentsChildren/${childData.parentId}", existingChildId);
+          if (imageUrl.isNotEmpty) {
+            childData.childImageUrl = imageUrl; // Store the new image URL
+          }
+        }
+
+        // Update the existing child data
+        await childDocRef.update(childData.toJson());
+        print("Child updated successfully: $existingChildId");
+      } else {
+        print("Child does not exist, adding new child...");
+
+        // Create a new document
+        DocumentReference childRef =
+            firestore.collection('parentsChildren').doc();
+        childData.id = childRef.id; // Assign Firestore-generated ID
+
+        // If an image is provided, upload it
+        if (imgUrl != null && imgUrl.isNotEmpty) {
+          File imageFile = File(imgUrl);
+          String imageUrl = await uploadChildImage(
+              imageFile, "parentsChildren/${childData.parentId}", childRef.id);
+          if (imageUrl.isNotEmpty) {
+            childData.childImageUrl = imageUrl; // Store the image URL
+          }
+        }
+
+        // Save new child data to Firestore
+        await childRef.set(childData.toJson());
+        print("New child added successfully: ${childRef.id}");
+      }
+
+      return true;
+    } catch (e) {
+      print("Error adding/updating child: $e");
+      return false;
+    }
+  }
 
   Future<bool> addChildren(ParentsAddChildren childData, String? imgUrl) async {
     print(" Index out of range :  ,,,,uuuuuuue ${imgUrl}");
@@ -156,12 +189,14 @@ class AddChildrenService extends BaseService {
     print(" Index out of range :  ,,,,uuuuuuue ${imagePath}");
 
     try {
-      String docId = FirebaseFirestore.instance.collection("parentsChildren").doc().id;
+      String docId =
+          FirebaseFirestore.instance.collection("parentsChildren").doc().id;
       // Assign the generated ID to the meal model
       childData.id = docId;
       // Upload image if available
       if (imageFile != null) {
-        String imageUrl = await uploadChildImage(imageFile, "parentsChildren", docId);
+        String imageUrl =
+            await uploadChildImage(imageFile, "parentsChildren", docId);
         if (imageUrl.isNotEmpty) {
           childData.childImageUrl = imageUrl; // Store the URL in Firestore
         }
@@ -172,7 +207,39 @@ class AddChildrenService extends BaseService {
       print("Error adding child: $e");
       return false; // Failure
     }
+  }
+  // ========= Update  children  against Parint id and child id =========
 
+  Future<bool> updateChildren(String parentId, String childId,
+      ParentsAddChildren childData, String? imgUrl) async {
+    print("Updating child data for parentId: $parentId, childId: $childId");
+    print("Image URL: $imgUrl");
+
+    try {
+      // Reference to Firestore document
+      DocumentReference childDocRef = FirebaseFirestore.instance
+          .collection("parentsChildren")
+          .doc(childId); // Access the document directly
+
+      // If a new image is provided, upload it and update the URL
+      if (imgUrl != null && imgUrl.isNotEmpty) {
+        File imageFile = File(imgUrl);
+        String imageUrl = await uploadChildImage(
+            imageFile, "parentsChildren/$parentId", childId);
+        if (imageUrl.isNotEmpty) {
+          childData.childImageUrl = imageUrl;
+        }
+      }
+
+      // Update Firestore document
+      await childDocRef.update(childData.toJson());
+
+      print("Child updated successfully");
+      return true;
+    } catch (e) {
+      print("Error updating child: $e");
+      return false;
+    }
   }
 
   //FOR DELETING ALL CHILDREN ON THE BASE  ARE CHILDREN ARE IN SAME SCHOOL(OF YES OR NO)

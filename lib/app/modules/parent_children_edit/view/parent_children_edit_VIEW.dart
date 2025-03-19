@@ -9,6 +9,8 @@ import 'package:luncher/widgets/custom_snackbar.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
+bool isEdit = false;
+
 class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
   const ParentsChildrenEditView({
     super.key,
@@ -39,36 +41,13 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
                         ),
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height*0.1),
-                    // SizedBox(height: 100),
-
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     Column(
                       children: [
                         _buildCenterImage(), // Center Image
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 30),
                         _buildTextFields(context),
 
-                        // for space
-                        if (controller.allChildrenSameSchool.value == "Yes")
-                          const SizedBox(height: 12),
-
-                        // if (allInSameSchool)
-                        if (controller.allChildrenSameSchool.value == "Yes")
-                          CustomButton(
-                            text: 'ADD MENU ITEMS',
-                            onPressed: () {
-                              if (controller.nameControllers.value.text.isEmpty ||
-                                  controller.idControllers.value.text.isEmpty ||
-                                  controller.schoolNameController.text.isEmpty) {
-                                showCustomSnack(
-                                    "Please Enter a School Name, Child Name and School ID");
-                                return;
-                              }
-                              Get.toNamed(Routes.CAFETERIA,
-                                  arguments: controller.schoolNameController.text);
-                            },
-                            isLoading: false.obs,
-                          ),
                         const SizedBox(height: 16),
                       ],
                     ),
@@ -76,7 +55,7 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
                 ),
               ),
               const SizedBox(height: 16),
-              CustomButton(
+              CustomButton1(
                 fontSize: 16,
                 isBackColor: true,
                 text: 'CONTINUE',
@@ -84,14 +63,27 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
                   if (controller.nameControllers.value.text.isEmpty ||
                       controller.idControllers.value.text.isEmpty ||
                       controller.schoolNameController.text.isEmpty) {
-                    showCustomSnack("Please Enter a School Name, Child Name and School ID");
+                    showCustomSnack(
+                        "Please Enter a School Name, Child Name and School ID");
                     return;
                   }
-                  // Get.toNamed(Routes.CAFETERIA,
-                  // arguments: controller.schoolNameController.text);
-                  //
+                  print(
+                      "Selected School Name for Child : ${controller.nameControllers.text}");
+                  print(
+                      "Selected School id for Child : ${controller.idControllers.text}");
+
+                  // Get.toNamed(
+                  //   Routes.CAFETERIA,
+                  //   arguments: {
+                  //     "schoolName": controller.schoolNameController.text,
+                  //     "isEdit": true,
+                  //   },
+                  // );
+                  isEdit = true;
+                  Get.toNamed(Routes.CAFETERIA,
+                      arguments: controller.schoolNameController.text);
                 },
-                isLoading: RxBool(false),
+                isLoading: controller.isLoading.value,
               ),
               const SizedBox(height: 32),
             ],
@@ -120,7 +112,8 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color with opacity
+                    color: Colors.black
+                        .withOpacity(0.1), // Shadow color with opacity
                     blurRadius: 5, // Blur effect
                     spreadRadius: 2, // Spread radius
                     offset: const Offset(0, 1), // Position of the shadow (x, y)
@@ -143,7 +136,8 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
                             height: 127,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
-                              return const Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             },
                             errorBuilder: (context, error, stackTrace) {
                               return Image.asset(
@@ -164,7 +158,11 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
               bottom: 0,
               right: 0,
               child: CustomBackButton(
-                  onTap: () => controller.pickImage(), widget: const Icon(Icons.add)))
+                  onTap: () => controller.pickImage(),
+                  widget: const Icon(
+                    Icons.edit,
+                    size: 18,
+                  )))
         ],
       ),
     );
@@ -188,22 +186,17 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
         SimpleTextFieldWithOutSuffixWidget(
           hintText: 'School/Collage Name',
           isReadOnly: true,
-          controller:
-              controller.schoolNameController, // Add this controller to your main controller
+          controller: controller
+              .schoolNameController, // Add this controller to your main controller
           onTap: () async {
             // controller.fetchSchoolNames();
-            if (controller.nameControllers.value.text.isEmpty &&
-                controller.idControllers.value.text.isEmpty) {
-              showCustomSnack("Please Enter a Child Name and School ID");
-              return;
-            }
-            final selectedSchool =
-                await SchoolSelectorDialog.show(context, controller.schoolNamesList);
+            print("Fetched School Names: ${controller.schoolNamesList}");
+
+            final selectedSchool = await SchoolSelectorDialog.show(
+                context, controller.schoolNamesList,
+                isEdit: true);
+            controller.schoolNameController.text = selectedSchool!;
             print("Selected School Names: $selectedSchool");
-            if (selectedSchool != null) {
-              print("Selected School Name for Child : ${controller.schoolNameController.text}");
-              print("Selected School id for Child : ${controller.idControllers.text}");
-            }
           },
         ),
       ],

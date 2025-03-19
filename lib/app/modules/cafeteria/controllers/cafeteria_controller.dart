@@ -19,6 +19,7 @@ var  cafeteriaL = <UserModel>[].obs;
   var isLoading = false.obs;
   var isDataFound = false.obs;
   var searchText = "".obs;
+  bool isEdit = false;
 
 
   final TextEditingController textController = TextEditingController();

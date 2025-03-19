@@ -90,6 +90,7 @@
 //   }
 // }
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -114,122 +115,63 @@ class ParentsChildrenEditController extends GetxController {
   // RxBool allChildrenSameSchool = false.obs; // Default to true
 
   // List of controllers for child-specific data
-  TextEditingController nameControllers = TextEditingController();
   RxList<bool> isChildrenAddedSuccessfully = <bool>[].obs;
-  TextEditingController idControllers = TextEditingController();
   Rx<File?> selectedImage = Rx<File?>(null);
   RxString imageUrl = ''.obs;
 
-  // var imagesUrl = [].obs;
   RxList<String> cafeteriaNameList = <String>[].obs;
-  // for single and list of schools
-  // RxList<TextEditingController> schoolNameController = <TextEditingController>[].obs;
-  final TextEditingController schoolNameController = TextEditingController();
-  // for single and list of schools  end
+  TextEditingController idControllers = TextEditingController();
+  TextEditingController nameControllers = TextEditingController();
+  TextEditingController schoolNameController = TextEditingController();
 
   RxList<String> schoolNamesList = <String>[].obs;
   // FETCHING CHILDREN DATA AGAINST PARENTS
-  var childrenList = <ParentsAddChildren>[].obs;
+  late ParentsAddChildren childData;
   var isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
 
+    // Fetch and cast the received arguments
+    var childReceived = Get.arguments;
 
-    fetchChildren();
+    // Ensure childReceived is not null and assign it to childData
+    if (childReceived != null) {
+      if (childReceived is ParentsAddChildren) {
+        childData = childReceived; // Directly assign if already an object
+      } else if (childReceived is Map<String, dynamic>) {
+        childData =
+            ParentsAddChildren.fromJson(childReceived); // Convert from JSON
+      } else if (childReceived is String) {
+        // If passed as a JSON-encoded string, decode it first
+        Map<String, dynamic> jsonMap = jsonDecode(childReceived);
+        childData = ParentsAddChildren.fromJson(jsonMap);
+      }
+    }
+
+    print("Received child data id: ${childData.id}");
+    // Call the function to populate text fields
+    populateFields();
+    // fetchChildren();
 
     fetchSchoolNames();
-
-
   }
-
-  // // DELETE THE CHILDREN AGAINST PARENTS
-  // Future<void> deleteChildrenByParentId() async {
-  //   var pId = _auth.currentUser;
-  //
-  //   final result = await addChildrenService.deleteChildrenByParentId(pId!.uid);
-  //
-  //   // Print the fetched list
-  //   print("Parent id : $pId");
-  //   print("Fetched School Names: $result");
-  // }
-
-  // void printdata (){
-  //   for(var aa in isChildrenAddedSuccessfully){
-  //     print("isChildrenAddedSuccessfully value : $aa");
-  //
-  //   }
-  // }
-  // void updateLastChildStatus(bool newValue) {
-  //   if (isChildrenAddedSuccessfully.isNotEmpty) {
-  //     int lastIndex = isChildrenAddedSuccessfully.length - 1; // Get last index
-  //     isChildrenAddedSuccessfully[lastIndex] = newValue; // Update last item
-  //   } else {
-  //     print("Error: List is empty, no index to update");
-  //   }
-  // }
-
-  // FETCH CHILDREN DATA AGAINST PARENTS
-  Future<void> fetchChildren() async {
-    isLoading.value = true;
-    final currentParentChildren = FirebaseAuth.instance.currentUser;
-    if (currentParentChildren != null) {
-      List<ParentsAddChildren> children =
-      await addChildrenService.fetchChildrenByParentId(currentParentChildren.uid);
-      childrenList.assignAll(children);
-      print("children data is  $currentParentChildren");
-
-
-      // numberOfChildren.value = childrenList.length;
-      // for (var child in childrenList) {
-      //
-      //   allChilSameSchool.add(child.allChildrenAreInSameSchool);
-      //   nameControllers.add(TextEditingController(text: child.childName));
-      //   idControllers.add(TextEditingController(text: child.childSchoolID));
-      //   images.add(File(child.childImageUrl!));
-      //   schoolNameController.text = child.schoolName!;
-      //   isChildrenAddedSuccessfully.add(true);
-      // }
-      // if (allChilSameSchool[0] == 'Yes') {
-      //   print("Child in same school: ${allChilSameSchool}");
-      //   allChildrenSameSchool.value = allChilSameSchool[0];
-      //
-      //
-      //
-      // } else {
-      //   print("Child  not in same school: ${allChilSameSchool}");
-      // }
-    }
-    print("children data is empty $currentParentChildren");
-
-    isLoading.value = false;
+  /// Function to populate text controllers with existing values
+  void populateFields() {
+    idControllers.text = childData.childSchoolID!;
+    nameControllers.text = childData.childName!;
+    schoolNameController.text = childData.schoolName!;
+    imageUrl.value = childData.childImageUrl!;
   }
-
-  // // FOR CHECK THE PARENTS HAVE CHILDREN OR NOT
-  // Future<bool> doesParentHaveChildren() async {
-  //   final currentUser = _auth.currentUser;
-  //   QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-  //       .collection("parentsChildren") // Collection Name
-  //       .where("parentId", isEqualTo: currentUser!.uid) // Filter by parentId
-  //       .limit(1) // Optimize query to check only one document
-  //       .get();
-  //   if (querySnapshot.docs.isEmpty) {
-  //     showCustomSnack('Please Add Children.');
-  //   } else {
-  //     Get.offAllNamed(Routes.LANDING_PAGE);
-  //   }
-  //   return querySnapshot.docs.isEmpty; // Returns true if at least one document exists
-  // }
   Future<void> pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       print('PickedFile Path${pickedFile.path}');
       selectedImage.value = File(pickedFile.path);
     }
   }
-
-
 
   // Fetch school names and update observable list
   Future<void> fetchSchoolNames() async {

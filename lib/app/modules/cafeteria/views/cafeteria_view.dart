@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/parent_children_edit/controller/parent_children_edit_controller.dart';
+import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
 import 'package:luncher/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
@@ -53,7 +55,8 @@ class CafeteriaView extends GetView<CafeteriaController> {
                         child: Container(
                           height: 35,
                           width: 35,
-                          margin: const EdgeInsets.only(top: 16), // Add some margin if needed
+                          margin: const EdgeInsets.only(
+                              top: 16), // Add some margin if needed
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
@@ -63,7 +66,8 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                 spreadRadius: 2,
                               ),
                             ],
-                            color: Colors.white, // Background color for the container
+                            color: Colors
+                                .white, // Background color for the container
                           ),
                           child: Center(
                             child: Image.asset(
@@ -131,69 +135,146 @@ class CafeteriaView extends GetView<CafeteriaController> {
                 : ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.filteredCafeteriaL.length, // 3 items in the list
+                    itemCount: controller
+                        .filteredCafeteriaL.length, // 3 items in the list
                     itemBuilder: (context, index) {
-                      print(
-                          "Cafeteria Name: ${controller.filteredCafeteriaL[index].cafeteriaName}");
+                      print("is Edit value is cafeteris screen is $isEdit}");
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: GestureDetector(
-                          onTap: () async {
-                            // print(
-                            //     "child Name cafe screen : ${controller.childData.childName}");
-                            final parentController = Get.find<ParentsChildrenDetailsController>();
-                            print(
-                                "child jjj  Name: ${controller.filteredCafeteriaL[index].schoolName!}");
-                            print("child jjj  Name: ${parentController.schoolNameController}");
-                            print(
-                                "child jjj  Name: ${parentController.allChildrenSameSchool.value}");
-
-                            var cafeModel = <CafeteriaDetailsParents>[]; // Initialize list
-                            final ParentsAddChildren parentsAddChildren = ParentsAddChildren(
-                              childName: parentController.nameControllers[index].text,
-                              childSchoolID: parentController.idControllers[index].text,
-                              childImageUrl: parentController.images[index]!.path,
-                              schoolName: parentController.allChildrenSameSchool.value == 'Yes'
-                                  ? parentController.schoolNameController.text
-                                  : controller.filteredCafeteriaL[index].schoolName!,
-                            );
+                          onTap: isEdit == true
+                              ? () {
+                                  print(
+                                      "child jjj  hhh Name: ${controller.filteredCafeteriaL[index].schoolName!}");
+                                  final parentEditController =
+                                      Get.find<ParentsChildrenEditController>();
+                                  var cafeModel = <CafeteriaDetailsParents>[];
+                                  final ParentsAddChildren parentsAddChildren =
+                                      ParentsAddChildren(
+                                    childName: parentEditController
+                                        .nameControllers.text,
+                                    childSchoolID:
+                                        parentEditController.idControllers.text,
+                                    childImageUrl: parentEditController
+                                        .imageUrl.value,
+                                    schoolName: parentEditController
+                                        .schoolNameController.text,
+                                    id: parentEditController.childData.id,
+                                  );
 // Create an instance of CafeteriaDetailsParents and add it to the list
-                            cafeModel.add(
-                              CafeteriaDetailsParents(
-                                id: controller.filteredCafeteriaL[index].userID!,
-                                schoolName: controller.filteredCafeteriaL[index].schoolName!,
-                                cafeteriaName: controller.filteredCafeteriaL[index].cafeteriaName!,
-                                img: controller.filteredCafeteriaL[index].cafeteriaLogo == null
-                                    ? ''
-                                    : controller.filteredCafeteriaL[index].cafeteriaLogo!,
-                              ),
-                            );
+                                  cafeModel.add(
+                                    CafeteriaDetailsParents(
+                                      id: controller
+                                          .filteredCafeteriaL[index].userID!,
+                                      schoolName: controller
+                                          .filteredCafeteriaL[index]
+                                          .schoolName!,
+                                      cafeteriaName: controller
+                                          .filteredCafeteriaL[index]
+                                          .cafeteriaName!,
+                                      img: controller.filteredCafeteriaL[index]
+                                                  .cafeteriaLogo ==
+                                              null
+                                          ? ''
+                                          : controller.filteredCafeteriaL[index]
+                                              .cafeteriaLogo!,
+                                    ),
+                                  );
                             print(
-                                " Index out of range :  ,,,, value ${parentController.images[index]!.path}");
-                            Get.toNamed(
-                              Routes.MENU_PAGE,
-                              arguments: {
-                                "cafeId": controller.filteredCafeteriaL[index].userID,
-                                "childData": parentsAddChildren,
-                                "cafeData": cafeModel,
-                                "imageFile": File(
-                                    parentController.images[index]!.path), // Passing the image file
-                              },
-                            );
+                                "child jjj  hhh Name: ${parentEditController
+                                        .selectedImage.value?.path ?? parentEditController.imageUrl.value}");
 
-                            // Get.toNamed(Routes.MENU_PAGE,
-                            //     arguments:{ controller.filteredCafeteriaL[index].userID,cafeModel});
-                          },
+                            Get.toNamed(
+                                    Routes.MENU_PAGE,
+                                    arguments: {
+                                      "cafeId": controller
+                                          .filteredCafeteriaL[index].userID,
+                                      "childData": parentsAddChildren,
+                                      "cafeData": cafeModel,
+                                      "imageFile": File(parentEditController
+                                          .selectedImage.value?.path ?? parentEditController.imageUrl.value
+                                          ), // Passing the image file
+                                    },
+                                  );
+                                }
+                              : () async {
+                                  // print(
+                                  //     "child Name cafe screen : ${controller.childData.childName}");
+                                  final parentController = Get.find<
+                                      ParentsChildrenDetailsController>();
+                                  print(
+                                      "child jjj  Name: ${controller.filteredCafeteriaL[index].schoolName!}");
+                                  print(
+                                      "child jjj  Name: ${parentController.schoolNameController}");
+                                  print(
+                                      "child jjj  Name: ${parentController.allChildrenSameSchool.value}");
+
+                                  var cafeModel =
+                                      <CafeteriaDetailsParents>[]; // Initialize list
+                                  final ParentsAddChildren parentsAddChildren =
+                                      ParentsAddChildren(
+                                    childName: parentController
+                                        .nameControllers[index].text,
+                                    childSchoolID: parentController
+                                        .idControllers[index].text,
+                                    childImageUrl:
+                                        parentController.images[index]!.path,
+                                    schoolName: parentController
+                                                .allChildrenSameSchool.value ==
+                                            'Yes'
+                                        ? parentController
+                                            .schoolNameController.text
+                                        : controller.filteredCafeteriaL[index]
+                                            .schoolName!,
+                                  );
+// Create an instance of CafeteriaDetailsParents and add it to the list
+                                  cafeModel.add(
+                                    CafeteriaDetailsParents(
+                                      id: controller
+                                          .filteredCafeteriaL[index].userID!,
+                                      schoolName: controller
+                                          .filteredCafeteriaL[index]
+                                          .schoolName!,
+                                      cafeteriaName: controller
+                                          .filteredCafeteriaL[index]
+                                          .cafeteriaName!,
+                                      img: controller.filteredCafeteriaL[index]
+                                                  .cafeteriaLogo ==
+                                              null
+                                          ? ''
+                                          : controller.filteredCafeteriaL[index]
+                                              .cafeteriaLogo!,
+                                    ),
+                                  );
+                                  print(
+                                      " Index out of range :  ,,,, value ${parentController.images[index]!.path}");
+                                  Get.toNamed(
+                                    Routes.MENU_PAGE,
+                                    arguments: {
+                                      "cafeId": controller
+                                          .filteredCafeteriaL[index].userID,
+                                      "childData": parentsAddChildren,
+                                      "cafeData": cafeModel,
+                                      "imageFile": File(parentController
+                                          .images[index]!
+                                          .path), // Passing the image file
+                                    },
+                                  );
+
+                                  // Get.toNamed(Routes.MENU_PAGE,
+                                  //     arguments:{ controller.filteredCafeteriaL[index].userID,cafeModel});
+                                },
                           child: Container(
-                            height: 127, // Adjusted height to fit all content comfortably
+                            height:
+                                127, // Adjusted height to fit all content comfortably
                             margin: const EdgeInsets.only(bottom: 16),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               color: controller.selectedIndexes.contains(index)
-                                  ? const Color(0xFFFC6011)
-                                      .withOpacity(0.2) // Background for selected item
+                                  ? const Color(0xFFFC6011).withOpacity(
+                                      0.2) // Background for selected item
                                   : Colors.white, // Default background
                               boxShadow: [
                                 BoxShadow(
@@ -209,7 +290,9 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                 // Image on the left
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
-                                  child: controller.filteredCafeteriaL[index].cafeteriaLogo == null
+                                  child: controller.filteredCafeteriaL[index]
+                                              .cafeteriaLogo ==
+                                          null
                                       ? const SizedBox(
                                           width: 100,
                                           height: 100,
@@ -224,22 +307,30 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                           width: 100,
                                           height: 100,
                                           fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, loadingProgress) {
-                                            if (loadingProgress == null) return child;
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
                                             return Padding(
-                                              padding: const EdgeInsets.all(5.0),
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
                                               child: Center(
-                                                  child: CircularProgressIndicator(
-                                                      color: const Color(0xFFFC6011)
-                                                          .withOpacity(0.2))),
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          color: const Color(
+                                                                  0xFFFC6011)
+                                                              .withOpacity(
+                                                                  0.2))),
                                             );
                                           },
-                                          errorBuilder: (context, error, stackTrace) {
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
                                             return const SizedBox(
                                                 width: 100,
                                                 height: 100,
                                                 child: Icon(
-                                                  Icons.image_not_supported_outlined,
+                                                  Icons
+                                                      .image_not_supported_outlined,
                                                   size: 50,
                                                   color: Colors.grey,
                                                 ));
@@ -251,21 +342,27 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                 // Right section: Text Information and Divider
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       // Cafeteria Name and Call Icon
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              controller.filteredCafeteriaL[index].cafeteriaName ??
+                                              controller
+                                                      .filteredCafeteriaL[index]
+                                                      .cafeteriaName ??
                                                   "", // Replace with dynamic data
-                                              style: AppTextStyles.MetropolisMedium.copyWith(
+                                              style: AppTextStyles
+                                                  .MetropolisMedium.copyWith(
                                                 fontSize: 14,
                                                 color: Colors.black,
                                               ),
-                                              overflow: TextOverflow.ellipsis, // Handle long names
+                                              overflow: TextOverflow
+                                                  .ellipsis, // Handle long names
                                             ),
                                           ),
                                           const SizedBox(width: 8),
@@ -284,7 +381,8 @@ class CafeteriaView extends GetView<CafeteriaController> {
                                       Text(
                                         controller.filteredCafeteriaL[index]
                                             .schoolName!, // Replace with dynamic data
-                                        style: AppTextStyles.MetropolisRegular.copyWith(
+                                        style: AppTextStyles.MetropolisRegular
+                                            .copyWith(
                                           fontSize: 12,
                                           color: const Color(0xFF858585),
                                         ),

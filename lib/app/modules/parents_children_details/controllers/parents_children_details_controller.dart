@@ -98,6 +98,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/services/parents/add_children_service.dart';
 import 'package:luncher/widgets/custom_snackbar.dart';
@@ -108,6 +109,7 @@ class ParentsChildrenDetailsController extends GetxController {
 
   // Observable for selected option for classroom delivery
   RxString allChildrenSameSchool = 'No'.obs;
+  RxBool isYesSelected = false.obs;
 
   // Initialize with 0 children
   RxInt numberOfChildren = 0.obs;
@@ -121,11 +123,13 @@ class ParentsChildrenDetailsController extends GetxController {
   // var imagesUrl = [].obs;
   RxList<String> cafeteriaNameList = <String>[].obs;
   // for single and list of schools
-  RxList<TextEditingController> schoolNameControllerList = <TextEditingController>[].obs;
+  RxList<TextEditingController> schoolNameControllerList =
+      <TextEditingController>[].obs;
   final TextEditingController schoolNameController = TextEditingController();
   // for single and list of schools  end
 
   RxList<String> schoolNamesList = <String>[].obs;
+  RxList<String> addedChildrenIdList = <String>[].obs;
   // FETCHING CHILDREN DATA AGAINST PARENTS
   var childrenList = <ParentsAddChildren>[].obs;
   var isLoading = false.obs;
@@ -134,30 +138,30 @@ class ParentsChildrenDetailsController extends GetxController {
   void onInit() {
     super.onInit();
 
-
     fetchChildren();
 
     fetchSchoolNames();
 
-    ever(allChildrenSameSchool, (selectedValue) {
-      if (selectedValue == 'Yes') {
-        deleteChildrenByParentId();
-        clear();
-      } else if (selectedValue == 'No') {
-        print("selectedValue is NO: $selectedValue");
-      }
-    });
+    // ever(allChildrenSameSchool, (selectedValue) {
+    //   if (selectedValue == 'Yes') {
+    //     deleteChildrenByParentId();
+    //     clear();
+    //   } else if (selectedValue == 'No') {
+    //     print("selectedValue is NO: $selectedValue");
+    //   }
+    // });
   }
 
   // DELETE THE CHILDREN AGAINST PARENTS
-  Future<void> deleteChildrenByParentId() async {
+  Future<void> deleteChildrenByParentId(BuildContext context) async {
     var pId = _auth.currentUser;
-
-    final result = await addChildrenService.deleteChildrenByParentId(pId!.uid);
+    showDeleteConfirmationDialog(
+        context,
+        "If you proceed, you will need to re-enter all children because you are changing the school for your children.",
+        pId!.uid);
 
     // Print the fetched list
     print("Parent id : $pId");
-    print("Fetched School Names: $result");
   }
 
   // void printdata (){
@@ -180,11 +184,10 @@ class ParentsChildrenDetailsController extends GetxController {
     isLoading.value = true;
     final currentParentChildren = FirebaseAuth.instance.currentUser;
     if (currentParentChildren != null) {
-      List<ParentsAddChildren> children =
-          await addChildrenService.fetchChildrenByParentId(currentParentChildren.uid);
+      List<ParentsAddChildren> children = await addChildrenService
+          .fetchChildrenByParentId(currentParentChildren.uid);
       childrenList.assignAll(children);
       print("children data is  $currentParentChildren");
-
 
       // numberOfChildren.value = childrenList.length;
       // for (var child in childrenList) {
@@ -196,15 +199,17 @@ class ParentsChildrenDetailsController extends GetxController {
       //   schoolNameController.text = child.schoolName!;
       //   isChildrenAddedSuccessfully.add(true);
       // }
-      // if (allChilSameSchool[0] == 'Yes') {
-      //   print("Child in same school: ${allChilSameSchool}");
-      //   allChildrenSameSchool.value = allChilSameSchool[0];
-      //
-      //
-      //
-      // } else {
-      //   print("Child  not in same school: ${allChilSameSchool}");
-      // }
+      if (childrenList[0].allChildrenAreInSameSchool == 'Yes') {
+        print(
+            "Child in same school: ${childrenList[0].allChildrenAreInSameSchool}");
+        allChildrenSameSchool.value =
+            childrenList[0].allChildrenAreInSameSchool!;
+        isYesSelected.value = true;
+      } else {
+        allChildrenSameSchool.value =
+            childrenList[0].allChildrenAreInSameSchool!;
+        isYesSelected.value = false;
+      }
     }
     print("children data is empty $currentParentChildren");
 
@@ -214,7 +219,8 @@ class ParentsChildrenDetailsController extends GetxController {
   // FOR CHECK THE PARENTS HAVE CHILDREN OR NOT
   Future<bool> doesParentHaveChildren() async {
     final currentUser = _auth.currentUser;
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
         .collection("parentsChildren") // Collection Name
         .where("parentId", isEqualTo: currentUser!.uid) // Filter by parentId
         .limit(1) // Optimize query to check only one document
@@ -224,11 +230,13 @@ class ParentsChildrenDetailsController extends GetxController {
     } else {
       Get.offAllNamed(Routes.LANDING_PAGE);
     }
-    return querySnapshot.docs.isEmpty; // Returns true if at least one document exists
+    return querySnapshot
+        .docs.isEmpty; // Returns true if at least one document exists
   }
 
   Future<void> pickImage(int index) async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       // Ensure list has enough elements before assigning
       while (images.length <= index) {
@@ -282,6 +290,7 @@ class ParentsChildrenDetailsController extends GetxController {
     var idController = TextEditingController();
     var schoolNameController = TextEditingController();
     String cafeteriaNameController = '';
+    String addedChildId = '';
 
     File? imageFile; // Nullable File object
     // Add listener to the new ID controller
@@ -297,6 +306,7 @@ class ParentsChildrenDetailsController extends GetxController {
     idControllers.add(idController);
     schoolNameControllerList.add(schoolNameController);
     cafeteriaNameList.add(cafeteriaNameController);
+    addedChildrenIdList.add(addedChildId);
     isChildrenAddedSuccessfully.add(false);
 
     // Add image file if it's not null
@@ -327,6 +337,9 @@ class ParentsChildrenDetailsController extends GetxController {
         cafeteriaNameList.removeLast();
         isChildrenAddedSuccessfully.removeLast(); // ✅ Remove last element
       }
+      if (addedChildrenIdList.isNotEmpty) {
+        addedChildrenIdList.removeLast();
+      }
       // if (images.isNotEmpty) {
       //   images.last?.delete();
       //   images.removeLast();
@@ -345,6 +358,8 @@ class ParentsChildrenDetailsController extends GetxController {
     for (var controller in schoolNameControllerList) {
       controller.clear();
     }
+
+    addedChildrenIdList.value = [];
     numberOfChildren.value = 0;
     isChildrenAddedSuccessfully.clear();
     schoolNameController.text = '';
@@ -367,5 +382,55 @@ class ParentsChildrenDetailsController extends GetxController {
     isChildrenAddedSuccessfully.clear();
     images.clear();
     super.onClose();
+  }
+
+  Future<bool?> showDeleteConfirmationDialog(
+      BuildContext context, String message, String parentId) async {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // Prevent closing by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure you want to delete All Children!",
+              textAlign: TextAlign.center,
+              style: AppTextStyles.MetropolisRegular.copyWith(
+                color: Colors.red,
+                fontSize: 16,
+              )),
+          content: Text(message,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.MetropolisRegular.copyWith(
+                color: const Color(0xFF4A4B4D),
+                fontSize: 15,
+              )),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // No, cancel deletion
+              },
+              child: Text("Cancel",
+                  style: AppTextStyles.MetropolisRegular.copyWith(
+                    color: const Color(0xFF4A4B4D),
+                    fontSize: 14,
+                  )),
+            ),
+            TextButton(
+              onPressed: () async {
+                final result =
+                    await addChildrenService.deleteChildrenByParentId(parentId);
+                Navigator.of(context).pop(false); // No, cancel deletion
+
+                // Yes, proceed with deletion
+              },
+              child: Text("Continue",
+                  style: AppTextStyles.MetropolisRegular.copyWith(
+                    color: Colors.red,
+                    fontSize: 14,
+                  )),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/cafeteria_phone_verification/views/cafeteria_phone_verification_view.dart';
+import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
@@ -11,7 +13,10 @@ import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/parents_children_details_controller.dart';
 
-class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsController> {
+int selectedIndex = 0;
+
+class ParentsChildrenDetailsView
+    extends GetView<ParentsChildrenDetailsController> {
   final bool isAddedMenuItems;
 
   const ParentsChildrenDetailsView({
@@ -104,7 +109,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                     const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: _buildChildrenAreInSameSchool(),
+                      child: _buildChildrenAreInSameSchool(context),
                     ),
 
                     const Padding(
@@ -125,8 +130,8 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                           children: [
                             _buildCenterImage(index), // Center Image
                             const SizedBox(height: 16),
-                            _buildTextFields(
-                                context, index, controller.allChildrenSameSchool.value),
+                            _buildTextFields(context, index,
+                                controller.allChildrenSameSchool.value),
 
                             // for space
                             if (controller.allChildrenSameSchool.value == "Yes")
@@ -137,9 +142,12 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                               CustomButton(
                                 text: 'ADD MENU ITEMS',
                                 onPressed: () {
-                                  if (controller.nameControllers[index].value.text.isEmpty ||
-                                      controller.idControllers[index].value.text.isEmpty ||
-                                      controller.schoolNameController.text.isEmpty) {
+                                  if (controller.nameControllers[index].value
+                                          .text.isEmpty ||
+                                      controller.idControllers[index].value.text
+                                          .isEmpty ||
+                                      controller
+                                          .schoolNameController.text.isEmpty) {
                                     showCustomSnack(
                                         "Please Enter a School Name, Child Name and School ID");
                                     return;
@@ -148,9 +156,11 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                                       "Selected School Name for Child $index: ${controller.nameControllers[index].text}");
                                   print(
                                       "Selected School id for Child $index: ${controller.idControllers[index].text}");
+                                  selectedIndex = index;
 
                                   Get.toNamed(Routes.CAFETERIA,
-                                      arguments: controller.schoolNameController.text);
+                                      arguments:
+                                          controller.schoolNameController.text);
                                 },
                                 isLoading: false.obs,
                               ),
@@ -206,9 +216,7 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                 isBackColor: true,
                 text: 'CONTINUE',
                 onPressed: () {
-
                   controller.doesParentHaveChildren();
-
                 },
                 isLoading: RxBool(false),
               ),
@@ -222,13 +230,87 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
   }
 
   // Type of Payment
-  Widget _buildChildrenAreInSameSchool() {
-    return SelectableOptions(
-      title: 'All Children are in same School?',
-      options: const ['No', 'Yes'],
-      selectedOption: controller.allChildrenSameSchool,
-      isRowLayout: true,
+  Widget _buildChildrenAreInSameSchool(BuildContext context) {
+    return Obx(
+      () => FittedBox(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text("All Children are in same school?",
+                style: AppTextStyles.MetropolisRegular.copyWith(
+                  color: const Color(0xFF4A4B4D),
+                  fontSize: 16,
+                )),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                controller.isYesSelected.value = false;
+                print("objectdsss");
+                controller.allChildrenSameSchool.value = "No";
+                 controller.deleteChildrenByParentId(context);
+              },
+              child: Row(
+                children: [
+                  Text("No",
+                      style: AppTextStyles.MetropolisRegular.copyWith(
+                        color: const Color(0xFF4A4B4D),
+                        fontSize: 16,
+                      )),
+                  const SizedBox(width: 5),
+                  Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey, width: 1.5),
+                      color: controller.isYesSelected.value == false
+                          ? AppColors.gradientStartColor
+                          : Colors.transparent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 20),
+            GestureDetector(
+              onTap: () {
+                controller.isYesSelected.value = true;
+                controller.allChildrenSameSchool.value = "Yes";
+                controller.deleteChildrenByParentId(context);
+                print("objectllllll");
+              },
+              child: Row(
+                children: [
+                  Text("Yes",
+                      style: AppTextStyles.MetropolisRegular.copyWith(
+                        color: const Color(0xFF4A4B4D),
+                        fontSize: 16,
+                      )),
+                  const SizedBox(width: 5),
+                  Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey, width: 1.5),
+                      color: controller.isYesSelected.value == true
+                          ? AppColors.gradientStartColor
+                          : Colors.transparent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
+    // return SelectableOptions(
+    //   title: 'All Children are in same School?',
+    //   options: const ['No', 'Yes'],
+    //   selectedOption: controller.allChildrenSameSchool,
+    //   isRowLayout: true,
+    // );
     // Listen to changes in selectedOption
   }
 
@@ -256,9 +338,11 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.25), // Shadow color with transparency
+                      color: Colors.black
+                          .withOpacity(0.25), // Shadow color with transparency
                       blurRadius: 8, // Spread of the shadow
-                      offset: const Offset(0, 4), // Position of the shadow (x, y)
+                      offset:
+                          const Offset(0, 4), // Position of the shadow (x, y)
                     ),
                   ],
                 ),
@@ -273,13 +357,15 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                           errorBuilder: (context, error, stackTrace) {
                             return Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+                              child: Image.asset("assets/icon/camera.png",
+                                  fit: BoxFit.contain),
                             );
                           },
                         )
                       : Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Image.asset("assets/icon/camera.png", fit: BoxFit.contain),
+                          child: Image.asset("assets/icon/camera.png",
+                              fit: BoxFit.contain),
                         ),
                 ),
               ),
@@ -399,7 +485,8 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
           Container(
             decoration: BoxDecoration(
               color: AppColors.whiteColor,
-              borderRadius: BorderRadius.circular(20), // Set border radius to 20
+              borderRadius:
+                  BorderRadius.circular(20), // Set border radius to 20
 
               boxShadow: [
                 BoxShadow(
@@ -493,9 +580,11 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
 
   // Reusable text fields
 // Modify the _buildTextFields() method in ParentsChildrenDetailsView
-  Widget _buildTextFields(BuildContext context, int index, String allChildrenInSameSchool) {
+  Widget _buildTextFields(
+      BuildContext context, int index, String allChildrenInSameSchool) {
     // Check if controllers exist for this index
-    if (index >= controller.nameControllers.length || index >= controller.idControllers.length) {
+    if (index >= controller.nameControllers.length ||
+        index >= controller.idControllers.length) {
       return const SizedBox(); // Return empty widget if controllers don't exist
     }
 
@@ -515,8 +604,8 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
           SimpleTextFieldWithOutSuffixWidget(
             hintText: 'School/Collage Name',
             isReadOnly: true,
-            controller: controller
-                .schoolNameControllerList[index], // Add this controller to your main controller
+            controller: controller.schoolNameControllerList[index],
+            // Add this controller to your main controller
             onTap: () async {
               // controller.fetchSchoolNames();
               print("Fetched School Names: ${controller.schoolNamesList}");
@@ -525,8 +614,10 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                 showCustomSnack("Please Enter a Child Name and School ID");
                 return;
               }
-              final selectedSchool =
-                  await SchoolSelectorDialog.show(context, controller.schoolNamesList);
+              isEdit = false;
+              selectedIndex = index;
+              final selectedSchool = await SchoolSelectorDialog.show(
+                  context, controller.schoolNamesList);
               print("Selected School Names: $selectedSchool");
               if (selectedSchool != null) {
                 controller.schoolNameControllerList[index].text =
@@ -538,12 +629,6 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
                 print(
                     "Selected School id for Child $index: ${controller.idControllers[index].text}");
               }
-
-              // if (selectedSchool != null) {
-              //   controller.schoolNameController.text = selectedSchool;
-              //   // Navigate to next screen if needed
-              //   Get.toNamed(Routes.CHILDREN_DETAILS);
-              // }
             },
           ),
       ],
@@ -556,14 +641,15 @@ class ParentsChildrenDetailsView extends GetView<ParentsChildrenDetailsControlle
         SimpleTextFieldWithOutSuffixWidget(
           hintText: 'School/Collage Name',
           isReadOnly: true,
-          controller:
-              controller.schoolNameController, // Add this controller to your main controller
+          controller: controller
+              .schoolNameController, // Add this controller to your main controller
           onTap: () async {
             // controller.fetchSchoolNames();
             print("Fetched School Names: ${controller.schoolNamesList}");
+            isEdit = false;
 
-            final selectedSchool =
-                await SchoolSelectorDialog.show(context, controller.schoolNamesList);
+            final selectedSchool = await SchoolSelectorDialog.show(
+                context, controller.schoolNamesList);
             print("Selected School Names: $selectedSchool");
 
             // if (selectedSchool != null) {

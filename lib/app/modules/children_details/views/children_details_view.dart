@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
@@ -22,7 +23,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 42, bottom: 12),
+              padding: const EdgeInsets.only(
+                  left: 24, right: 24, top: 42, bottom: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -36,7 +38,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                       child: Container(
                         height: 35,
                         width: 35,
-                        margin: const EdgeInsets.only(top: 16), // Add some margin if needed
+                        margin: const EdgeInsets.only(
+                            top: 16), // Add some margin if needed
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           boxShadow: [
@@ -46,7 +49,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                               spreadRadius: 2,
                             ),
                           ],
-                          color: Colors.white, // Background color for the container
+                          color: Colors
+                              .white, // Background color for the container
                         ),
                         child: Center(
                           child: Image.asset(
@@ -85,7 +89,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                         _selectMealDeals(controller.selectedMealData),
                         const SizedBox(height: 8),
                         Align(
-                          alignment: Alignment.centerRight, // Aligns content to the right
+                          alignment: Alignment
+                              .centerRight, // Aligns content to the right
                           child: GestureDetector(
                             onTap: () {
                               // Add your logic here
@@ -122,15 +127,23 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
               ),
             ),
             Obx(
-                ()=> CustomButton1(
-                  fontSize: 16,
-                  isBackColor: true,
-                  text: 'SUBMIT',
-                  onPressed: () {
-                    controller.addChildren();
-
-                  },
-                  isLoading: controller.isLoading.value),
+              () => isEdit == true
+                  ? CustomButton1(
+                      fontSize: 16,
+                      isBackColor: true,
+                      text: 'UPDATE',
+                      onPressed: () {
+                        controller.updateChildren();
+                      },
+                      isLoading: controller.isLoading.value)
+                  : CustomButton1(
+                      fontSize: 16,
+                      isBackColor: true,
+                      text: 'SUBMIT',
+                      onPressed: () {
+                        controller.addChildren();
+                      },
+                      isLoading: controller.isLoading.value),
             ),
             const SizedBox(height: 16),
           ],
@@ -147,8 +160,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
       isSingleRow: true,
       title: 'Classroom Delivery?',
       options: const ['No', 'Yes'],
-      selectedOption:
-          controller.selectedClassRoomDeliveryOption, // Pass the observable to SelectableOptions
+      selectedOption: controller
+          .selectedClassRoomDeliveryOption, // Pass the observable to SelectableOptions
       isRowLayout: true,
     );
   }
@@ -158,7 +171,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
     return SelectableOptions(
       title: 'Duration',
       options: const ['Weekly', 'Monthly'],
-      selectedOption: controller.selectedDurationOption, // Reuse the same observable if needed
+      selectedOption: controller
+          .selectedDurationOption, // Reuse the same observable if needed
     );
   }
 
@@ -200,32 +214,44 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                   builder: (BuildContext context, Widget? child) {
                     return Theme(
                       data: ThemeData.light().copyWith(
-                        primaryColor: const Color(0xFFE65100), // Dark orange for primary color
+                        primaryColor: const Color(
+                            0xFFE65100), // Dark orange for primary color
                         buttonTheme: const ButtonThemeData(
-                          textTheme: ButtonTextTheme.primary, // Button text color
+                          textTheme:
+                              ButtonTextTheme.primary, // Button text color
                         ),
                         // Customizing time picker button colors
                         timePickerTheme: const TimePickerThemeData(
-                          backgroundColor: Color(0xFFFFE0B2), // Light orange background
-                          dialBackgroundColor: Color(0xFFFF7043), // Dark orange dial background
-                          dialHandColor: Color(0xFFE65100), // Dark orange dial hand
-                          dialTextColor:
-                              Color.fromARGB(255, 255, 255, 255), // Lighter orange dial text
-                          entryModeIconColor: Color(0xFFE65100), // Dark orange entry mode icon
+                          backgroundColor:
+                              Color(0xFFFFE0B2), // Light orange background
+                          dialBackgroundColor:
+                              Color(0xFFFF7043), // Dark orange dial background
+                          dialHandColor:
+                              Color(0xFFE65100), // Dark orange dial hand
+                          dialTextColor: Color.fromARGB(
+                              255, 255, 255, 255), // Lighter orange dial text
+                          entryModeIconColor:
+                              Color(0xFFE65100), // Dark orange entry mode icon
                         ),
-                        cardColor:
-                            const Color(0xFFFFA726), // Light orange for selection card background
-                        dialogBackgroundColor: const Color(0xFFFFE0B2), // Light orange for dialogs
+                        cardColor: const Color(
+                            0xFFFFA726), // Light orange for selection card background
+                        dialogBackgroundColor:
+                            const Color(0xFFFFE0B2), // Light orange for dialogs
                         textTheme: const TextTheme(
-                          bodyLarge: TextStyle(color: Color(0xFFE65100)), // Dark orange text
-                          bodyMedium: TextStyle(color: Color(0xFFFF7043)), // Darker orange text
+                          bodyLarge: TextStyle(
+                              color: Color(0xFFE65100)), // Dark orange text
+                          bodyMedium: TextStyle(
+                              color: Color(0xFFFF7043)), // Darker orange text
                         ),
                         colorScheme: const ColorScheme.light(
                           primary: Color(0xFFE65100), // Dark orange primary
-                          onPrimary: Color(0xFFFFE0B2), // Light orange for text on primary
-                          secondary: Color(0xFFFF7043), // Secondary as darker orange
+                          onPrimary: Color(
+                              0xFFFFE0B2), // Light orange for text on primary
+                          secondary:
+                              Color(0xFFFF7043), // Secondary as darker orange
                           onSecondary: Color(0xFFFFE0B2), // Text on secondary
-                          background: Color(0xFFFFCC80), // Light orange background
+                          background:
+                              Color(0xFFFFCC80), // Light orange background
                           onBackground: Color(0xFFE65100), // Text on background
                         ),
                       ),
@@ -334,7 +360,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                           padding: const EdgeInsets.all(5.0),
                           child: Center(
                               child: CircularProgressIndicator(
-                                  color: const Color(0xFFFC6011).withOpacity(0.2))),
+                                  color: const Color(0xFFFC6011)
+                                      .withOpacity(0.2))),
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
@@ -392,18 +419,20 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: parentSelectedMeals.length,
-     separatorBuilder: (context, index)=>const SizedBox(height: 12),
-
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (BuildContext context, int index) {
         return Container(
           height: 100,
-          padding: const EdgeInsets.all(8), // Optional: for padding inside the container
+          padding: const EdgeInsets.all(
+              8), // Optional: for padding inside the container
           decoration: BoxDecoration(
             color: Colors.white, // Background color of the container
-            borderRadius: BorderRadius.circular(12), // Rounded corners for the container
+            borderRadius:
+                BorderRadius.circular(12), // Rounded corners for the container
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2), // Shadow color with opacity
+                color:
+                    Colors.grey.withOpacity(0.2), // Shadow color with opacity
                 blurRadius: 6, // Blur effect for the shadow
                 spreadRadius: 2, // Spread of the shadow
                 offset: const Offset(0, 2), // Shadow offset (vertical)
@@ -428,7 +457,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                         padding: const EdgeInsets.all(5.0),
                         child: Center(
                             child: CircularProgressIndicator(
-                                color: const Color(0xFFFC6011).withOpacity(0.2))),
+                                color:
+                                    const Color(0xFFFC6011).withOpacity(0.2))),
                       );
                     },
                     errorBuilder: (context, error, stackTrace) {
@@ -459,7 +489,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
                     child: Text(
                       parentSelectedMeals[index].mealName!, // ✅ Safe access
                       maxLines: 1, // Ensure text stays in one line
-                      overflow: TextOverflow.ellipsis, // Prevents text from wrapping
+                      overflow:
+                          TextOverflow.ellipsis, // Prevents text from wrapping
                       style: AppTextStyles.MetropolisMedium.copyWith(
                         fontSize: 13,
                         color: Colors.black,
@@ -554,7 +585,8 @@ class ChildrenDetailsView extends GetView<ChildrenDetailsController> {
 
         // Right side: Wallet Balance Text inside its own container
         Container(
-          padding: const EdgeInsets.only(right: 16), // Optional padding for spacing
+          padding:
+              const EdgeInsets.only(right: 16), // Optional padding for spacing
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

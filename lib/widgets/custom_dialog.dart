@@ -8,16 +8,22 @@ import 'package:luncher/widgets/custom_textfeild.dart';
 
 class SchoolSelectorDialog extends StatefulWidget {
   final List<String> schoolsList;
+  final bool isEdit;
 
-  const SchoolSelectorDialog({super.key, required this.schoolsList});
+  const SchoolSelectorDialog(
+      {super.key, required this.schoolsList, this.isEdit = false});
 
-  static Future<String?> show(BuildContext context, List<String> schoolsList) async {
+  static Future<String?> show(BuildContext context, List<String> schoolsList,
+      {bool isEdit = false}) async {
     return await showDialog<String>(
       context: context,
       builder: (
         BuildContext context,
       ) =>
-          SchoolSelectorDialog(schoolsList: schoolsList),
+          SchoolSelectorDialog(
+        schoolsList: schoolsList,
+        isEdit: isEdit,
+      ),
     );
   }
 
@@ -26,7 +32,8 @@ class SchoolSelectorDialog extends StatefulWidget {
 }
 
 class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
-  final ParentsChildrenDetailsController controller = Get.find<ParentsChildrenDetailsController>();
+  final ParentsChildrenDetailsController controller =
+      Get.find<ParentsChildrenDetailsController>();
   final TextEditingController textController = TextEditingController();
   // final List<String> schools = [
   //   'Cambridge International School',
@@ -52,7 +59,9 @@ class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
         filteredSchools = List.from(controller.schoolNamesList);
       } else {
         filteredSchools = controller.schoolNamesList
-            .where((school) => school.toLowerCase().contains(textController.text.toLowerCase()))
+            .where((school) => school
+                .toLowerCase()
+                .contains(textController.text.toLowerCase()))
             .toList();
       }
     });
@@ -125,17 +134,28 @@ class _SchoolSelectorDialogState extends State<SchoolSelectorDialog> {
                       itemCount: filteredSchools.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: controller.allChildrenSameSchool.value == "Yes"
+                          onTap: widget.isEdit == true
                               ? () {
-                            controller.schoolNameController.text = filteredSchools[index];
-                            Get.back();
-                          }
-                              : () {
-                                  print("Selected School gg Names: ${filteredSchools[index]}");
-                                  controller.schoolNameController.text = filteredSchools[index];
                                   Get.back(result: filteredSchools[index]);
-                                  Get.toNamed(Routes.CAFETERIA, arguments: filteredSchools[index]);
-                                },
+                                }
+                              : controller.allChildrenSameSchool.value == "Yes"
+                                  ? () {
+                                      controller.schoolNameController.text =
+                                          filteredSchools[index];
+                                      print(
+                                          "Selected School gg Names: ${filteredSchools[index]}");
+
+                                      Get.back();
+                                    }
+                                  : () {
+                                      print(
+                                          "Selected School gg Names: ${filteredSchools[index]}");
+                                      controller.schoolNameController.text =
+                                          filteredSchools[index];
+                                      Get.back(result: filteredSchools[index]);
+                                      Get.toNamed(Routes.CAFETERIA,
+                                          arguments: filteredSchools[index]);
+                                    },
                           child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             padding: const EdgeInsets.all(16),

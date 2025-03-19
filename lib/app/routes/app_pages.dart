@@ -156,7 +156,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA,
-      page: () => const CafeteriaView(),
+      page: () =>  CafeteriaView(),
       binding: CafeteriaBinding(),
     ),
     GetPage(
