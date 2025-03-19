@@ -44,8 +44,8 @@ class ParentAddWalletService extends BaseService {
     } catch (e) {
       print("❌ Error updating wallet amount for user ${model.parrentId}: $e");
     }
+   
   }
-
 
 
 }

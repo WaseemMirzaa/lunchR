@@ -25,6 +25,38 @@ class ParentsHomeController extends GetxController {
     super.onInit();
   }
 
+  Future<void> deleteChildrenById(String parentId, String childId) async {
+    print("Parent ID: $parentId, Child ID: $childId");
+
+    final result = await parentHomeService.deleteChildByParentId(parentId, childId);
+    if (result == true) {
+      print("✅ Child deleted successfully. Refreshing list...");
+
+      // Fetch updated list after deletion
+      fetchChildren();
+    } else {
+      print("❌ Failed to delete child.");
+    }
+  }
+
+  // FETCH CHILDREN DATA AGAINST PARENTS
+  void fetchChildren() {
+    isLoading.value = true;
+
+    final currentParent = FirebaseAuth.instance.currentUser;
+    if (currentParent != null) {
+      parentHomeService.fetchChildrenByParentId(currentParent.uid).listen((children) {
+        childrenList.assignAll(children); // ✅ Automatically updates the UI
+        print("✅ Children data updated: ${children.length} children found.");
+      }, onError: (error) {
+        print("❌ Error fetching children: $error");
+      });
+    }
+
+    isLoading.value = false;
+  }
+
+
   // Listen for real-time wallet data updates
   void listenToWalletChanges() {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -36,7 +68,7 @@ class ParentsHomeController extends GetxController {
     print("🚀 Listening for wallet updates for Parent ID: ${currentUser.uid}");
 
     parentHomeService.fetchWalletStreamByParentId(currentUser.uid).listen(
-          (wallet) {
+      (wallet) {
         parentAddWalletModel.value = wallet;
         if (wallet != null) {
           switchController.value = wallet.enableMonthlyReload; // Sync switch state
@@ -68,21 +100,6 @@ class ParentsHomeController extends GetxController {
     }
   }
 
-  // FETCH CHILDREN DATA AGAINST PARENTS
-  Future<void> fetchChildren() async {
-    isLoading.value = true;
-    final currentParentChildren = FirebaseAuth.instance.currentUser;
-    var allChilSameSchool = [];
-    if (currentParentChildren != null) {
-      List<ParentsAddChildren> children =
-          await parentHomeService.fetchChildrenByParentId(currentParentChildren.uid);
-      childrenList.assignAll(children);
-      print("children data is  $currentParentChildren");
-    }
-    print("children data is empty $currentParentChildren");
-
-    isLoading.value = false;
-  }
 
   @override
   void onReady() {

@@ -36,6 +36,7 @@ abstract class Routes {
   static const CAFETERIA_CHILD_VERIFICATION =
       _Paths.CAFETERIA_CHILD_VERIFICATION;
   static const PARENTS_CHILDREN_DETAILS = _Paths.PARENTS_CHILDREN_DETAILS;
+  static const PARENTS_CHILDREN_EDIT = _Paths.PARENTS_CHILDREN_EDIT;
   static const CAFETERIA_PHONE_AUTHENICATION =
       _Paths.CAFETERIA_PHONE_AUTHENICATION;
   static const CAFETERIA_PHONE_VERIFICATION =
@@ -101,6 +102,7 @@ abstract class _Paths {
   static const CAFETERIA_LANDING_PAGE = '/cafeteria-landing-page';
   static const CAFETERIA_CHILD_VERIFICATION = '/cafeteria-child-verification';
   static const PARENTS_CHILDREN_DETAILS = '/parents-children-details';
+  static const PARENTS_CHILDREN_EDIT = '/parents-children-edit';
   static const CAFETERIA_PHONE_AUTHENICATION = '/cafeteria-phone-authenication';
   static const CAFETERIA_PHONE_VERIFICATION = '/cafeteria-phone-verification';
   static const CAFETERIA_HISTORY_DETAILS = '/cafeteria-history-details';

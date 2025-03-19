@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:luncher/app/modules/parents_add_wallet/controllers/parents_add_wallet_controller.dart';
+import 'package:luncher/app/modules/parents_home/controllers/parents_home_controller.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
@@ -79,7 +81,7 @@ class WalletBalanceCard extends StatelessWidget {
                 ),
                 child: childList!.childImageUrl != null && childList!.childImageUrl!.isNotEmpty
                     ? ClipOval(
-                      child: Image.network(
+                        child: Image.network(
                           childList!.childImageUrl!,
                           width: double.infinity,
                           height: 100,
@@ -95,14 +97,14 @@ class WalletBalanceCard extends StatelessWidget {
                                 ));
                           },
                         ),
-                    )
+                      )
                     : ClipOval(
-                      child: Image.asset(
+                        child: Image.asset(
                           'assets/images/profile_emoji.png',
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
-                    ),
+                      ),
               ),
             ],
           ),
@@ -138,10 +140,16 @@ class WalletBalanceCard extends StatelessWidget {
                       ),
                     const SizedBox(width: 8),
                     if (!isShowScan)
-                      Image.asset(
-                        'assets/icon/delete.png',
-                        width: 15,
-                        height: 15,
+                      GestureDetector(
+                        onTap: () {
+                          // final homeController = Get.find<ParentsAddWalletController>();
+                          ParentsHomeController().deleteChildrenById(childList!.parentId!,childList!.childId!);
+                        },
+                        child: Image.asset(
+                          'assets/icon/delete.png',
+                          width: 15,
+                          height: 15,
+                        ),
                       )
                   ],
                 ),

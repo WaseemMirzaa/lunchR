@@ -6,23 +6,18 @@ class ParentHomeService{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Fetch all children for a specific parent ID
-  Future<List<ParentsAddChildren>> fetchChildrenByParentId(String parentId) async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-          .collection("parentsChildren")
-          .where("parentId", isEqualTo: parentId)
-          .get();
-
-      List<ParentsAddChildren> childrenList = querySnapshot.docs
+  Stream<List<ParentsAddChildren>> fetchChildrenByParentId(String parentId) {
+    return firestore
+        .collection("parentsChildren")
+        .where("parentId", isEqualTo: parentId)
+        .snapshots()
+        .map((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      return snapshot.docs
           .map((doc) => ParentsAddChildren.fromJson(doc.data()))
           .toList();
-
-      return childrenList;
-    } catch (e) {
-      print("Error fetching children: $e");
-      return [];
-    }
+    });
   }
+
 
   // Fetch wallet data as a real-time stream
   Stream<ParentAddWalletModel?> fetchWalletStreamByParentId(String parentId) {
@@ -50,5 +45,36 @@ class ParentHomeService{
       return wallet;
     });
   }
+  //FOR DELETING ALL CHILDREN ON THE BASE  ARE CHILDREN ARE IN SAME SCHOOL(OF YES OR NO)
+  Future<bool> deleteChildByParentId(String parentId, String childId) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      // 🔍 Query the document to find the child
+      QuerySnapshot querySnapshot = await firestore
+          .collection('parentsChildren')
+          .where('parentId', isEqualTo: parentId)
+          .where('childId', isEqualTo: childId)
+          .get();
+
+      if (querySnapshot.docs.isEmpty) {
+        print("⚠️ No child found with ID: $childId under parent: $parentId");
+        return false; // Child not found
+      }
+
+      // 🗑️ Delete the matched child document
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        await firestore.collection('parentsChildren').doc(doc.id).delete();
+      }
+
+      print("✅ Successfully deleted child with ID: $childId");
+      return true; // Success
+
+    } catch (e) {
+      print("❌ Error deleting child: $e");
+      return false; // Failure
+    }
+  }
+
 
 }

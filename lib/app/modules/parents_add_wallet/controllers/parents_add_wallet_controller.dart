@@ -5,6 +5,7 @@ import 'package:luncher/app/modules/parents_home/controllers/parents_home_contro
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
 import 'package:luncher/services/Shared_preference/preferences.dart';
+import 'package:luncher/services/parents/add_children_service.dart';
 import 'package:luncher/services/parents/parent_add_wallet_service.dart';
 import 'package:luncher/widgets/custom_snackbar.dart';
 
@@ -25,6 +26,8 @@ class ParentsAddWalletController extends GetxController {
   void onInit() {
     super.onInit();
   }
+
+
 
   // Updates the amount based on peso selection
   void selectPeso(int index, int peso) {

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/bindings/cafeteria_edit_staff_binding.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/views/cafeteria_edit_staff_view.dart';
+import 'package:luncher/app/modules/parent_children_edit/binding/parent_children_edit_binding.dart';
+import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
 import 'package:luncher/app/modules/parents_profile/binding/parent_profile_binding.dart';
 import 'package:luncher/app/modules/parents_profile/view/parent_profile_view.dart';
 
@@ -272,6 +274,10 @@ class AppPages {
       name: _Paths.PARENTS_CHILDREN_DETAILS,
       page: () => const ParentsChildrenDetailsView(),
       binding: ParentsChildrenDetailsBinding(),
+    ),  GetPage(
+      name: _Paths.PARENTS_CHILDREN_EDIT,
+      page: () => const ParentsChildrenEditView(),
+      binding: ParentsChildrenEditBinding(),
     ),
     GetPage(
       name: _Paths.CAFETERIA_PHONE_AUTHENICATION,
@@ -280,7 +286,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA_PHONE_VERIFICATION,
-      page: () => CafeteriaPhoneVerificationView(),
+      page: () => const CafeteriaPhoneVerificationView(),
       binding: CafeteriaPhoneVerificationBinding(),
     ),
     GetPage(
@@ -376,7 +382,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA_ADD_STAFF,
-      page: () =>  CafeteriaAddStaffView(),
+      page: () =>  const CafeteriaAddStaffView(),
       binding: CafeteriaAddStaffBinding(),
     ), GetPage(
       name: _Paths.CAFETERIA_EDIT_STAFF,
