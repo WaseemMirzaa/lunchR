@@ -137,7 +137,7 @@ class CafeteriaHistoryDetailsView
 
             CustomButton(
                 text: 'Confirm', onPressed: () {}, isLoading: false.obs),
-            SizedBox(
+           const SizedBox(
               height: 16,
             )
           ],

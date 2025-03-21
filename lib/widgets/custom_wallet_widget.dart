@@ -22,7 +22,6 @@ class WalletBalanceCard extends StatelessWidget {
   final bool isDelivered;
   final bool isDeliveredBy;
   final bool isNoImage;
-  final ParentsAddChildren? childList;
 
   // Constructor with default value for isEdit
   const WalletBalanceCard(
@@ -38,7 +37,6 @@ class WalletBalanceCard extends StatelessWidget {
       this.walletDesc = 'Wallet balance',
       this.image = 'assets/icon/scan.png',
       this.price = '\$25',
-      this.childList,
       this.isShowScan = true});
   @override
   Widget build(BuildContext context) {
@@ -79,26 +77,7 @@ class WalletBalanceCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: childList!.childImageUrl != null && childList!.childImageUrl!.isNotEmpty
-                    ? ClipOval(
-                        child: Image.network(
-                          childList!.childImageUrl!,
-                          width: double.infinity,
-                          height: 100,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  size: 50,
-                                  color: Colors.grey,
-                                ));
-                          },
-                        ),
-                      )
-                    : ClipOval(
+                child:  ClipOval(
                         child: Image.asset(
                           'assets/images/profile_emoji.png',
                           width: double.infinity,
@@ -119,7 +98,7 @@ class WalletBalanceCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      childList!.childName!,
+                      "Abc",
                       style: AppTextStyles.MetropolisMedium.copyWith(
                         fontSize: 14,
                       ),
@@ -143,7 +122,7 @@ class WalletBalanceCard extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           // final homeController = Get.find<ParentsAddWalletController>();
-                          ParentsHomeController().deleteChildrenById(childList!.parentId!,childList!.childId!);
+                          // ParentsHomeController().deleteChildrenById(childList!.parentId!,childList!.childId!);
                         },
                         child: Image.asset(
                           'assets/icon/delete.png',
@@ -154,12 +133,12 @@ class WalletBalanceCard extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  childList!.schoolName!,
+                  "school name",
                   style: AppTextStyles.MetropolisRegular.copyWith(
                       fontSize: 12, color: const Color(0xFF858585)),
                 ),
                 Text(
-                  childList!.childSchoolID!,
+                  "child id ",
                   style: AppTextStyles.MetropolisRegular.copyWith(
                       fontSize: 12, color: const Color(0xFF858585)),
                 ),
