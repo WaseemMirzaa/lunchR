@@ -24,6 +24,7 @@ class CafeteriaHistorySelectDateController extends GetxController {
   @override
   void onInit() async {
     await fetchCafateriaName();
+    
     fetchCafateriaChildren();
     super.onInit();
   }
@@ -41,94 +42,144 @@ class CafeteriaHistorySelectDateController extends GetxController {
     cafateriaAdminName = cafaeteriaName;
   }
 
+//   bool checkIfDateHasMeal(DateTime day) {
+//     for (var child in childrenList) {
+//       if (child.selectedMealMenuData == null || child.selectedMealMenuData!.isEmpty) {
+//         continue;
+//       }
+//
+//       // Parse the initial order date from child data
+//       DateTime orderDate;
+//       try {
+//         orderDate = DateTime.parse(child.date!);
+//         // Normalize order date to start of day
+//         orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
+//       } catch (e) {
+//         print("Error parsing date: ${child.date}");
+//         continue;
+//       }
+//
+//       // Normalize check day to start of day
+//       day = DateTime(day.year, day.month, day.day);
+//
+//       for (var mealData in child.selectedMealMenuData!) {
+//         var schedule = mealData.schedule;
+//
+//         if (schedule == null ||
+//             schedule.repeatOn == null ||
+//             schedule.repeatEvery != 'week' ||
+//             schedule.repeatCount == null) {
+//           continue;
+//         }
+//
+//         // Get weekday name of the current day being checked
+//         String currentDayName = DateFormat('EEEE').format(day);
+//
+//         // Clean up the repeatOn list to handle potential spaces
+//         List<String> scheduledDays = schedule.repeatOn!
+//             .map((d) => d.trim())
+//             .toList();
+//
+//         // Check if this day's name is in the repeatOn list
+//         bool isDayScheduled = scheduledDays.contains(currentDayName);
+// print("order date $orderDate");
+// print("day is $day");
+// print("current day name $currentDayName");
+// print("scheduled days $scheduledDays");
+// print("is day scheduled $isDayScheduled");
+//         if (isDayScheduled) {
+//           // Only proceed if the day is after or equal to the order date
+//           if (day.compareTo(orderDate) >= 0) {
+//             // Calculate the start of the week for both dates
+//             DateTime orderWeekStart = orderDate.subtract(Duration(days: orderDate.weekday - 1));
+//             DateTime checkWeekStart = day.subtract(Duration(days: day.weekday - 1));
+//
+//             // Calculate week difference
+//             int weeksDifference = checkWeekStart.difference(orderWeekStart).inDays ~/ 7;
+//
+//             // Get repeat count as integer (default to 1 if parsing fails)
+//             int repeatCount = int.tryParse(schedule.repeatCount!) ?? 1;
+//
+//             // Check if we're within the repeat period
+//             if (weeksDifference < repeatCount) {
+//               print("✅ Found meal for $currentDayName on ${day.toString()} - Week ${weeksDifference + 1} of $repeatCount");
+//               return true;
+//             }
+//           }
+//         }
+//       }
+//     }
+//
+//     return false;
+//   }
   bool checkIfDateHasMeal(DateTime day) {
-    print("🔍 Checking meals for day: $day");
+  for (var child in childrenList) {
+    if (child.selectedMealMenuData == null ||
+        child.selectedMealMenuData!.isEmpty) {
+      continue;
+    }
 
-    // ✅ Extract meal dates from backend
-    List<DateTime> savedDates = childrenList
-        .map((child) => child.date != null ? DateTime.parse(child.date!) : null)
-        .whereType<DateTime>()
-        .toList();
+    // Parse the initial order date from child data
+    DateTime orderDate;
+    try {
+      orderDate = DateTime.parse(child.date!);
+      // Normalize order date to start of day
+      orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
+    } catch (e) {
+      print("Error parsing date: ${child.date}");
+      continue;
+    }
 
-    // for (var savedDate in savedDates) {
-    //   bool isSame = isSameDay(savedDate, day);
-    //   print(
-    //       "✅ Checking saved date: $savedDate with day: $day => Match: $isSame");
-    //
-    //   if (isSame) {
-    //     print("✅ Meal found on exact date: LLLL $day");
-    //     return true;
-    //   }
-    // }
+    // Normalize check day to start of day
+    day = DateTime(day.year, day.month, day.day);
 
-    // ✅ Check for repeated weekly schedules from the backend
-    // for (var child in childrenList) {
-    //   for (var meal in child.selectedMealMenuData ?? []) {
-    //     var schedule = meal.schedule;
-    //
-    //     if (schedule != null &&
-    //         schedule.repeatEvery == 'week' &&
-    //         schedule.repeatCount== 1 &&
-    //         schedule.repeatOn != null) {
-    //       List<String> repeatOnDays = List<String>.from(schedule.repeatOn!);
-    //       print("🔄 RepeatOn days from backend: $repeatOnDays");
-    //
-    //       // ✅ Normalize weekday formatting
-    //       String date2 = DateFormat('EEEE').format(day).trim();
-    //       repeatOnDays = repeatOnDays
-    //           .map((d) => d.trim())
-    //           .toList(); // Remove unwanted spaces
-    //
-    //       print("🔍 Checking if $date2 is in $repeatOnDays");
-    //
-    //       if (repeatOnDays.contains(date2)) {
-    //         print("✅ Meal Found! Matching Repeat Day: $date2");
-    //         return true;
-    //       }
-    //     }
-    //   }
-    // }
-    for (var child in childrenList) {
-      for (var meal in child.selectedMealMenuData ?? []) {
-        var schedule = meal.schedule;
+    for (var mealData in child.selectedMealMenuData!) {
+      var schedule = mealData.schedule;
 
-        if (schedule != null &&
-            schedule.repeatEvery == 'week' &&
-            schedule.repeatOn != null) {
+      if (schedule == null ||
+          schedule.repeatOn == null ||
+          schedule.repeatEvery != 'week' ||
+          schedule.repeatCount == null) {
+        continue;
+      }
 
-          List<String> repeatOnDays = List<String>.from(schedule.repeatOn!);
-          String date2 = DateFormat('EEEE').format(day).trim();
-          print("object dataeadf $date2");
-          repeatOnDays = repeatOnDays.map((d) => d.trim()).toList();
+      // Get weekday name of the current day being checked
+      String currentDayName = DateFormat('EEEE').format(day);
 
-          // ✅ Get the saved date for this meal
-          DateTime? savedDate = childrenList
-              .map((child) => child.date != null ? DateTime.parse(child.date!) : null)
-              .whereType<DateTime>()
-              .toList()
-              .firstOrNull; // Get the first saved date
+      // Clean up the repeatOn list to handle potential spaces
+      List<String> scheduledDays =
+          schedule.repeatOn!.map((d) => d.trim()).toList();
 
-          for (var savedDate in savedDates) {
-            if (savedDate != null) {
-              int weeksDifference = day
-                  .difference(savedDate)
-                  .inDays ~/ 7; // Get week difference
+      // Check if this day's name is in the repeatOn list
+      bool isDayScheduled = scheduledDays.contains(currentDayName);
+      print("order date $orderDate");
+print("day is $day");
+print("current day name $currentDayName");
+print("scheduled days $scheduledDays");
+print("is day scheduled $isDayScheduled");
+      if (isDayScheduled) {
+        // Ensure the current day is **on or after** the order date
+        if (day.compareTo(orderDate) >= 0) {
+          // ✅ Calculate the exact **week number** since `orderDate`
+          int daysSinceStart = day.difference(orderDate).inDays;
+          int weekNumber = daysSinceStart ~/ 7; // Number of completed weeks
 
-              // ✅ Ensure the date is NOT before the earliest saved date
-              if (!day.isBefore(savedDate) && repeatOnDays.contains(date2) &&
-                  weeksDifference < int.parse(schedule.repeatCount!)) {
-                print(
-                    "✅ Meal Found! Matching Repeat Day: $date2 after $savedDate");
-                return true;
-              }
-            }
+          // ✅ Convert `repeatCount` to integer (default to 1 if parsing fails)
+          int repeatCount = int.tryParse(schedule.repeatCount!) ?? 1;
+
+          // ✅ Ensure the meal appears only on **scheduled days in weekly intervals**
+          if (weekNumber < repeatCount) {
+            print(
+                "✅ Meal scheduled on $currentDayName (${day.toString()}) - Week ${weekNumber + 1} of $repeatCount");
+            return true;
           }
         }
       }
     }
-    print("❌ No meal found for this date: $day");
-    return false; // ❌ No meal found for this date
   }
+  return false;
+}
+
 
   ///Check if two dates are the same (ignores time)**
   bool isSameDay(DateTime date1, DateTime date2) {
