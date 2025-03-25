@@ -140,10 +140,8 @@ class ParentsChildrenEditView extends GetView<ParentsChildrenEditController> {
                                   child: CircularProgressIndicator());
                             },
                             errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                                'assets/images/profile_emoji.png', // Replace with the actual image URL
-                                fit: BoxFit.cover,
-                              ); //_buildPlaceholder();
+                              return  const Icon(Icons.error_outline_outlined,size: 20); //_buildPlaceholder();
+//_buildPlaceholder();
                             },
                           )
                         : Image.asset(

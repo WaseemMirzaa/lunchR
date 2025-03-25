@@ -6,6 +6,7 @@ import 'package:luncher/config/appBuilderId.dart';
 
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/models/cefeteria_admin/upcoming_meal_order.dart';
 
 import '../controllers/cafeteria_history_select_date_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -30,7 +31,8 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                   focusedDay: DateTime.now(), // Current visible month
                   calendarBuilders: CalendarBuilders(
                     defaultBuilder: (context, day, focusedDay) {
-                      bool hasMealToday = cafateriaHSDCont.checkIfDateHasMeal(day); // Pass day
+                      String hasMealToday =
+                          cafateriaHSDCont.checkIfDateHasMeal(day); // Pass day
 
                       return Center(
                         child: Column(
@@ -43,7 +45,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                                 color: const Color(0xFF2E2E2E),
                               ),
                             ),
-                            if (hasMealToday)
+                            if (hasMealToday.isNotEmpty)
                               Container(
                                 width: 5,
                                 height: 5,
@@ -61,14 +63,19 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6.0, horizontal: 10.0),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [AppColors.gradientEndColor, AppColors.gradientStartColor],
+                                colors: [
+                                  AppColors.gradientEndColor,
+                                  AppColors.gradientStartColor
+                                ],
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
                               ),
-                              borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                              borderRadius:
+                                  BorderRadius.circular(8.0), // Rounded corners
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.2),
@@ -109,7 +116,8 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                     },
                   ),
                   calendarStyle: CalendarStyle(
-                    todayTextStyle: const TextStyle(color: Colors.transparent), // Hide default styling
+                    todayTextStyle: const TextStyle(
+                        color: Colors.transparent), // Hide default styling
                     outsideDaysVisible: false,
                     defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
                       fontSize: 13,
@@ -121,7 +129,8 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                     ),
                   ),
                   headerStyle: HeaderStyle(
-                    headerPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                    headerPadding: const EdgeInsets.symmetric(
+                        vertical: 16.0, horizontal: 16.0),
                     formatButtonVisible: false,
                     titleCentered: false,
                     titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
@@ -142,7 +151,15 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                       color: const Color(0xFFBFBFBF),
                     ),
                     dowTextFormatter: (date, locale) {
-                      return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
+                      return [
+                        "S",
+                        "M",
+                        "T",
+                        "W",
+                        "T",
+                        "F",
+                        "S"
+                      ][date.weekday % 7];
                     },
                   ),
                 ),
@@ -174,11 +191,15 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                 // Upcoming Orders Section
                 Expanded(
                     child: ListView.builder(
-                  itemCount: 3, // Hardcoded number of items
+                  itemCount: cafateriaHSDCont.upComingMealOrderList
+                      .length, // Hardcoded number of items
                   padding: const EdgeInsets.only(top: 0),
                   itemBuilder: (context, index) {
                     return _buildOrderCard(
-                        context, historyController); // Call the method to build each order card
+                        context,
+                        historyController,
+                        cafateriaHSDCont.upComingMealOrderList[
+                            index]); // Call the method to build each order card
                   },
                 )),
               ],
@@ -188,7 +209,10 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
   }
 }
 
-Widget _buildOrderCard(BuildContext context, CafeteriaHistoryController historyController) {
+Widget _buildOrderCard(
+    BuildContext context,
+    CafeteriaHistoryController historyController,
+    UpcomingMealOrder upcomingOrderCount) {
   return GestureDetector(
     onTap: () {
       historyController.updateSelectedIndex(1);
@@ -235,18 +259,42 @@ Widget _buildOrderCard(BuildContext context, CafeteriaHistoryController historyC
               children: [
                 // Left side image (50x50) and Name + Subtitle
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 16.0),
                   child: Container(
-                    width: 43, // Adjust width for more rectangular shape
-                    height: 43, // Adjust height for more rectangular shape
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0), // Optional: for rounded corners
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/gra.png'), // Image asset path
-                        fit: BoxFit.cover, // Fit the image inside the container
+                      width: 43, // Adjust width for more rectangular shape
+                      height: 43, // Adjust height for more rectangular shape
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                            8.0), // Optional: for rounded corners
                       ),
-                    ),
-                  ),
+                      child: upcomingOrderCount.image != null &&
+                              upcomingOrderCount.image!.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                upcomingOrderCount.image!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 127,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.error_outline_outlined,
+                                    size: 20,
+                                  ); //_buildPlaceholder();
+                                },
+                              ),
+                            )
+                          : const Icon(Icons.no_meals_sharp,
+                              size: 20) //_buildPlaceholder();
+
+                      ),
                 ),
 
                 const SizedBox(width: 8),
@@ -256,7 +304,7 @@ Widget _buildOrderCard(BuildContext context, CafeteriaHistoryController historyC
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Chicken Gravy", // Hardcoded title
+                     upcomingOrderCount.itemName ??"", // Hardcoded title
                       style: AppTextStyles.PoppinsMedium.copyWith(
                         fontSize: 11,
                         color: Colors.black,
@@ -284,7 +332,7 @@ Widget _buildOrderCard(BuildContext context, CafeteriaHistoryController historyC
               child: Column(
                 children: [
                   Text(
-                    "25",
+                    upcomingOrderCount.expectedStudent.toString(),
                     style: AppTextStyles.PoppinsMedium.copyWith(
                       fontSize: 27,
                     ),

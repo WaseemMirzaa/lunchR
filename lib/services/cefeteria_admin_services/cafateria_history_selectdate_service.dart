@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/services/base_service.dart';
 
@@ -32,5 +34,24 @@ class CafaterisHistorySelectDateService extends BaseService{
       return [];
     }
   }
+  Future<List<MealModel>> getMealsByUser(String userId) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("meals")
+          .where("userId", isEqualTo: userId) // ✅ Filter meals by userId
+          .get();
+
+      List<MealModel> meals = snapshot.docs.map((doc) {
+        print("Fetched Meal: ${doc.data()}");
+        return MealModel.fromMap(doc.id, doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return meals;
+    } catch (e) {
+      print("❌ Error fetching meals: $e");
+      return [];
+    }
+  }
+
 
 }
