@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_history/controllers/cafeteria_history_controller.dart';
+import 'package:luncher/config/appBuilderId.dart';
 
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
@@ -9,183 +10,187 @@ import 'package:luncher/config/app_text_style.dart';
 import '../controllers/cafeteria_history_select_date_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CafeteriaHistorySelectDateView
-    extends GetView<CafeteriaHistorySelectDateController> {
+class CafeteriaHistorySelectDateView extends StatelessWidget {
   const CafeteriaHistorySelectDateView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final historyController = Get.find<CafeteriaHistoryController>();
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: DateTime.now(), // Current visible month
-            calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, focusedDay) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${day.day}',
-                        style: AppTextStyles.RobotoRegular.copyWith(
-                          fontSize: 13,
-                          color: const Color(0xFF2E2E2E),
-                        ),
-                        // Show day number
-                      ),
-                      // Add orange dot below the specified dates
-                      if ([5, 12].contains(day.day)) // Specify any dates
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
-                            color: AppColors.gradientEndColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              },
-              todayBuilder: (context, day, focusedDay) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6.0, horizontal: 10.0),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            AppColors.gradientEndColor,
-                            AppColors.gradientStartColor
-                          ],
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(8.0), // Rounded corners
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            blurRadius: 2,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
+      body: GetBuilder<CafeteriaHistorySelectDateController>(
+        init: CafeteriaHistorySelectDateController(),
+        id: cafateriaHistorySelectDataId,
+        builder: (cafateriaHSDCont) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TableCalendar(
+                firstDay: DateTime.utc(2020, 1, 1),
+                lastDay: DateTime.utc(2030, 12, 31),
+                focusedDay: DateTime.now(), // Current visible month
+                calendarBuilders: CalendarBuilders(
+                  defaultBuilder: (context, day, focusedDay) {
+                    bool hasMealToday = cafateriaHSDCont.checkIfDateHasMeal(day); // Pass day
+
+                    return Center(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${day.day}', // Display the day number
-                            style: AppTextStyles.RobotoBold.copyWith(
-                              fontSize: 16,
-                              color: Colors.white,
+                            '${day.day}',
+                            style: AppTextStyles.RobotoRegular.copyWith(
+                              fontSize: 13,
+                              color: const Color(0xFF2E2E2E),
                             ),
                           ),
-                          Text(
-                              [
-                                'SUN',
-                                'MON',
-                                'TUE',
-                                'WED',
-                                'THU',
-                                'FRI',
-                                'SAT'
-                              ][day.weekday % 7], // Display weekday
-                              style: AppTextStyles.RobotoLight.copyWith(
-                                fontSize: 12,
-                                color: Colors.white,
-                              )),
+                          if (hasMealToday)
+                            Container(
+                              width: 5,
+                              height: 5,
+                              decoration: const BoxDecoration(
+                                color: AppColors.gradientEndColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
                         ],
                       ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            calendarStyle: CalendarStyle(
-              todayTextStyle: const TextStyle(
-                  color: Colors.transparent), // Hide default styling
-              outsideDaysVisible: false,
-              defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 13,
-                color: const Color(0xFF2E2E2E),
-              ),
-              weekendTextStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 13,
-                color: const Color(0xFF2E2E2E),
-              ),
-            ),
-            headerStyle: HeaderStyle(
-              headerPadding:
-                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              formatButtonVisible: false,
-              titleCentered: false,
-              titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 18,
-                color: const Color(0xFF2E2E2E),
-              ),
-              leftChevronVisible: false,
-              rightChevronVisible: false,
-            ),
+                    );
+                  },
+                  todayBuilder: (context, day, focusedDay) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                AppColors.gradientEndColor,
+                                AppColors.gradientStartColor
+                              ],
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(8.0), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                blurRadius: 2,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                '${day.day}', // Display the day number
+                                style: AppTextStyles.RobotoBold.copyWith(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                  [
+                                    'SUN',
+                                    'MON',
+                                    'TUE',
+                                    'WED',
+                                    'THU',
+                                    'FRI',
+                                    'SAT'
+                                  ][day.weekday % 7], // Display weekday
+                                  style: AppTextStyles.RobotoLight.copyWith(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                calendarStyle: CalendarStyle(
+                  todayTextStyle: const TextStyle(
+                      color: Colors.transparent), // Hide default styling
+                  outsideDaysVisible: false,
+                  defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 13,
+                    color: const Color(0xFF2E2E2E),
+                  ),
+                  weekendTextStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 13,
+                    color: const Color(0xFF2E2E2E),
+                  ),
+                ),
+                headerStyle: HeaderStyle(
+                  headerPadding:
+                      const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  formatButtonVisible: false,
+                  titleCentered: false,
+                  titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 18,
+                    color: const Color(0xFF2E2E2E),
+                  ),
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
+                ),
 
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 11,
-                color: const Color(0xFFBFBFBF),
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 11,
+                    color: const Color(0xFFBFBFBF),
+                  ),
+                  weekendStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 11,
+                    color: const Color(0xFFBFBFBF),
+                  ),
+                  dowTextFormatter: (date, locale) {
+                    return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
+                  },
+                ),
               ),
-              weekendStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 11,
-                color: const Color(0xFFBFBFBF),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(
+                  color: Color(0xFFEEEEEE),
+                  thickness: 1,
+                  height: 1,
+                ),
               ),
-              dowTextFormatter: (date, locale) {
-                return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
-              },
-            ),
-          ),
 
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Divider(
-              color: Color(0xFFEEEEEE),
-              thickness: 1,
-              height: 1,
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              top: 8,
-            ),
-            child: Text(
-              'Upcoming',
-              style: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFBFBFBF),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  top: 8,
+                ),
+                child: Text(
+                  'Upcoming',
+                  style: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFFBFBFBF),
+                  ),
+                ),
               ),
-            ),
-          ),
 
-          // Upcoming Orders Section
-          Expanded(
-              child: ListView.builder(
-            itemCount: 3, // Hardcoded number of items
-            padding:const EdgeInsets.only(top: 0),
-            itemBuilder: (context, index) {
-              return _buildOrderCard(context,
-                  historyController); // Call the method to build each order card
-            },
-          )),
-        ],
+              // Upcoming Orders Section
+              Expanded(
+                  child: ListView.builder(
+                itemCount: 3, // Hardcoded number of items
+                padding:const EdgeInsets.only(top: 0),
+                itemBuilder: (context, index) {
+                  return _buildOrderCard(context,
+                      historyController); // Call the method to build each order card
+                },
+              )),
+            ],
+          );
+        }
       ),
     );
   }

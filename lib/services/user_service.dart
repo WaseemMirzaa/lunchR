@@ -27,24 +27,19 @@ class UserService extends BaseService {
       role: user.role,
       userAccountCreatedTime: user.userAccountCreatedTime,
     );
-// saving user Id
-//     final SharedPreferences prefs = await SharedPreferences.getInstance();
-//     prefs.setString('user_Id', userId);
 
     var snapshot = await getDocument(CollectionKey.USER_COLLECTION, userId);
-// If the snapshot exists, print the data
-    var data = snapshot.data() as Map<String, dynamic>; // Convert to a Map
-    String? cafeteriaName = data['cafeteriaName']; // Get cafeteriaName
-    String? cafeteriaLogo = data['cafeteriaLogo'];
-    print("Document????????: $cafeteriaName");
-    print("Document????????: $cafeteriaLogo");
-// Get cafeteriaLogo
+    print("Parent exists or not: ${snapshot.exists}");
+
+
     if (snapshot.exists) {
       print("Snapshot data: ${snapshot.data()}");
     } else {
       print("Document does not exist for userId: $userId");
     }
     if (!snapshot.exists) {
+      print("Document????????: =====");
+
       await createDocument(
         CollectionKey.USER_COLLECTION,
         userId,
@@ -52,6 +47,13 @@ class UserService extends BaseService {
       );
     }
     userPreferences.saveUserId(userId);
+    // If the snapshot exists, print the data
+    var data = snapshot.data() as Map<String, dynamic>; // Convert to a Map
+    String? cafeteriaName = data['cafeteriaName']; // Get cafeteriaName
+    String? cafeteriaLogo = data['cafeteriaLogo'];
+    print("Document????????: $cafeteriaName");
+    print("Document????????: $cafeteriaLogo");
+// Get cafeteriaLogo
     if (cafeteriaName == null && cafeteriaLogo == null) {
       print("Document ========false: ${!snapshot.exists}");
 

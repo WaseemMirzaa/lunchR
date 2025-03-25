@@ -1,18 +1,25 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:luncher/config/app_const.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/services/meal_service.dart';
 
 class CafeteriaMenuPageController extends GetxController {
   final MealService _mealService = MealService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 
   var meals = <MealModel>[].obs;
   var filteredMeals = <MealModel>[].obs;
   var isDataFound = false.obs;
   var isLoading = false.obs;
   var searchText = "".obs;
+  var schoolName = "".obs;
   TextEditingController searchTextController = TextEditingController();
   final Map<String, ValueNotifier<bool>> switchControllers = {};
 
@@ -20,10 +27,30 @@ class CafeteriaMenuPageController extends GetxController {
   void onInit() {
     super.onInit();
     searchText.value = searchTextController.text;
+    fetchSchoolName();
     fetchMeals();
   }
+void fetchSchoolName()async{
+  final user = _auth.currentUser;
 
+  // Fetch user document from Firestore
+  DocumentSnapshot<Map<String, dynamic>> userDoc =
+      await _firestore.collection(CollectionKey.USER_COLLECTION).doc(user!.uid).get();
+  print("user value documents splash ${userDoc.exists}");
+  final schoolN = userDoc.data()?['schoolName'] as String?;
+
+  if (schoolN !=null ) {
+   print("School kkk name $schoolN");
+   schoolName.value = schoolN;
+  }else{
+    schoolName.value = "School Name Not Available";
+    print("School kkk name else $schoolN");
+
+  }
+}
   void fetchMeals() {
+    print("School kkk name ???  $schoolName");
+
     isLoading.value = true;
     String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
 

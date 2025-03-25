@@ -98,12 +98,14 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
 
   // "Congratulations" text in the center
   Widget _buildText() {
-    return Center(
-      child: Text(
-        'Collage/School Name', // Replace with dynamic text
-        style: AppTextStyles.PoppinsBold.copyWith(
-          fontSize: 14,
-          color: AppColors.blackColor,
+    return Obx(
+      ()=> Center(
+        child: Text(
+          controller.schoolName.value, // Replace with dynamic text
+          style: AppTextStyles.PoppinsBold.copyWith(
+            fontSize: 14,
+            color: AppColors.blackColor,
+          ),
         ),
       ),
     );
