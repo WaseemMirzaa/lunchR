@@ -24,8 +24,44 @@ class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsControl
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 30),
+                // const SizedBox(height: 30),
                 // Title
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 30),
+                  child: GestureDetector(
+                    onTap: () {
+                      // controller.updateSelectedIndex(0);
+                      Get.back();
+                    },
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        margin: const EdgeInsets.only(
+                            top: 16), // Add some margin if needed
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                          color: Colors.white, // Background color for the container
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            "assets/icon/back.png",
+                            height: 15, // Set the height to 15
+                            width: 10, // Set the width to 15
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Center(
                   child: Text(
                     'Details',

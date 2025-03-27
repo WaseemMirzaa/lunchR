@@ -17,7 +17,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
   const CafeteriaHistorySelectDateView({super.key});
   @override
   Widget build(BuildContext context) {
-    final historyController = Get.find<CafeteriaHistoryController>();
+    // final historyController = Get.find<CafeteriaHistoryController>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<CafeteriaHistorySelectDateController>(
@@ -182,7 +182,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return _buildOrderCard(
                         context,
-                        historyController,
+                        // historyController,
                         cafateriaHSDCont,
                         cafateriaHSDCont
                             .upComingMealOrderList[index]); // Call the method to build each order card
@@ -195,7 +195,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
   }
 }
 
-Widget _buildOrderCard(BuildContext context, CafeteriaHistoryController historyController,
+Widget _buildOrderCard(BuildContext context, 
     CafeteriaHistorySelectDateController cafateriaHSDCont, UpcomingMealOrder upcomingOrderCount) {
   return GestureDetector(
     onTap: () {

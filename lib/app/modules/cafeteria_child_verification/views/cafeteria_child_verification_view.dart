@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_child_verification_home/controllers/cafeteria_child_verification_home_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfeild.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
@@ -17,7 +15,6 @@ class CafeteriaChildVerificationView
   @override
   Widget build(BuildContext context) {
     // Define the controller for the email text field
-    final TextEditingController phoneController = TextEditingController();
     final controller = Get.find<CafeteriaChildVerificationHomeController>();
 
     return PopScope(

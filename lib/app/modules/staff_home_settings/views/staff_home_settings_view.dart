@@ -52,7 +52,7 @@ class StaffHomeSettingsView extends GetView<StaffHomeSettingsController> {
                     labelName: "Upcoming",
                     onTap: () {
                       // Get.toNamed(Routes.CAFETERIA_ADD_STAFF, arguments: true);
-                      // Get.toNamed(Routes.CAFETERIA_STAFF_LIST);
+                      Get.toNamed(Routes.STAFF_HISTORY_CALENDER);
                     },
                   ),
                   // CafeteriaSettingWidget(
