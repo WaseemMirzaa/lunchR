@@ -293,6 +293,7 @@ class AppPages {
       name: _Paths.CAFETERIA_HISTORY_DETAILS,
       page: () => const CafeteriaHistoryDetailsView(),
       binding: CafeteriaHistoryDetailsBinding(),
+      transition: Transition.fadeIn,
     ),
     GetPage(
       name: _Paths.PARENT_NAME,

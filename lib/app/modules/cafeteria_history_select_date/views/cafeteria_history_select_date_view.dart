@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_history/controllers/cafeteria_history_controller.dart';
@@ -32,8 +33,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                   focusedDay: DateTime.now(), // Current visible month
                   calendarBuilders: CalendarBuilders(
                     defaultBuilder: (context, day, focusedDay) {
-                      String hasMealToday =
-                          cafateriaHSDCont.checkIfDateHasMeal(day); // Pass day
+                      String hasMealToday = cafateriaHSDCont.checkIfDateHasMeal(day); // Pass day
 
                       return Center(
                         child: Column(
@@ -64,19 +64,14 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6.0, horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [
-                                  AppColors.gradientEndColor,
-                                  AppColors.gradientStartColor
-                                ],
+                                colors: [AppColors.gradientEndColor, AppColors.gradientStartColor],
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
                               ),
-                              borderRadius:
-                                  BorderRadius.circular(8.0), // Rounded corners
+                              borderRadius: BorderRadius.circular(8.0), // Rounded corners
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.grey.withOpacity(0.2),
@@ -117,8 +112,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                     },
                   ),
                   calendarStyle: CalendarStyle(
-                    todayTextStyle: const TextStyle(
-                        color: Colors.transparent), // Hide default styling
+                    todayTextStyle: const TextStyle(color: Colors.transparent), // Hide default styling
                     outsideDaysVisible: false,
                     defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
                       fontSize: 13,
@@ -130,8 +124,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                     ),
                   ),
                   headerStyle: HeaderStyle(
-                    headerPadding: const EdgeInsets.symmetric(
-                        vertical: 16.0, horizontal: 16.0),
+                    headerPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
                     formatButtonVisible: false,
                     titleCentered: false,
                     titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
@@ -152,15 +145,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                       color: const Color(0xFFBFBFBF),
                     ),
                     dowTextFormatter: (date, locale) {
-                      return [
-                        "S",
-                        "M",
-                        "T",
-                        "W",
-                        "T",
-                        "F",
-                        "S"
-                      ][date.weekday % 7];
+                      return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
                     },
                   ),
                 ),
@@ -192,16 +177,15 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                 // Upcoming Orders Section
                 Expanded(
                     child: ListView.builder(
-                  itemCount: cafateriaHSDCont.upComingMealOrderList
-                      .length, // Hardcoded number of items
+                  itemCount: cafateriaHSDCont.upComingMealOrderList.length, // Hardcoded number of items
                   padding: const EdgeInsets.only(top: 0),
                   itemBuilder: (context, index) {
                     return _buildOrderCard(
                         context,
                         historyController,
                         cafateriaHSDCont,
-                        cafateriaHSDCont.upComingMealOrderList[
-                            index]); // Call the method to build each order card
+                        cafateriaHSDCont
+                            .upComingMealOrderList[index]); // Call the method to build each order card
                   },
                 )),
               ],
@@ -211,18 +195,14 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
   }
 }
 
-Widget _buildOrderCard(
-    BuildContext context,
-    CafeteriaHistoryController historyController,
-    CafeteriaHistorySelectDateController cafateriaHSDCont,
-
-    UpcomingMealOrder upcomingOrderCount) {
+Widget _buildOrderCard(BuildContext context, CafeteriaHistoryController historyController,
+    CafeteriaHistorySelectDateController cafateriaHSDCont, UpcomingMealOrder upcomingOrderCount) {
   return GestureDetector(
     onTap: () {
       print("List of student IDs: ${upcomingOrderCount.studentIds}");
-          Get.toNamed(Routes.CAFETERIA_HISTORY_DETAILS,arguments: {
-            "orderStudentIds" :upcomingOrderCount.studentIds,
-          });
+      Get.toNamed(Routes.CAFETERIA_HISTORY_DETAILS, arguments: {
+        "orderStudentIds": upcomingOrderCount.studentIds,
+      });
       // historyController.updateSelectedIndex(1);
     },
     child: Container(
@@ -267,17 +247,14 @@ Widget _buildOrderCard(
               children: [
                 // Left side image (50x50) and Name + Subtitle
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: Container(
                       width: 43, // Adjust width for more rectangular shape
                       height: 43, // Adjust height for more rectangular shape
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Optional: for rounded corners
+                        borderRadius: BorderRadius.circular(8.0), // Optional: for rounded corners
                       ),
-                      child: upcomingOrderCount.image != null &&
-                              upcomingOrderCount.image!.isNotEmpty
+                      child: upcomingOrderCount.image != null && upcomingOrderCount.image!.isNotEmpty
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Image.network(
@@ -285,11 +262,9 @@ Widget _buildOrderCard(
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: 127,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
+                                loadingBuilder: (context, child, loadingProgress) {
                                   if (loadingProgress == null) return child;
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return const Center(child: CircularProgressIndicator());
                                 },
                                 errorBuilder: (context, error, stackTrace) {
                                   return const Icon(
@@ -299,8 +274,7 @@ Widget _buildOrderCard(
                                 },
                               ),
                             )
-                          : const Icon(Icons.no_meals_sharp,
-                              size: 20) //_buildPlaceholder();
+                          : const Icon(Icons.no_meals_sharp, size: 20) //_buildPlaceholder();
 
                       ),
                 ),
@@ -312,18 +286,34 @@ Widget _buildOrderCard(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                     upcomingOrderCount.itemName ??"", // Hardcoded title
+                      upcomingOrderCount.itemName ?? "", // Hardcoded title
                       style: AppTextStyles.PoppinsMedium.copyWith(
                         fontSize: 11,
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text("Wednesday",
-                        style: AppTextStyles.RobotoRegular.copyWith(
-                          fontSize: 12,
-                          color: const Color(0xFFBFBFBF),
-                        )), // Hardcoded subtitle
+
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: DateFormat('MMMM ').format(DateTime.now()),
+                            style: AppTextStyles.RobotoRegular.copyWith(
+                              fontSize: 12,
+                              color: const Color(0xFFBFBFBF),
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${DateTime.now().year}',
+                            style: AppTextStyles.RobotoRegular.copyWith(
+                              fontSize: 12,
+                              color: const Color(0xFFBFBFBF),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ), // Hardcoded subtitle
                   ],
                 ),
               ],

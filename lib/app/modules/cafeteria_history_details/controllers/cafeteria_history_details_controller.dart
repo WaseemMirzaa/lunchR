@@ -19,15 +19,19 @@ class CafeteriaHistoryDetailsController extends GetxController {
   final count = 0.obs;
   @override
   void onInit() {
+    print("CafeteriaHistoryDetailsController onInit called");
     super.onInit();
     if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
+      print("Arguments received: ${Get.arguments}");
       orderStudentIds = List<String>.from(Get.arguments["orderStudentIds"] ?? []);
-      print("Received Student IDs: $orderStudentIds");
+      print("Processed Student IDs: $orderStudentIds");
       if (orderStudentIds?.isNotEmpty ?? false) {
         fetchChildrenData();
       } else {
         errorMessage.value = 'No student IDs provided';
       }
+    } else {
+      print("No arguments received or invalid format");
     }
   }
   // Future<void> fetchCafateriaChildren() async {

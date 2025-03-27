@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
+import 'package:luncher/config/appBuilderId.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
 import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_history_details_controller.dart';
+
 class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsController> {
   const CafeteriaHistoryDetailsView({super.key});
   @override
@@ -18,65 +21,76 @@ class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsControl
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
             ),
-            child: Stack(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    // Title
-                    Center(
-                      child: Text(
-                        'History',
-                        style: AppTextStyles.MetropolisMedium.copyWith(
-                          fontSize: 18,
-                          color: const Color(0xFF434343),
-                        ),
-                      ),
+                const SizedBox(height: 30),
+                // Title
+                Center(
+                  child: Text(
+                    'Details',
+                    style: AppTextStyles.MetropolisMedium.copyWith(
+                      fontSize: 18,
+                      color: const Color(0xFF434343),
                     ),
-                    const SizedBox(height: 20),
+                  ),
+                ),
+                const SizedBox(height: 20),
 
-                    // Month and Year
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'July ',
-                              style: AppTextStyles.RobotoLight.copyWith(
-                                fontSize: 18,
-                                color: const Color(0xFF2E2E2E),
-                              ),
-                            ),
-                            TextSpan(
-                              text: '2024',
-                              style: AppTextStyles.RobotoBold.copyWith(
-                                fontSize: 18,
-                                color: const Color(0xFF2E2E2E),
-                              ),
-                            ),
-                          ],
+                // Month and Year
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: DateFormat('MMMM ').format(DateTime.now()),
+                          style: AppTextStyles.RobotoLight.copyWith(
+                            fontSize: 18,
+                            color: const Color(0xFF2E2E2E),
+                          ),
                         ),
-                      ),
+                        TextSpan(
+                          text: '${DateTime.now().year}',
+                          style: AppTextStyles.RobotoBold.copyWith(
+                            fontSize: 18,
+                            color: const Color(0xFF2E2E2E),
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                ),
 
-                    const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                    // List of Orders
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount:  2,
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          thickness: 1, // Line thickness
-                          color: Colors.grey[300], // Line color
-                        );
-                      },                  itemBuilder: (context, index) {
+                // List of Orders
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.errorMessage.value.isNotEmpty) {
+                    return Center(
+                      child: Text(controller.errorMessage.value),
+                    );
+                  }
+
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: controller.childrenList.length,
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        thickness: 1,
+                        color: Colors.grey[300],
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      final child = controller.childrenList[index];
                       return Container(
-                        height:  80,
+                        height: 80,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
@@ -85,16 +99,15 @@ class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsControl
                               color: Colors.grey.withOpacity(0.4),
                               spreadRadius: 1,
                               blurRadius: 6,
-                              offset: const Offset(0, 6), // changes position of shadow
+                              offset: const Offset(0, 6),
                             ),
                           ],
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                         child: Row(
                           children: [
-                            // Profile image wrapped with Container
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.start, // Align image to top
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
                                   width: 55,
@@ -108,23 +121,40 @@ class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsControl
                                         color: Colors.grey.withOpacity(0.3),
                                         spreadRadius: 2,
                                         blurRadius: 6,
-                                        offset: const Offset(0, 3), // shadow position
+                                        offset: const Offset(0, 3),
                                       ),
                                     ],
                                   ),
-                                  child:  ClipOval(
-                                    child: Image.asset(
-                                      'assets/images/profile_emoji.png',
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
+                                  child: ClipOval(
+                                    child: child.childImageUrl != null && child.childImageUrl!.isNotEmpty
+                                        ? Image.network(
+                                            child.childImageUrl!,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (context, child, loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return const Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            },
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/profile_emoji.png',
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          )
+                                        : Image.asset(
+                                            'assets/images/profile_emoji.png',
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
                                 ),
                               ],
                             ),
                             const SizedBox(width: 12),
-
-                            // Details Column
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,232 +163,37 @@ class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsControl
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "Abc",
+                                        child.childName ?? "N/A",
                                         style: AppTextStyles.MetropolisMedium.copyWith(
                                           fontSize: 14,
                                         ),
                                       ),
-                                      // const Spacer(),
-                                      // if (isEdit)
-                                      //   GestureDetector(
-                                      //     onTap: () {
-                                      //       Get.toNamed(Routes.CAFETERIA);
-                                      //     },
-                                      //     child: Text(
-                                      //       "Edit",
-                                      //       style: AppTextStyles.MetropolisRegular.copyWith(
-                                      //         fontSize: 12,
-                                      //         color: const Color(0xFFFF9A0D),
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // const SizedBox(width: 8),
-                                      // // if (!isShowScan)
-                                      //   GestureDetector(
-                                      //     onTap: () {
-                                      //       // final homeController = Get.find<ParentsAddWalletController>();
-                                      //       // ParentsHomeController().deleteChildrenById(childList!.parentId!,childList!.childId!);
-                                      //     },
-                                      //     child: Image.asset(
-                                      //       'assets/icon/delete.png',
-                                      //       width: 15,
-                                      //       height: 15,
-                                      //     ),
-                                      //   )
                                     ],
                                   ),
                                   Text(
-                                    "school name",
+                                    child.schoolName ?? "N/A",
                                     style: AppTextStyles.MetropolisRegular.copyWith(
-                                        fontSize: 12, color: const Color(0xFF858585)),
+                                      fontSize: 12,
+                                      color: const Color(0xFF858585),
+                                    ),
                                   ),
                                   Text(
-                                    "child id ",
+                                    child.childSchoolID ?? "N/A",
                                     style: AppTextStyles.MetropolisRegular.copyWith(
-                                        fontSize: 12, color: const Color(0xFF858585)),
+                                      fontSize: 12,
+                                      color: const Color(0xFF858585),
+                                    ),
                                   ),
-                                  // if (isType)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Type: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Wallet Balance",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // if (isDuration)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Duration: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Weekly",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // if (isStaff)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Staff Name: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Name",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // if (isDeliveredBy)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Delivered By: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Name",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // const SizedBox(height: 8),
-                                  // if (isPreparing)
-                                  //   Align(
-                                  //     alignment: Alignment.centerRight,
-                                  //     child: GradientButton(
-                                  //       height: 30,
-                                  //       width: 90,
-                                  //       onTap: () {
-                                  //         print("Preparing button tapped!");
-                                  //         // Add your onTap logic here
-                                  //       },
-                                  //     ),
-                                  //   ),
-                                  // if (isDelivered)
-                                  //   Align(
-                                  //     alignment: Alignment.centerRight,
-                                  //     child: Text(
-                                  //       "Delivered",
-                                  //       style: AppTextStyles.MetropolisMedium.copyWith(
-                                  //         fontSize: 12,
-                                  //         color: Colors.black,
-                                  //       ),
-                                  //     ),
-                                  //   ),
                                 ],
                               ),
                             ),
-
-                            // // Vertical Divider
-                            // isShowScan
-                            //     ? Container(
-                            //   width: 1,
-                            //   color: Colors.black.withOpacity(0.1),
-                            //   margin: const EdgeInsets.only(left: 6, right: 10),
-                            // )
-                            //     : const SizedBox.shrink(),
-                            //
-                            // // Wallet Balance Section
-                            // isShowScan && !isNoImage
-                            //     ? Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.end,
-                            //   children: [
-                            //     const SizedBox(height: 8),
-                            //
-                            //     Image.asset(
-                            //       image,
-                            //       width: 36,
-                            //       height: 36,
-                            //     ),
-                            //
-                            //     const SizedBox(height: 8),
-                            //     // Divider
-                            //     Container(
-                            //       width: 40, // Adjust as needed
-                            //       height: 1,
-                            //       color: Colors.grey[300],
-                            //     ),
-                            //     const SizedBox(height: 8),
-                            //     const SizedBox(height: 4),
-                            //     Text(
-                            //       price,
-                            //       style: AppTextStyles.MetropolisMedium.copyWith(
-                            //         fontSize: 16,
-                            //         color: Colors.black,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // )
-                            //     : const SizedBox.shrink(),
-
-                            // isNoImage
-                            //     ? Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.center,
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   children: [
-                            //     Text(
-                            //       price,
-                            //       style: AppTextStyles.MetropolisMedium.copyWith(
-                            //         fontSize: 16,
-                            //         color: Colors.black,
-                            //       ),
-                            //     ),
-                            //   ],
-                            // )
-                            //     : const SizedBox.shrink()
                           ],
                         ),
                       );
-                        // return const Padding(
-                        //   padding:  EdgeInsets.all(16),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       // Order Details
-                        //       const WalletBalanceCard(
-                        //         isEdit: false,
-                        //         walletDesc: 'Wallet Remaining Balance',
-                        //         price: '\$250',
-                        //         isShowScan: true,
-                        //         isNoImage: true,
-                        //         isPreparing: false,
-                        //         isDelivered: false,
-                        //         isStaff: false,
-                        //         isType: false,
-                        //         isDuration: false,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // );
-                      },
-                    ),
-                  ],
-                ),
-                Positioned(
-                  bottom: 10,
-                  left: 0,
-                  right: 0,
-                  child:  CustomButton(
-                text: 'Confirm', onPressed: () {}, isLoading: false.obs),
-                ),
+                    },
+                  );
+                }),
               ],
-
             ),
           ),
         ),
