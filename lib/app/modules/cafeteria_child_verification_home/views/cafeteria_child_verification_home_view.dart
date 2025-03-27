@@ -19,9 +19,9 @@ class CafeteriaChildVerificationHomeView
             () => IndexedStack(
               index: controller
                   .selectedIndex.value, // Bind the selected index to controller
-              children: const [
+              children:const [
                 // First child
-                CafeteriaChildVerificationView(),
+                 CafeteriaChildVerificationView(),
 
                 // Third child
                 ChildVerificationUploadInfoView(),

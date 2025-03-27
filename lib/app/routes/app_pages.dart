@@ -301,7 +301,7 @@ class AppPages {
       binding: ParentNameBinding(),
     ),
     GetPage(
-      name: _Paths.CHILD_VERIFICATION_UPLOAD_INFO,
+      name: Routes.CHILD_VERIFICATION_UPLOAD_INFO,
       page: () => const ChildVerificationUploadInfoView(),
       binding: ChildVerificationUploadInfoBinding(),
     ),

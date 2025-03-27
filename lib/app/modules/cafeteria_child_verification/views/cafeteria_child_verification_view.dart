@@ -82,21 +82,24 @@ class CafeteriaChildVerificationView extends StatelessWidget {
                       Obx(() => CustomButton1(
                             text: 'IDENTIFY',
                             onPressed: () async {
+                              // Unfocus before starting async operation
+                              final currentFocus = FocusScope.of(context);
+                              if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                              }
+                              
                               if (childVerificationController.isValid.value) {
                                 bool success = await childVerificationController.fetchCafateriaChildren();
                                 if (success) {
-                                  // Navigate to next screen
-                                  // homeController.updateSelectedIndex(1);
                                   Get.toNamed(
                                     Routes.CHILD_VERIFICATION_UPLOAD_INFO,
                                     arguments: {
                                       'childrenList': childVerificationController.childrenList,
                                     },
-                                  ); // Navigate with children data
+                                  );
                                 }
                               } else {
-                                childVerificationController
-                                    .verifyChildId(); // This will show validation error message
+                                childVerificationController.verifyChildId();
                               }
                             },
                             isLoading: childVerificationController.isLoading.value,

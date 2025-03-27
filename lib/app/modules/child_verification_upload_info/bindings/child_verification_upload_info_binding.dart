@@ -7,6 +7,7 @@ class ChildVerificationUploadInfoBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<ChildVerificationUploadInfoController>(
       () => ChildVerificationUploadInfoController(),
+      fenix: true, // This allows the controller to be reused if needed
     );
   }
 }

@@ -5,15 +5,14 @@ import 'package:luncher/app/modules/cafeteria_child_verification_home/controller
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
 import 'package:luncher/widgets/reuse_button.dart';
-
+import 'package:intl/intl.dart';
 import '../controllers/child_verification_upload_info_controller.dart';
 
-class ChildVerificationUploadInfoView
-    extends GetView<ChildVerificationUploadInfoController> {
+class ChildVerificationUploadInfoView extends GetView<ChildVerificationUploadInfoController> {
   const ChildVerificationUploadInfoView({super.key});
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CafeteriaChildVerificationHomeController>();
+    final homeController = Get.find<CafeteriaChildVerificationHomeController>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -26,14 +25,13 @@ class ChildVerificationUploadInfoView
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
                   onTap: () {
-                  Get.back();
+                    Get.back();
                     // controller.updateSelectedIndex(0);
                   },
                   child: Container(
                     height: 35,
                     width: 35,
-                    margin: const EdgeInsets.only(
-                        top: 16), // Add some margin if needed
+                    margin: const EdgeInsets.only(top: 16), // Add some margin if needed
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       boxShadow: [
@@ -75,14 +73,14 @@ class ChildVerificationUploadInfoView
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: 'July ',
+                      text: DateFormat('MMMM ').format(DateTime.now()),
                       style: AppTextStyles.RobotoLight.copyWith(
                         fontSize: 18,
                         color: const Color(0xFF2E2E2E),
                       ),
                     ),
                     TextSpan(
-                      text: '2024',
+                      text: '${DateTime.now().year}',
                       style: AppTextStyles.RobotoBold.copyWith(
                         fontSize: 18,
                         color: const Color(0xFF2E2E2E),
@@ -91,9 +89,10 @@ class ChildVerificationUploadInfoView
                   ],
                 ),
               ),
+              // Hardcoded subtitle
             ),
 
-            SizedBox(height: 5), // Spacing between date and image
+            const SizedBox(height: 5), // Spacing between date and image
 
             // Center circular image
             Center(
@@ -109,23 +108,32 @@ class ChildVerificationUploadInfoView
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black
-                          .withOpacity(0.25), // Shadow color with transparency
+                      color: Colors.black.withOpacity(0.25), // Shadow color with transparency
                       blurRadius: 8, // Spread of the shadow
-                      offset:
-                          const Offset(0, 4), // Position of the shadow (x, y)
+                      offset: const Offset(0, 4), // Position of the shadow (x, y)
                     ),
                   ],
                 ),
                 child: ClipOval(
-                  // Ensures the image stays within the circular shape
-                  child: Padding(
-                    padding: const EdgeInsets.all(35.0),
-                    child: Image.asset(
-                      "assets/icon/camera.png",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                  child: controller.childrenList.first.childImageUrl!.isNotEmpty
+                      ? Image.network(
+                          controller.childrenList.first.childImageUrl!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 127,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return const Center(child: CircularProgressIndicator());
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.error_outline_outlined, size: 20); //_buildPlaceholder();
+                          },
+                        )
+                      : Image.asset(
+                          // 'assets/images/userimg.png', // Replace with the actual image URL
+                          'assets/images/profile_emoji.png', // Replace with the actual image URL
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
@@ -156,19 +164,51 @@ class ChildVerificationUploadInfoView
                     width: 166,
                     height: 183,
                     decoration: BoxDecoration(
-                      color: Colors.white
-                          .withOpacity(0.9), // Optional background color
+                      color: Colors.white.withOpacity(0.9), // Optional background color
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
                       children: [
                         // Image taking 80% of the container height
-                        Image.asset(
-                          'assets/images/gra.png', // Change to your image asset
-                          width: double.infinity,
-                          height: 153, // 80% of container height
-                          fit: BoxFit.contain,
-                        ),
+
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: controller.childrenList.first.childImageUrl!.isNotEmpty
+                              ? Image.network(
+                                  controller.childrenList.first.selectedMealMenuData!.first.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 153,
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return SizedBox(
+                                      height: 153, // Match parent height
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return SizedBox(
+                                      height: 153, // Match parent height
+                                      child: Center(
+                                        child: Icon(Icons.error_outline_outlined, size: 20),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : SizedBox(
+                                  height: 153, // Match parent height
+                                  child: Center(
+                                    child: Icon(Icons.error_outline_outlined, size: 20),
+                                  ),
+                                ),
+                        ), // Image.asset(
+                        //   'assets/images/gra.png', // Change to your image asset
+                        //   width: double.infinity,
+                        //   height: 153, // 80% of container height
+                        //   fit: BoxFit.contain,
+                        // ),
                         // Bottom row with text and price
                         const Spacer(),
                         Padding(
@@ -177,13 +217,13 @@ class ChildVerificationUploadInfoView
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Chicken Gravy',
+                                controller.childrenList.first.selectedMealMenuData!.first.mealName!,
                                 style: AppTextStyles.MetropolisMedium.copyWith(
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
-                                '\$25',
+                                '\$${controller.childrenList.first.selectedMealMenuData!.first.mealPrice}',
                                 style: AppTextStyles.MetropolisMedium.copyWith(
                                   fontSize: 16,
                                 ),
@@ -200,32 +240,141 @@ class ChildVerificationUploadInfoView
 
             // ListView of WalletBalanceCards
             // ignore: prefer_const_constructors
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: const WalletBalanceCard(
-                isEdit: false,
-                walletDesc: 'Wallet Remaining Balance',
-                price: '\$250',
-                isShowScan: true,
-                isNoImage: true,
-                isPreparing: false,
-                isDelivered: false,
-                isStaff: false,
-                isType: false,
-                isDuration: false,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 55,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 3),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: ClipOval(
+                          child: controller.childrenList.first.selectedMealMenuData!.first.imageUrl != null &&
+                                  controller
+                                      .childrenList.first.selectedMealMenuData!.first.imageUrl!.isNotEmpty
+                              ? Image.network(
+                                  controller.childrenList.first.selectedMealMenuData!.first.imageUrl!,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(Icons.error_outline);
+                                  },
+                                )
+                              : Image.asset(
+                                  'assets/images/profile_emoji.png',
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              controller.childrenList.first.childName ?? "N/A",
+                              style: AppTextStyles.MetropolisMedium.copyWith(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          controller.childrenList.first.schoolName ?? "N/A",
+                          style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFF858585),
+                          ),
+                        ),
+                        Text(
+                          controller.childrenList.first.childSchoolID ?? "N/A",
+                          style: AppTextStyles.MetropolisRegular.copyWith(
+                            fontSize: 12,
+                            color: const Color(0xFF858585),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            //   child: const WalletBalanceCard(
+            //     isEdit: false,
+            //     walletDesc: 'Wallet Remaining Balance',
+            //     price: '\$250',
+            //     isShowScan: true,
+            //     isNoImage: true,
+            //     isPreparing: false,
+            //     isDelivered: false,
+            //     isStaff: false,
+            //     isType: false,
+            //     isDuration: false,
+            //   ),
+            // ),
 
             const SizedBox(
               height: 20,
             ),
 
-            CustomButton(
-                text: 'CONFIRM',
-                onPressed: () {
-                  controller.updateSelectedIndex(0);
-                },
-                isLoading: false.obs),
+            Obx(
+              () => CustomButton1(
+                  text: 'START PREPARATION',
+                  onPressed: () async {
+                    final parentId = controller.childrenList.first.parentId;
+                    if (parentId != null) {
+                                          print("parent id is $parentId");
+
+                      await controller.fetchChildParentWallet(parentId);
+                    } else {
+                      Get.snackbar('Error', 'Child ID not found');
+                    }
+                  },
+                  isLoading: controller.isLoading.value),
+            ),
 
             const SizedBox(
               height: 50,
