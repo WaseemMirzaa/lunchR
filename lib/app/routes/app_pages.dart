@@ -334,6 +334,7 @@ class AppPages {
       name: _Paths.STAFF_HISTORY,
       page: () => const StaffHistoryView(),
       binding: StaffHistoryBinding(),
+      transition: Transition.fadeIn,
     ),
     GetPage(
       name: _Paths.STAFF_HISTORY_CALENDER,

@@ -6,6 +6,7 @@ class StaffHistoryController extends GetxController {
 
   // Method to update the selected index
   void updateSelectedIndex(int index) {
+    print(" msdkhvud $index");
     selectedIndex.value = index;
   }
 }

@@ -27,6 +27,7 @@ class StaffLandingPageController extends GetxController {
     ),
     GetBuilder<StaffHistoryController>(
       init: StaffHistoryController(),
+      autoRemove: false,
       builder: (_) => const StaffHistoryView(),
     ),
     GetBuilder<CafeteriaChildVerificationHomeController>(
@@ -45,6 +46,18 @@ class StaffLandingPageController extends GetxController {
 
   // Selected index (Reactive variable)
   var selectedIndex = 0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Check if we have an initial index from arguments
+    if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
+      final initialIndex = Get.arguments['initialIndex'];
+      if (initialIndex != null) {
+        selectedIndex.value = initialIndex;
+      }
+    }
+  }
 
   // Function to update the selected index
   void onItemTapped(int index) {

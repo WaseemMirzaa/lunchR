@@ -24,7 +24,7 @@ class CafeteriaChildVerificationHomeView
                  CafeteriaChildVerificationView(),
 
                 // Third child
-                ChildVerificationUploadInfoView(),
+                // ChildVerificationUploadInfoView(),
               ],
             ),
           ),
