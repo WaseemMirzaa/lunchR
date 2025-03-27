@@ -5,8 +5,6 @@ import '../controllers/cafeteria_child_verification_controller.dart';
 class CafeteriaChildVerificationBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CafeteriaChildVerificationController>(
-      () => CafeteriaChildVerificationController(),
-    );
+    Get.put(CafeteriaChildVerificationController());
   }
 }

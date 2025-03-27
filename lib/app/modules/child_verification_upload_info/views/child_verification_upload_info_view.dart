@@ -26,7 +26,8 @@ class ChildVerificationUploadInfoView
                 alignment: Alignment.topLeft,
                 child: GestureDetector(
                   onTap: () {
-                    controller.updateSelectedIndex(0);
+                  Get.back();
+                    // controller.updateSelectedIndex(0);
                   },
                   child: Container(
                     height: 35,
