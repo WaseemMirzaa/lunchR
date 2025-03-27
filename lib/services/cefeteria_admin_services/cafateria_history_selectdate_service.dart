@@ -52,6 +52,29 @@ class CafaterisHistorySelectDateService extends BaseService{
       return [];
     }
   }
+  Future<List<ParentsAddChildren>> fetchChildrenByIds(List<String> studentIds) async {
+    try {
+      print("Fetching children for IDs: $studentIds");
+
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+          .collection("parentsChildren")
+          .where("id", whereIn: studentIds)
+          .get();
+
+      print("Found ${querySnapshot.docs.length} documents");
+
+      List<ParentsAddChildren> children = querySnapshot.docs.map((doc) {
+        var data = doc.data();
+        print("Processing document: ${doc.id} with data: $data");
+        return ParentsAddChildren.fromJson(data);
+      }).toList();
+
+      return children;
+    } catch (e) {
+      print("Error fetching children: $e");
+      throw Exception("Failed to fetch children data: $e");
+    }
+  }
 
 
 }

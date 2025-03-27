@@ -35,6 +35,19 @@ class CafeteriaHistorySelectDateController extends GetxController {
     super.onInit();
   }
 
+  Future<void> fetchCafateriaName() async {
+    final user = _auth.currentUser;
+    // Fetch user document from Firestore
+    DocumentSnapshot<Map<String, dynamic>> userDoc = await _firestore
+        .collection(CollectionKey.USER_COLLECTION)
+        .doc(user?.uid)
+        .get();
+    print("user value documents  ${userDoc.exists}");
+    final cafaeteriaName = userDoc.data()?['cafeteriaName'] as String?;
+    print("Cafateria nama is :${cafaeteriaName}");
+    cafateriaAdminName = cafaeteriaName;
+  }
+
   Future<void> _fetchCafeteriaMeals() async {
     isLoading.value = true;
     String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
@@ -47,11 +60,11 @@ class CafeteriaHistorySelectDateController extends GetxController {
 
     try {
       // ✅ Fetch meals once instead of using a stream
-      List<MealModel> fetchedMeals = await cafaterisHistorySelectDateService.getMealsByUser(userId);
+      List<MealModel> fetchedMeals =
+          await cafaterisHistorySelectDateService.getMealsByUser(userId);
 
       // ✅ Update the observable list manually
       meals.value = fetchedMeals;
-
     } catch (e) {
       print("❌ Error fetching meals: $e");
     }
@@ -59,112 +72,24 @@ class CafeteriaHistorySelectDateController extends GetxController {
     isLoading.value = false;
   }
 
-
-
-    Future<void> fetchCafateriaName() async {
-    final user = _auth.currentUser;
-    // Fetch user document from Firestore
-    DocumentSnapshot<Map<String, dynamic>> userDoc = await _firestore
-        .collection(CollectionKey.USER_COLLECTION)
-        .doc(user?.uid)
-        .get();
-    print("user value documents  ${userDoc.exists}");
-    final cafaeteriaName = userDoc.data()?['cafeteriaName'] as String?;
-    print("Cafateria nama is :${cafaeteriaName}");
-    cafateriaAdminName = cafaeteriaName;
-  }
-  String checkIfDateHasMeal(DateTime day) {
-    for (var child in childrenList) {
-      if (child.selectedMealMenuData == null ||
-          child.selectedMealMenuData!.isEmpty) {
-        continue;
-      }
-
-      // Parse the initial order date from child data
-      DateTime orderDate;
-      try {
-        orderDate = DateTime.parse(child.date!);
-        // Normalize order date to start of day
-        orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
-      } catch (e) {
-        print("Error parsing date: ${child.date}");
-        continue;
-      }
-
-      // Normalize check day to start of day
-      day = DateTime(day.year, day.month, day.day);
-
-      for (var mealData in child.selectedMealMenuData!) {
-        var schedule = mealData.schedule;
-
-        if (schedule == null ||
-            schedule.repeatOn == null ||
-            schedule.repeatEvery != 'week' ||
-            schedule.repeatCount == null) {
-          continue;
-        }
-
-        // Get weekday name of the current day being checked
-        String currentDayName = DateFormat('EEEE').format(day);
-
-        // Clean up the repeatOn list to handle potential spaces
-        List<String> scheduledDays =
-        schedule.repeatOn!.map((d) => d.trim()).toList();
-
-        // Check if this day's name is in the repeatOn list
-        bool isDayScheduled = scheduledDays.contains(currentDayName);
-
-        if (isDayScheduled) {
-          // Ensure the current day is **on or after** the order date
-          if (day.compareTo(orderDate) >= 0) {
-            // ✅ Calculate the exact **week number** since `orderDate`
-            int daysSinceStart = day.difference(orderDate).inDays;
-            int weekNumber = daysSinceStart ~/ 7; // Number of completed weeks
-
-            // ✅ Convert `repeatCount` to integer (default to 1 if parsing fails)
-            int repeatCount = int.tryParse(schedule.repeatCount!) ?? 1;
-
-            // ✅ Ensure the meal appears only on **scheduled days in weekly intervals**
-            if (weekNumber < repeatCount) {
-              print(
-                  "✅ Meal scheduled on $currentDayName (${day.toString()}) - Week ${weekNumber + 1} of $repeatCount");
-
-              // ✅ If the date is **after today**, return with a dot (🔴)
-              if (day.isAfter(DateTime.now())) {
-                print(
-                    "✅ Meal scheduled on $currentDayName (${day.toString()}) - Week ${weekNumber + 1} of $repeatCount");
-
-                return "✔️ Meal Available •"; // Dot after the current date
-              }
-
-              return "";
-            }
-          }
-        }
-      }
-    }
-    return ""; // No meal scheduled
-  }
-
-  // bool checkIfDateHasMeal(DateTime day) {
+  // String checkIfDateHasMeal(DateTime day) {
+  //   DateTime today = DateTime.now();
+  //
   //   for (var child in childrenList) {
   //     if (child.selectedMealMenuData == null ||
   //         child.selectedMealMenuData!.isEmpty) {
   //       continue;
   //     }
   //
-  //     // Parse the initial order date from child data
   //     DateTime orderDate;
   //     try {
   //       orderDate = DateTime.parse(child.date!);
-  //       // Normalize order date to start of day
   //       orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
   //     } catch (e) {
   //       print("Error parsing date: ${child.date}");
   //       continue;
   //     }
   //
-  //     // Normalize check day to start of day
   //     day = DateTime(day.year, day.month, day.day);
   //
   //     for (var mealData in child.selectedMealMenuData!) {
@@ -172,48 +97,124 @@ class CafeteriaHistorySelectDateController extends GetxController {
   //
   //       if (schedule == null ||
   //           schedule.repeatOn == null ||
-  //           schedule.repeatEvery != 'week' ||
+  //           (schedule.repeatEvery != 'week' && schedule.repeatEvery != 'month') ||
   //           schedule.repeatCount == null) {
   //         continue;
   //       }
   //
-  //       // Get weekday name of the current day being checked
   //       String currentDayName = DateFormat('EEEE').format(day);
-  //
-  //       // Clean up the repeatOn list to handle potential spaces
   //       List<String> scheduledDays =
-  //           schedule.repeatOn!.map((d) => d.trim()).toList();
+  //       schedule.repeatOn!.map((d) => d.trim()).toList();
   //
-  //       // Check if this day's name is in the repeatOn list
   //       bool isDayScheduled = scheduledDays.contains(currentDayName);
-  //       // print("order date $orderDate");
-  //       // print("day is $day");
-  //       // print("current day name $currentDayName");
-  //       // print("scheduled days $scheduledDays");
-  //       // print("is day scheduled $isDayScheduled");
-  //       if (isDayScheduled) {
-  //         // Ensure the current day is **on or after** the order date
-  //         if (day.compareTo(orderDate) >= 0) {
-  //           // ✅ Calculate the exact **week number** since `orderDate`
+  //
+  //       if (isDayScheduled && day.compareTo(orderDate) >= 0) {
+  //         int repeatCount = int.tryParse(schedule.repeatCount!) ?? 1;
+  //
+  //         if (schedule.repeatEvery == 'week') {
   //           int daysSinceStart = day.difference(orderDate).inDays;
-  //           int weekNumber = daysSinceStart ~/ 7; // Number of completed weeks
-  //
-  //           // ✅ Convert `repeatCount` to integer (default to 1 if parsing fails)
-  //           int repeatCount = int.tryParse(schedule.repeatCount!) ?? 1;
-  //
-  //           // ✅ Ensure the meal appears only on **scheduled days in weekly intervals**
+  //           int weekNumber = daysSinceStart ~/ 7;
   //           if (weekNumber < repeatCount) {
-  //             print(
-  //                 "✅ Meal scheduled on $currentDayName (${day.toString()}) - Week ${weekNumber + 1} of $repeatCount");
-  //             return true;
+  //             if (day.isAfter(DateTime.now())) {
+  //               return "✔️ Meal Available •"; // Dot after the current date
+  //             }
   //           }
   //         }
+  //         else if (schedule.repeatEvery == 'month') {
+  //           // Calculate months since start, including the initial month
+  //           int monthsSinceStart = (day.year - orderDate.year) * 12 +
+  //               (day.month - orderDate.month);
+  //
+  //           // Specific check for exact day match and within repeat count
+  //           if (monthsSinceStart >= 0 && monthsSinceStart < repeatCount) {
+  //             // Ensure the exact day matches the original order date
+  //             if (day.day == orderDate.day &&
+  //                 day.isAfter(DateTime.now())) {
+  //               return "✔️ Meal Available •"; // Dot after the current date
+  //             }
+  //
+  //             // Optional: Add a break or return to stop further checking
+  //             // This prevents unnecessary iterations
+  //             if (monthsSinceStart == repeatCount - 1) {
+  //               break;
+  //             }
+  //           }
+  //         }
+  //
   //       }
   //     }
   //   }
-  //   return false;
+  //   return "";
   // }
+  String checkIfDateHasMeal(DateTime day) {
+    DateTime today = DateTime.now();
 
+    for (var child in childrenList) {
+      if (child.selectedMealMenuData == null ||
+          child.selectedMealMenuData!.isEmpty) {
+        continue;
+      }
+
+      DateTime orderDate;
+      try {
+        orderDate = DateTime.parse(child.date!);
+        orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
+      } catch (e) {
+        print("Error parsing date: ${child.date}");
+        continue;
+      }
+
+      day = DateTime(day.year, day.month, day.day);
+
+      for (var mealData in child.selectedMealMenuData!) {
+        var schedule = mealData.schedule;
+
+        if (schedule == null ||
+            schedule.repeatOn == null ||
+            (schedule.repeatEvery != 'week' &&
+                schedule.repeatEvery != 'month') ||
+            schedule.repeatCount == null) {
+          continue;
+        }
+
+        String currentDayName = DateFormat('EEEE').format(day);
+        List<String> scheduledDays =
+            schedule.repeatOn!.map((d) => d.trim()).toList();
+
+        bool isDayScheduled = scheduledDays.contains(currentDayName);
+
+        if (isDayScheduled && day.compareTo(orderDate) >= 0) {
+          int repeatCount = int.tryParse(schedule.repeatCount!) ?? 1;
+
+          if (schedule.repeatEvery == 'week') {
+            int daysSinceStart = day.difference(orderDate).inDays;
+            int weekNumber = daysSinceStart ~/ 7;
+            if (weekNumber < repeatCount) {
+              if (day.isAfter(DateTime.now())) {
+                return "✔️ Meal Available •"; // Dot after the current date
+              }
+            }
+            // if (weekNumber < repeatCount) {
+            //   return day.isAfter(DateTime.now()) ? "✔️ Meal Available •" : "✔️ Meal Available";
+            // }
+          } else if (schedule.repeatEvery == 'month') {
+            // Calculate months since start, including the initial month
+            int monthsSinceStart = (day.year - orderDate.year) * 12 +
+                (day.month - orderDate.month);
+
+            // Specific check for exact day match and within repeat count
+            if (monthsSinceStart >= 0 && monthsSinceStart < repeatCount) {
+              // Ensure the exact day matches the original order date
+              if (day.isAfter(DateTime.now())) {
+                return "✔️ Meal Available •"; // Dot after the current date
+              }
+            }
+          }
+        }
+      }
+    }
+    return "";
+  }
 
   ///Check if two dates are the same (ignores time)**
   bool isSameDay(DateTime date1, DateTime date2) {
@@ -247,62 +248,295 @@ class CafeteriaHistorySelectDateController extends GetxController {
         .fetchChildrenByCafateriaName(cafateriaAdminName!);
     childrenList.assignAll(children);
     print("children data is  $children");
-    await  getUpcomingOrders(); // Call function after updating meals list
+    await getUpcomingOrders(); // Call function after updating meals list
 
     isLoading.value = false;
     update(['cafateriaHistorySelectDataId']);
   }
+
+  /// get the upcoming orders
+  // Future<void> getUpcomingOrders() async {
+  //   await Future.delayed(Duration(milliseconds: 1)); // Ensures async execution if needed
+  //
+  //   Map<String, Map<String, dynamic>> mealData = {};
+  //
+  //   DateTime today = DateTime.now();
+  //
+  //   for (var child in childrenList) {
+  //     for (var meal in child.selectedMealMenuData ?? []) {
+  //       var schedule = meal.schedule;
+  //       if (schedule == null ||
+  //           schedule.repeatOn == null ||
+  //           (schedule.repeatEvery != 'week' && schedule.repeatEvery != 'month') ||
+  //           schedule.repeatCount == null) {
+  //         continue;
+  //       }
+  //
+  //       DateTime orderDate;
+  //       try {
+  //         orderDate = DateTime.parse(child.date!);
+  //         orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
+  //       } catch (e) {
+  //         print("Error parsing date: ${child.date}");
+  //         continue;
+  //       }
+  //
+  //       List<DateTime> futureOrderDates = [];
+  //
+  //       for (int i = 0; i < (int.tryParse(schedule.repeatCount!) ?? 1); i++) {
+  //         if (schedule.repeatEvery == 'week') {
+  //           futureOrderDates.add(orderDate.add(Duration(days: 7 * i)));
+  //         } else if (schedule.repeatEvery == 'month') {
+  //           futureOrderDates.add(DateTime(orderDate.year, orderDate.month + i, orderDate.day));
+  //         }
+  //         print("order month is ${orderDate.day}");
+  //       }
+  //
+  //       // Check if this child has any future orders
+  //       bool hasFutureOrder = futureOrderDates.any((date) => date.isAfter(today));
+  //
+  //       if (hasFutureOrder) {
+  //         if (!mealData.containsKey(meal.mealName)) {
+  //           mealData[meal.mealName] = {
+  //             'count': 0,
+  //             'image': meal.imageUrl,
+  //             'studentIds': <String>[]
+  //           };
+  //         }
+  //
+  //         mealData[meal.mealName]!['count'] += 1;
+  //         mealData[meal.mealName]!['studentIds'].add(child.id);
+  //       }
+  //     }
+  //   }
+  //
+  //   List<String?> adminMeals = meals.map((data) => data.name).toList();
+  //   upComingMealOrderList.clear();
+  //
+  //   for (var entry in mealData.entries) {
+  //     String mealName = entry.key;
+  //     int studentCount = entry.value['count'];
+  //     String? mealImage = entry.value['image'];
+  //     List<String> studentIds = (entry.value['studentIds'] as List<dynamic>?)?.cast<String>() ?? [];
+  //
+  //     bool isInAdminMeals = adminMeals.contains(mealName);
+  //
+  //     upComingMealOrderList.add(
+  //       UpcomingMealOrder(
+  //         image: mealImage,
+  //         itemName: mealName,
+  //         weekday: DateFormat('EEEE').format(DateTime.now()),
+  //         expectedStudent: studentCount,
+  //         studentIds: studentIds, // ✅ Now storing student IDs
+  //       ),
+  //     );
+  //         print("🍽️ Meal: $mealName | Ordered by: $studentCount students | Exists in Admin Meals: $isInAdminMeals | Image: $mealImage");
+  //
+  //   }
+  //
+  //
+  //   upComingMealOrderList.sort((a, b) => (b.expectedStudent ?? 0).compareTo(a.expectedStudent ?? 0));
+  // }
   Future<void> getUpcomingOrders() async {
-    await Future.delayed(Duration(milliseconds: 1)); // Ensures async execution if needed
+    await Future.delayed(Duration(milliseconds: 1)); // Ensures async execution
 
-    // Map to store meal data (count and image)
     Map<String, Map<String, dynamic>> mealData = {};
+    DateTime today = DateTime.now();
 
-    // Count how many children ordered each meal and store the image
+    print("🔍 Starting getUpcomingOrders() method");
+    print("Current Date: $today");
+
     for (var child in childrenList) {
       for (var meal in child.selectedMealMenuData ?? []) {
-        if (!mealData.containsKey(meal.mealName)) {
-          mealData[meal.mealName] = {
-            'count': 0,
-            'image': meal.imageUrl, // Assuming meal.imageUrl holds the image link
-          };
+        var schedule = meal.schedule;
+        print("\n🍽️ Checking Meal: ${meal.mealName}");
+
+        if (schedule == null ||
+            schedule.repeatOn == null ||
+            (schedule.repeatEvery != 'week' &&
+                schedule.repeatEvery != 'month') ||
+            schedule.repeatCount == null) {
+          print("❌ Invalid schedule data, skipping meal: ${meal.mealName}");
+          continue;
         }
-        mealData[meal.mealName]!['count'] += 1;
+
+        DateTime orderDate;
+        try {
+          orderDate = DateTime.parse(child.date!);
+          orderDate = DateTime(orderDate.year, orderDate.month, orderDate.day);
+          print("📅 Order Date: $orderDate");
+        } catch (e) {
+          print("❌ Error parsing date: ${child.date}");
+          continue;
+        }
+
+        print("🔁 Repeat Schedule:");
+        print("  - Repeat Every: ${schedule.repeatEvery}");
+        print("  - Repeat Count: ${schedule.repeatCount}");
+        print("  - Repeat On: ${schedule.repeatOn}");
+
+        List<DateTime> futureOrderDates = [];
+
+        for (int i = 0; i < (int.tryParse(schedule.repeatCount!) ?? 0); i++) {
+          DateTime futureDate;
+
+          if (schedule.repeatEvery == 'week') {
+            // Check all upcoming days in the current week
+            for (int j = 0; j < 7; j++) {
+              futureDate = orderDate.add(Duration(days: j));
+
+              String futureDayName =
+                  DateFormat('EEEE').format(futureDate).toLowerCase();
+              List<String> scheduledDays = schedule.repeatOn!
+                  .map((d) => d.toLowerCase().trim())
+                  .toList();
+
+              print("\n🕰️ Checking Future Weekday: $futureDate");
+              print("  - Future Day Name: $futureDayName");
+              print("  - Scheduled Days: $scheduledDays");
+
+              if (futureDate.isAfter(today) &&
+                  scheduledDays.contains(futureDayName)) {
+                print("✅ Scheduled Meal Found on $futureDate");
+                futureOrderDates.add(futureDate);
+              }
+            }
+          } else if (schedule.repeatEvery == 'month') {
+            // Check all future occurrences in the current and next months
+            for (int j = 0; j < 31; j++) {
+              try {
+                futureDate = DateTime(
+                    orderDate.year, orderDate.month, orderDate.day + j);
+              } catch (e) {
+                continue; // Skip invalid dates
+              }
+
+              String futureDayName =
+                  DateFormat('EEEE').format(futureDate).toLowerCase();
+              List<dynamic> scheduledDays = schedule.repeatOn!
+                  .map((d) => d.toLowerCase().trim())
+                  .toList();
+
+              print("\n🕰️ Checking Future Monthday: $futureDate");
+              print("  - Future Day Name: $futureDayName");
+              print("  - Scheduled Days: $scheduledDays");
+
+              if (futureDate.isAfter(today) &&
+                  scheduledDays.contains(futureDayName)) {
+                print("✅ Scheduled Meal Found on $futureDate");
+                futureOrderDates.add(futureDate);
+                break; // Stop checking once we find a valid date
+              }
+            }
+          }
+        }
+
+        print(
+            "\n📋 Future Order Dates for ${meal.mealName}: $futureOrderDates");
+
+        if (futureOrderDates.isNotEmpty) {
+          if (!mealData.containsKey(meal.mealName)) {
+            mealData[meal.mealName] = {
+              'count': 0,
+              'image': meal.imageUrl,
+              'studentIds': <String>[]
+            };
+          }
+
+          mealData[meal.mealName]!['count'] += 1;
+          mealData[meal.mealName]!['studentIds'].add(child.id);
+          print("🏆 Meal Added to Order Data");
+        }
       }
     }
 
-    // Get the list of admin meals
-    List<String?> adminMeals = meals.map((data) => data.name).toList();
+    print("\n🍲 Final Meal Data: $mealData");
 
     // Clear the existing list before adding new data
     upComingMealOrderList.clear();
 
-    // Add meals to the upcoming order list
+    List<String?> adminMeals = meals.map((data) => data.name).toList();
+
     for (var entry in mealData.entries) {
       String mealName = entry.key;
       int studentCount = entry.value['count'];
-      String? mealImage = entry.value['image']; // Get meal image
-      bool isInAdminMeals = adminMeals.contains(mealName);
+      String? mealImage = entry.value['image'];
+      List<String> studentIds =
+          (entry.value['studentIds'] as List<dynamic>?)?.cast<String>() ?? [];
 
-      // Get current weekday (assuming order is for today)
+      bool isInAdminMeals = adminMeals.contains(mealName);
       String weekday = DateFormat('EEEE').format(DateTime.now());
 
-      // Add data to the observable list
       upComingMealOrderList.add(
         UpcomingMealOrder(
           image: mealImage,
           itemName: mealName,
           weekday: weekday,
           expectedStudent: studentCount,
+          studentIds: studentIds, // ✅ Now storing student IDs
         ),
       );
 
-      // Debug print
-      print("🍽️ Meal: $mealName | Ordered by: $studentCount students | Exists in Admin Meals: $isInAdminMeals | Image: $mealImage");
+      print(
+          "🍽️ Meal: $mealName | Ordered by: $studentCount students | student Id $studentIds| Exists in Admin Meals: $isInAdminMeals | Image: $mealImage");
     }
-    upComingMealOrderList.sort((a, b) => (b.expectedStudent??0).compareTo(a.expectedStudent??0));
-  }
 
+    // Sort the list in descending order by student count
+    upComingMealOrderList.sort(
+        (a, b) => (b.expectedStudent ?? 0).compareTo(a.expectedStudent ?? 0));
+
+    print("✅ Sorted Meal List Updated!");
+  }
+  // Future<void> getUpcomingOrders() async {
+  //   await Future.delayed(Duration(milliseconds: 1)); // Ensures async execution if needed
+  //
+  //   // Map to store meal data (count and image)
+  //   Map<String, Map<String, dynamic>> mealData = {};
+  //
+  //   // Count how many children ordered each meal and store the image
+  //   for (var child in childrenList) {
+  //     for (var meal in child.selectedMealMenuData ?? []) {
+  //       if (!mealData.containsKey(meal.mealName)) {
+  //         mealData[meal.mealName] = {
+  //           'count': 0,
+  //           'image': meal.imageUrl, // Assuming meal.imageUrl holds the image link
+  //         };
+  //       }
+  //       mealData[meal.mealName]!['count'] += 1;
+  //     }
+  //   }
+  //
+  //   // Get the list of admin meals
+  //   List<String?> adminMeals = meals.map((data) => data.name).toList();
+  //
+  //   // Clear the existing list before adding new data
+  //   upComingMealOrderList.clear();
+  //
+  //   // Add meals to the upcoming order list
+  //   for (var entry in mealData.entries) {
+  //     String mealName = entry.key;
+  //     int studentCount = entry.value['count'];
+  //     String? mealImage = entry.value['image']; // Get meal image
+  //     bool isInAdminMeals = adminMeals.contains(mealName);
+  //
+  //     // Get current weekday (assuming order is for today)
+  //     String weekday = DateFormat('EEEE').format(DateTime.now());
+  //
+  //     // Add data to the observable list
+  //     upComingMealOrderList.add(
+  //       UpcomingMealOrder(
+  //         image: mealImage,
+  //         itemName: mealName,
+  //         weekday: weekday,
+  //         expectedStudent: studentCount,
+  //       ),
+  //     );
+  //
+  //     // Debug print
+  //     print("🍽️ Meal: $mealName | Ordered by: $studentCount students | Exists in Admin Meals: $isInAdminMeals | Image: $mealImage");
+  //   }
+  //   upComingMealOrderList.sort((a, b) => (b.expectedStudent??0).compareTo(a.expectedStudent??0));
+  // }
 
   @override
   void onReady() {

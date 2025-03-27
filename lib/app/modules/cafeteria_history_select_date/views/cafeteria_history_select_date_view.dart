@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_history/controllers/cafeteria_history_controller.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/appBuilderId.dart';
 
 import 'package:luncher/config/app_colors.dart';
@@ -198,6 +199,7 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                     return _buildOrderCard(
                         context,
                         historyController,
+                        cafateriaHSDCont,
                         cafateriaHSDCont.upComingMealOrderList[
                             index]); // Call the method to build each order card
                   },
@@ -212,10 +214,16 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
 Widget _buildOrderCard(
     BuildContext context,
     CafeteriaHistoryController historyController,
+    CafeteriaHistorySelectDateController cafateriaHSDCont,
+
     UpcomingMealOrder upcomingOrderCount) {
   return GestureDetector(
     onTap: () {
-      historyController.updateSelectedIndex(1);
+      print("List of student IDs: ${upcomingOrderCount.studentIds}");
+          Get.toNamed(Routes.CAFETERIA_HISTORY_DETAILS,arguments: {
+            "orderStudentIds" :upcomingOrderCount.studentIds,
+          });
+      // historyController.updateSelectedIndex(1);
     },
     child: Container(
       height: 72, // Fixed height for each item

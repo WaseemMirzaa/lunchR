@@ -160,6 +160,7 @@ class ChildrenDetailsController extends GetxController {
       allChildrenAreInSameSchool: parentController.allChildrenSameSchool.value,
       childId: pChildEditController.childData.childId,
       childName: parentsAddChild.childName,
+      date: DateTime.now().toIso8601String(),
       childSchoolID: parentsAddChild.childSchoolID,
       childImageUrl: pChildEditController.selectedImage.value?.path ??
           pChildEditController.imageUrl.value,
