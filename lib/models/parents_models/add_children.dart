@@ -2,6 +2,7 @@ import 'package:luncher/models/parents_models/parent_selected_meals.dart';
 
 class ParentsAddChildren {
   String? id;
+  String? orderPrepId;
   String? parentId;
   String? numberOfChildren;
   String? allChildrenAreInSameSchool;
@@ -16,7 +17,8 @@ class ParentsAddChildren {
   String? cafeteriaName;
   String? date;
   String? orderPreparationDate;
-  String? status;  // Added status field
+  String? orderDeliveredTime;
+  String? status;
   
   bool startPreparation;
   bool delivered;
@@ -25,6 +27,7 @@ class ParentsAddChildren {
 
   ParentsAddChildren({
     this.id,
+    this.orderPrepId,
     this.parentId,
     this.numberOfChildren,
     this.allChildrenAreInSameSchool,
@@ -37,7 +40,8 @@ class ParentsAddChildren {
     this.cafeteriaName,
     this.date,
     this.orderPreparationDate,
-    this.status,  // Added to constructor
+    this.orderDeliveredTime,
+    this.status,
     this.startPreparation = false,
     this.delivered = false,
     this.selectedMealMenuData,
@@ -45,8 +49,9 @@ class ParentsAddChildren {
 
   factory ParentsAddChildren.fromJson(Map<String, dynamic> json) {
     return ParentsAddChildren(
-      parentId: json['parentId'],
       id: json['id'],
+      orderPrepId: json['orderPrepId'],
+      parentId: json['parentId'],
       numberOfChildren: json['numberOfChildren'],
       classroomDelivery: json['classroomDelivery'],
       allChildrenAreInSameSchool: json['allChildrenAreInSameSchool'],
@@ -58,7 +63,8 @@ class ParentsAddChildren {
       cafeteriaName: json['cafeteriaName'],
       date: json['date'],
       orderPreparationDate: json['orderPreparationDate'],
-      status: json['status'],  // Added to fromJson
+      orderDeliveredTime: json['orderDeliveredTime'],
+      status: json['status'],
       startPreparation: json['startPreparation'] ?? false,
       delivered: json['delivered'] ?? false,
       selectedMealMenuData: json['selectedMealMenuData'] != null
@@ -71,8 +77,9 @@ class ParentsAddChildren {
 
   Map<String, dynamic> toJson() {
     return {
-      'parentId': parentId,
       'id': id,
+      'orderPrepId': orderPrepId,
+      'parentId': parentId,
       'numberOfChildren': numberOfChildren,
       'classroomDelivery': classroomDelivery,
       'allChildrenAreInSameSchool': allChildrenAreInSameSchool,
@@ -84,7 +91,8 @@ class ParentsAddChildren {
       'cafeteriaName': cafeteriaName,
       'date': date ?? DateTime.now().toIso8601String(),
       'orderPreparationDate': orderPreparationDate,
-      'status': status,  // Added to toJson
+      'orderDeliveredTime': orderDeliveredTime,
+      'status': status,
       'startPreparation': startPreparation,
       'delivered': delivered,
       'selectedMealMenuData': selectedMealMenuData?.map((meal) => meal.toMap()).toList(),

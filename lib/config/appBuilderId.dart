@@ -1,5 +1,7 @@
 const String cafateriaHistorySelectDataId = 'cafateriaHistorySelectDataId';
-const String cafateriaHistoryDetailsDataId = 'cafateriaHistoryDetailsDataId';
+const String cafeteriaHistoryDetailsDataId = 'cafeteriaHistoryDetailsDataId';
 // STAFF ID's
 const String staffHistorySelectDataId = 'staffHistorySelectDataId';
+const String staffOrderPreparingId = 'staffOrderPreparingId';
 
+const String staffOrderDeliveredId = 'staffOrderDeliveredId';

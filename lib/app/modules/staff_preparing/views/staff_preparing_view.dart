@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
+import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/config/appBuilderId.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
 import 'package:intl/intl.dart';
@@ -12,11 +14,11 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
   const StaffPreparingView({super.key});
   @override
   Widget build(BuildContext context) {
-    final historyController = Get.find<StaffHistoryController>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: GetBuilder<StaffOrderPreparingController>(
           init: StaffOrderPreparingController(),
+          id: staffOrderPreparingId,
           builder: (controller) {
             return Column(
               children: [
@@ -68,10 +70,14 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
 
                 // ListView of WalletBalanceCards
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: controller.preparingOrdersList.length, // Display 4 items
+                  child: ListView.separated(
+                    itemCount: controller.preparingOrdersList.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 8), // Display 4 items
                     padding: const EdgeInsets.only(top: 8), // Reduce the top padding
                     itemBuilder: (context, index) {
+                      final preparingOrder = controller.preparingOrdersList[index];
+//                       final child = preparingOrder.childName;
+
                       return Container(
                         height: 117,
                         decoration: BoxDecoration(
@@ -110,27 +116,28 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
                                     ],
                                   ),
                                   child: ClipOval(
-                                        child: controller.preparingOrdersList[index].childImageUrl != null && controller.preparingOrdersList[index].childImageUrl!.isNotEmpty
-                                            ? Image.network(
-                                         controller.preparingOrdersList[index].childImageUrl!,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, loadingProgress) {
-                                            if (loadingProgress == null) return child;
-                                            return const Center(
-                                              child: CircularProgressIndicator(),
-                                            );
-                                          },
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Icon(Icons.error_outline_rounded, size: 20);
-                                          },
-                                        )
-                                            : Image.asset(
-                                          'assets/images/profile_emoji.png',
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                    child: controller.preparingOrdersList[index].childImageUrl != null &&
+                                            controller.preparingOrdersList[index].childImageUrl!.isNotEmpty
+                                        ? Image.network(
+                                            controller.preparingOrdersList[index].childImageUrl!,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (context, child, loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return const Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            },
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return const Icon(Icons.error_outline_rounded, size: 20);
+                                            },
+                                          )
+                                        : Image.asset(
+                                            'assets/images/profile_emoji.png',
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -145,181 +152,91 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                       controller.preparingOrdersList[index].childName ?? "N/A",
+                                        preparingOrder.childName ?? "",
                                         style: AppTextStyles.MetropolisMedium.copyWith(
                                           fontSize: 14,
                                         ),
                                       ),
                                       const Spacer(),
-                                      // if (isEdit)
-                                      //   GestureDetector(
-                                      //     onTap: () {
-                                      //       Get.toNamed(Routes.CAFETERIA);
-                                      //     },
-                                      //     child: Text(
-                                      //       "Edit",
-                                      //       style: AppTextStyles.MetropolisRegular.copyWith(
-                                      //         fontSize: 12,
-                                      //         color: const Color(0xFFFF9A0D),
-                                      //       ),
-                                      //     ),
-                                      //   ),
                                       const SizedBox(width: 8),
-                                      // if (!isShowScan)
-                                      // GestureDetector(
-                                      //   onTap: () {
-                                      //     // final homeController = Get.find<ParentsAddWalletController>();
-                                      //     // ParentsHomeController().deleteChildrenById(childList!.parentId!,childList!.childId!);
-                                      //   },
-                                      //   child: Image.asset(
-                                      //     'assets/icon/delete.png',
-                                      //     width: 15,
-                                      //     height: 15,
-                                      //   ),
-                                      // )
                                     ],
                                   ),
                                   Text(
-                                   controller.preparingOrdersList[index].schoolName ?? "N/A",
+                                    preparingOrder.schoolName ?? "",
                                     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12, color: const Color(0xFF858585)),
                                   ),
                                   Text(
-                                   controller.preparingOrdersList[index].childSchoolID ?? "N/A",
+                                    preparingOrder.childSchoolID ?? "",
                                     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12, color: const Color(0xFF858585)),
                                   ),
-                                  // if (isType)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Type: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Wallet Balance",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // if (isDuration)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Duration: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Weekly",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // if (isStaff)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Staff Name: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Name",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // if (isDeliveredBy)
-                                  //   Row(
-                                  //     children: [
-                                  //       Text(
-                                  //         "Delivered By: ",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: Colors.black),
-                                  //       ),
-                                  //       Text(
-                                  //         "Name",
-                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
-                                  //             fontSize: 12, color: const Color(0xFF858585)),
-                                  //       ),
-                                  //     ],
-                                  //   ),
                                   const SizedBox(height: 8),
-                                  // if (isPreparing)
                                   Align(
                                     alignment: Alignment.centerRight,
                                     child: GradientButton(
                                       height: 30,
                                       width: 90,
                                       onTap: () {
+                                        controller.markAsDelivered(controller.preparingOrdersList[index].orderPrepId!);
                                         print("Preparing button tapped!");
                                         // Add your onTap logic here
                                       },
                                     ),
                                   ),
-                                  // if (isDelivered)
-                                  //   Align(
-                                  //     alignment: Alignment.centerRight,
-                                  //     child: Text(
-                                  //       "Delivered",
-                                  //       style: AppTextStyles.MetropolisMedium.copyWith(
-                                  //         fontSize: 12,
-                                  //         color: Colors.black,
-                                  //       ),
-                                  //     ),
-                                  //   ),
                                 ],
                               ),
                             ),
 
-                            // Vertical Divider
-                            // isShowScan
-                            //     ?
                             Container(
                               width: 1,
                               color: Colors.black.withOpacity(0.1),
                               margin: const EdgeInsets.only(left: 6, right: 10),
                             ),
-                            // : const SizedBox.shrink(),
 
-                            // Wallet Balance Section
-                            // isShowScan && !isNoImage
-                            //     ?
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 const SizedBox(height: 8),
 
-                                // Image.asset(
-                                //   "assets/images/profile_emoji.png",
-                                //   width: 36,
-                                //   height: 36,
-                                // ),
-ClipOval(
-                                        child: controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl != null && controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl!.isNotEmpty
-                                            ? Image.network(
-                                         controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl!,
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder: (context, child, loadingProgress) {
-                                            if (loadingProgress == null) return child;
-                                            return const Center(
-                                              child: CircularProgressIndicator(),
-                                            );
-                                          },
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Icon(Icons.error_outline_rounded, size: 20);
-                                          },
-                                        )
-                                            : Image.asset(
-                                          'assets/images/profile_emoji.png',
-                                          width: double.infinity,
-                                          fit: BoxFit.cover,
-                                        ),
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.white, width: 3),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3), // shadow position
                                       ),
+                                    ],
+                                  ),
+                                  child: ClipOval(
+                                    child: controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl != null &&
+                                            controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl!.isNotEmpty
+                                        ? Image.network(
+                                            controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl!,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (context, child, loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return const Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            },
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return const Icon(Icons.error_outline_rounded, size: 20);
+                                            },
+                                          )
+                                        : Image.asset(
+                                            'assets/images/profile_emoji.png',
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
                                 const SizedBox(height: 8),
                                 // Divider
                                 Container(
@@ -330,7 +247,7 @@ ClipOval(
                                 const SizedBox(height: 8),
                                 const SizedBox(height: 4),
                                 Text(
-                                 controller.preparingOrdersList[index].selectedMealMenuData![0].mealName ?? "N/A",
+                                  "\$${preparingOrder.selectedMealMenuData![0].mealPrice.toString()}",
                                   style: AppTextStyles.MetropolisMedium.copyWith(
                                     fontSize: 16,
                                     color: Colors.black,

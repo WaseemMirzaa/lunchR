@@ -44,12 +44,18 @@ class ChildVerificationWalletService extends BaseService {
         'childName': childData.childName,
         'schoolName': childData.schoolName,
         'cafeteriaName': childData.cafeteriaName,
-        'selectedMeals': childData.selectedMealMenuData?.map((meal) => meal.toMap()).toList(),
+        'selectedMealMenuData': childData.selectedMealMenuData?.map((meal) => meal.toMap()).toList(),
         'startPreparation': true,
         'delivered': false,
-        'preparationStartTime': DateTime.now().toIso8601String(),
+        'allChildrenAreInSameSchool': childData.allChildrenAreInSameSchool,
         'date': childData.date,
-        'status': 'in_preparation'
+        'status': 'in_preparation',
+        'orderPreparationDate': DateTime.now().toIso8601String(),
+        'numberOfChildren': childData.numberOfChildren,
+        'classroomDelivery': childData.classroomDelivery,
+        'childSchoolID': childData.childSchoolID,
+        'childImageUrl': childData.childImageUrl,
+        
       };
 
       print("📝 Saving Order Preparation Data:");
