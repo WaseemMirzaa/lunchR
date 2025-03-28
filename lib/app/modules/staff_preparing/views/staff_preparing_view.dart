@@ -8,92 +8,382 @@ import 'package:intl/intl.dart';
 
 import '../controllers/staff_preparing_controller.dart';
 
-class StaffPreparingView extends GetView<StaffPreparingController> {
+class StaffPreparingView extends GetView<StaffOrderPreparingController> {
   const StaffPreparingView({super.key});
   @override
   Widget build(BuildContext context) {
     final historyController = Get.find<StaffHistoryController>();
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          // Row with month/year and calendar icon
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: GetBuilder<StaffOrderPreparingController>(
+          init: StaffOrderPreparingController(),
+          builder: (controller) {
+            return Column(
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: DateFormat('MMMM ').format(DateTime.now()),
-                          style: AppTextStyles.RobotoLight.copyWith(
-                            fontSize: 18,
-                            color: const Color(0xFF2E2E2E),
+                // Row with month/year and calendar icon
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: DateFormat('MMMM ').format(DateTime.now()),
+                                  style: AppTextStyles.RobotoLight.copyWith(
+                                    fontSize: 18,
+                                    color: const Color(0xFF2E2E2E),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '${DateTime.now().year}',
+                                  style: AppTextStyles.RobotoBold.copyWith(
+                                    fontSize: 18,
+                                    color: const Color(0xFF2E2E2E),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: '${DateTime.now().year}',
-                          style: AppTextStyles.RobotoBold.copyWith(
-                            fontSize: 18,
-                            color: const Color(0xFF2E2E2E),
-                          ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     historyController.updateSelectedIndex(1);
+                      //   },
+                      //   child: Image.asset(
+                      //     'assets/icon/calendar.png',
+                      //     height: 20,
+                      //     width: 20,
+                      //   ),
+                      // )
+                    ],
                   ),
-                  ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    historyController.updateSelectedIndex(1);
-                  },
-                  child: Image.asset(
-                    'assets/icon/calendar.png',
-                    height: 20,
-                    width: 20,
-                  ),
-                )
-              ],
-            ),
-          ),
 
-          // ListView of WalletBalanceCards
-          Expanded(
-            child: ListView.builder(
-              itemCount: 4, // Display 4 items
-              padding: const EdgeInsets.only(top: 8), // Reduce the top padding
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 24,
-                    left: 16,
-                    right: 16,
-                  ), // Adjust the padding as needed
-                  child: WalletBalanceCard(
-                    isEdit: false,
-                    price: index == 1 ? '\$870' : '\$250',
-                    isType: false,
-                    isDuration: false,
-                    isStaff: false,
-                    isDelivered: false,
-                    isDeliveredBy: false,
-                    isShowScan: true,
-                    isNoImage: false,
-                    image: 'assets/images/userimg.png',
-                    walletDesc: 'Weekly Spending',
+                // ListView of WalletBalanceCards
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: controller.preparingOrdersList.length, // Display 4 items
+                    padding: const EdgeInsets.only(top: 8), // Reduce the top padding
+                    itemBuilder: (context, index) {
+                      return Container(
+                        height: 117,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              offset: const Offset(0, 6), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: Row(
+                          children: [
+                            // Profile image wrapped with Container
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start, // Align image to top
+                              children: [
+                                Container(
+                                  width: 55,
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.white, width: 3),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 2,
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3), // shadow position
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipOval(
+                                        child: controller.preparingOrdersList[index].childImageUrl != null && controller.preparingOrdersList[index].childImageUrl!.isNotEmpty
+                                            ? Image.network(
+                                         controller.preparingOrdersList[index].childImageUrl!,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return const Center(
+                                              child: CircularProgressIndicator(),
+                                            );
+                                          },
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Icon(Icons.error_outline_rounded, size: 20);
+                                          },
+                                        )
+                                            : Image.asset(
+                                          'assets/images/profile_emoji.png',
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 12),
+
+                            // Details Column
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                       controller.preparingOrdersList[index].childName ?? "N/A",
+                                        style: AppTextStyles.MetropolisMedium.copyWith(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      // if (isEdit)
+                                      //   GestureDetector(
+                                      //     onTap: () {
+                                      //       Get.toNamed(Routes.CAFETERIA);
+                                      //     },
+                                      //     child: Text(
+                                      //       "Edit",
+                                      //       style: AppTextStyles.MetropolisRegular.copyWith(
+                                      //         fontSize: 12,
+                                      //         color: const Color(0xFFFF9A0D),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      const SizedBox(width: 8),
+                                      // if (!isShowScan)
+                                      // GestureDetector(
+                                      //   onTap: () {
+                                      //     // final homeController = Get.find<ParentsAddWalletController>();
+                                      //     // ParentsHomeController().deleteChildrenById(childList!.parentId!,childList!.childId!);
+                                      //   },
+                                      //   child: Image.asset(
+                                      //     'assets/icon/delete.png',
+                                      //     width: 15,
+                                      //     height: 15,
+                                      //   ),
+                                      // )
+                                    ],
+                                  ),
+                                  Text(
+                                   controller.preparingOrdersList[index].schoolName ?? "N/A",
+                                    style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12, color: const Color(0xFF858585)),
+                                  ),
+                                  Text(
+                                   controller.preparingOrdersList[index].childSchoolID ?? "N/A",
+                                    style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12, color: const Color(0xFF858585)),
+                                  ),
+                                  // if (isType)
+                                  //   Row(
+                                  //     children: [
+                                  //       Text(
+                                  //         "Type: ",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: Colors.black),
+                                  //       ),
+                                  //       Text(
+                                  //         "Wallet Balance",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: const Color(0xFF858585)),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // if (isDuration)
+                                  //   Row(
+                                  //     children: [
+                                  //       Text(
+                                  //         "Duration: ",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: Colors.black),
+                                  //       ),
+                                  //       Text(
+                                  //         "Weekly",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: const Color(0xFF858585)),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // if (isStaff)
+                                  //   Row(
+                                  //     children: [
+                                  //       Text(
+                                  //         "Staff Name: ",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: Colors.black),
+                                  //       ),
+                                  //       Text(
+                                  //         "Name",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: const Color(0xFF858585)),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // if (isDeliveredBy)
+                                  //   Row(
+                                  //     children: [
+                                  //       Text(
+                                  //         "Delivered By: ",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: Colors.black),
+                                  //       ),
+                                  //       Text(
+                                  //         "Name",
+                                  //         style: AppTextStyles.MetropolisRegular.copyWith(
+                                  //             fontSize: 12, color: const Color(0xFF858585)),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  const SizedBox(height: 8),
+                                  // if (isPreparing)
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: GradientButton(
+                                      height: 30,
+                                      width: 90,
+                                      onTap: () {
+                                        print("Preparing button tapped!");
+                                        // Add your onTap logic here
+                                      },
+                                    ),
+                                  ),
+                                  // if (isDelivered)
+                                  //   Align(
+                                  //     alignment: Alignment.centerRight,
+                                  //     child: Text(
+                                  //       "Delivered",
+                                  //       style: AppTextStyles.MetropolisMedium.copyWith(
+                                  //         fontSize: 12,
+                                  //         color: Colors.black,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                ],
+                              ),
+                            ),
+
+                            // Vertical Divider
+                            // isShowScan
+                            //     ?
+                            Container(
+                              width: 1,
+                              color: Colors.black.withOpacity(0.1),
+                              margin: const EdgeInsets.only(left: 6, right: 10),
+                            ),
+                            // : const SizedBox.shrink(),
+
+                            // Wallet Balance Section
+                            // isShowScan && !isNoImage
+                            //     ?
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const SizedBox(height: 8),
+
+                                // Image.asset(
+                                //   "assets/images/profile_emoji.png",
+                                //   width: 36,
+                                //   height: 36,
+                                // ),
+ClipOval(
+                                        child: controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl != null && controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl!.isNotEmpty
+                                            ? Image.network(
+                                         controller.preparingOrdersList[index].selectedMealMenuData![0].imageUrl!,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return const Center(
+                                              child: CircularProgressIndicator(),
+                                            );
+                                          },
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Icon(Icons.error_outline_rounded, size: 20);
+                                          },
+                                        )
+                                            : Image.asset(
+                                          'assets/images/profile_emoji.png',
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                const SizedBox(height: 8),
+                                // Divider
+                                Container(
+                                  width: 40, // Adjust as needed
+                                  height: 1,
+                                  color: Colors.grey[300],
+                                ),
+                                const SizedBox(height: 8),
+                                const SizedBox(height: 4),
+                                Text(
+                                 controller.preparingOrdersList[index].selectedMealMenuData![0].mealName ?? "N/A",
+                                  style: AppTextStyles.MetropolisMedium.copyWith(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            )
+                            // : const SizedBox.shrink(),
+
+                            // isNoImage
+                            //     ? Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.center,
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     Text(
+                            //       price,
+                            //       style: AppTextStyles.MetropolisMedium.copyWith(
+                            //         fontSize: 16,
+                            //         color: Colors.black,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // )
+                            //     : const SizedBox.shrink()
+                          ],
+                        ),
+                      );
+                      // return Padding(
+                      //   padding: EdgeInsets.only(
+                      //     bottom: 24,
+                      //     left: 16,
+                      //     right: 16,
+                      //   ), // Adjust the padding as needed
+                      //   child: WalletBalanceCard(
+                      //     isEdit: false,
+                      //     price: index == 1 ? '\$870' : '\$250',
+                      //     isType: false,
+                      //     isDuration: false,
+                      //     isStaff: false,
+                      //     isDelivered: false,
+                      //     isDeliveredBy: false,
+                      //     isShowScan: true,
+                      //     isNoImage: false,
+                      //     image: 'assets/images/userimg.png',
+                      //     walletDesc: 'Weekly Spending',
+                      //   ),
+                      // );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+                ),
+              ],
+            );
+          }),
     );
   }
 }
