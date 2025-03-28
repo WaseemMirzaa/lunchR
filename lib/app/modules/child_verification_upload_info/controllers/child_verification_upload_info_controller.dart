@@ -93,21 +93,22 @@ class ChildVerificationUploadInfoController extends GetxController {
       );
     } else {
       try {
+        startPreparationOrder(childrenList.first);
         // First ensure the StaffLandingPageController exists and get its instance
-        if (!Get.isRegistered<StaffLandingPageController>()) {
-          Get.put(StaffLandingPageController(), permanent: true);
-        }
-        final staffLandingPageController = Get.find<StaffLandingPageController>();
+        // if (!Get.isRegistered<StaffLandingPageController>()) {
+        //   Get.put(StaffLandingPageController(), permanent: true);
+        // }
+        // final staffLandingPageController = Get.find<StaffLandingPageController>();
         
-        // Set the index before navigation
-        staffLandingPageController.selectedIndex.value = 1;
-        historyController.updateSelectedIndex(0);
+        // // Set the index before navigation
+        // staffLandingPageController.selectedIndex.value = 1;
+        // historyController.updateSelectedIndex(0);
         
-        // Navigate to landing page
-        await Get.offAllNamed(
-          Routes.STAFF_LANDING_PAGE,
-          arguments: {'initialIndex': 1}  // Pass the initial index as argument
-        );
+        // // Navigate to landing page
+        // await Get.offAllNamed(
+        //   Routes.STAFF_LANDING_PAGE,
+        //   arguments: {'initialIndex': 1}  // Pass the initial index as argument
+        // );
         
       } catch (e) {
         print("Navigation error: $e");
@@ -136,7 +137,66 @@ class ChildVerificationUploadInfoController extends GetxController {
   //     print("Error sending notification: $e");
   //   }
   // }
-  @override
+ 
+
+  Future<void> startPreparationOrder(ParentsAddChildren child) async {
+    try {
+      isLoading.value = true;
+
+      // Save the order preparation
+      bool success = await _walletService.saveOrderPreparation(child);
+
+      if (success) {
+        // Update the local list item
+        int index = childrenList.indexWhere((element) => element.childId == child.childId);
+        if (index != -1) {
+          childrenList[index].startPreparation = true;
+          childrenList.refresh();
+        }
+
+        Get.snackbar(
+          'Success',
+          'Order preparation started successfully',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+
+        // Ensure the StaffLandingPageController exists
+        if (!Get.isRegistered<StaffLandingPageController>()) {
+          Get.put(StaffLandingPageController(), permanent: true);
+        }
+        final staffLandingPageController = Get.find<StaffLandingPageController>();
+        
+        // Set the index before navigation
+        staffLandingPageController.selectedIndex.value = 1;
+        historyController.updateSelectedIndex(0);
+        
+        // Navigate to landing page
+        await Get.offAllNamed(
+          Routes.STAFF_LANDING_PAGE,
+          arguments: {'initialIndex': 1}
+        );
+      } else {
+        Get.snackbar(
+          'Error',
+          'Failed to start order preparation',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print("❌ Error in startPreparationOrder: $e");
+      Get.snackbar(
+        'Error',
+        'An error occurred while starting the preparation',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+   @override
   void onClose() {
     super.onClose();
   }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/staff_preparing_controller.dart';
 
@@ -26,20 +27,26 @@ class StaffPreparingView extends GetView<StaffPreparingController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'July ',
-                      style: AppTextStyles.RobotoLight.copyWith(
-                        fontSize: 18,
-                        color: const Color(0xFF2E2E2E),
-                      ),
+                    RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: DateFormat('MMMM ').format(DateTime.now()),
+                          style: AppTextStyles.RobotoLight.copyWith(
+                            fontSize: 18,
+                            color: const Color(0xFF2E2E2E),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${DateTime.now().year}',
+                          style: AppTextStyles.RobotoBold.copyWith(
+                            fontSize: 18,
+                            color: const Color(0xFF2E2E2E),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '2024',
-                      style: AppTextStyles.RobotoBold.copyWith(
-                        fontSize: 18,
-                        color: const Color(0xFF2E2E2E),
-                      ),
-                    ),
+                  ),
                   ],
                 ),
                 GestureDetector(

@@ -14,9 +14,14 @@ class ParentsAddChildren {
 
   String? schoolName;
   String? cafeteriaName;
-  String? date;  // Added date field
+  String? date;
+  String? orderPreparationDate;
+  String? status;  // Added status field
+  
+  bool startPreparation;
+  bool delivered;
 
-  List<ParentSelectedMeals>? selectedMealMenuData; // Changed to List
+  List<ParentSelectedMeals>? selectedMealMenuData;
 
   ParentsAddChildren({
     this.id,
@@ -30,7 +35,11 @@ class ParentsAddChildren {
     this.childImageUrl,
     this.schoolName,
     this.cafeteriaName,
-    this.date,  // Initialize date
+    this.date,
+    this.orderPreparationDate,
+    this.status,  // Added to constructor
+    this.startPreparation = false,
+    this.delivered = false,
     this.selectedMealMenuData,
   });
 
@@ -47,11 +56,15 @@ class ParentsAddChildren {
       childImageUrl: json['childImageUrl'],
       schoolName: json['schoolName'],
       cafeteriaName: json['cafeteriaName'],
-      date: json['date'],  // Assign date from Firestore
+      date: json['date'],
+      orderPreparationDate: json['orderPreparationDate'],
+      status: json['status'],  // Added to fromJson
+      startPreparation: json['startPreparation'] ?? false,
+      delivered: json['delivered'] ?? false,
       selectedMealMenuData: json['selectedMealMenuData'] != null
           ? (json['selectedMealMenuData'] as List)
-          .map((meal) => ParentSelectedMeals.fromMap(meal))
-          .toList()
+              .map((meal) => ParentSelectedMeals.fromMap(meal))
+              .toList()
           : [],
     );
   }
@@ -69,7 +82,11 @@ class ParentsAddChildren {
       'childImageUrl': childImageUrl,
       'schoolName': schoolName,
       'cafeteriaName': cafeteriaName,
-      'date': date ?? DateTime.now().toIso8601String(),  // Save current date if not provided
+      'date': date ?? DateTime.now().toIso8601String(),
+      'orderPreparationDate': orderPreparationDate,
+      'status': status,  // Added to toJson
+      'startPreparation': startPreparation,
+      'delivered': delivered,
       'selectedMealMenuData': selectedMealMenuData?.map((meal) => meal.toMap()).toList(),
     };
   }
