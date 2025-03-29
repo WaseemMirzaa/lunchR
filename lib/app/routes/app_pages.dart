@@ -5,6 +5,7 @@ import 'package:luncher/app/modules/cafeteria_upcoming_detail/binding/cafeteria_
 import 'package:luncher/app/modules/cafeteria_upcoming_detail/view/cafeteria_upcoming_detail_viewe.dart';
 import 'package:luncher/app/modules/parent_children_edit/binding/parent_children_edit_binding.dart';
 import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
+import 'package:luncher/app/modules/parent_upcoming_order_detail/binding/parent_upcoming_order_detail_binding.dart';
 import 'package:luncher/app/modules/parents_profile/binding/parent_profile_binding.dart';
 import 'package:luncher/app/modules/parents_profile/view/parent_profile_view.dart';
 
@@ -121,6 +122,7 @@ import '../modules/staff_settings/bindings/staff_settings_binding.dart';
 import '../modules/staff_settings/views/staff_settings_view.dart';
 import '../modules/cafeteria_setting_history/bindings/cafeteria_setting_history_binding.dart';
 import '../modules/cafeteria_setting_history/views/cafeteria_setting_history_view.dart';
+import '../modules/parent_upcoming_order_detail/view/parent_upcoming_order_detail_view.dart';
 
 part 'app_routes.dart';
 
@@ -434,6 +436,11 @@ class AppPages {
       binding: CafeteriaSettingHistoryBinding(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 250),
+    ),
+    GetPage(
+      name: Routes.PARENT_UPCOMING_ORDER_DETAIL,
+      page: () => const ParentUpcomingOrderDetailView(),
+      binding: ParentUpcomingOrderDetailBinding(),
     ),
   ];
 }

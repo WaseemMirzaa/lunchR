@@ -238,8 +238,9 @@ Widget _buildOrderCard(
     ) {
   return GestureDetector(
     onTap: () {
+
        print("List of st kjkkkkkhudent IDs: ${upcomingOrderCount.studentIds}");
-      Get.toNamed(Routes.CAFETERIA_UPCOMING_DETAIL, arguments: {
+      Get.toNamed(Routes.PARENT_UPCOMING_ORDER_DETAIL, arguments: {
         "orderStudentIds": upcomingOrderCount.studentIds,
       });
       // historyController.updateSelectedIndex(1);

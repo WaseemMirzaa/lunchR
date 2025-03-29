@@ -28,7 +28,7 @@ class ParentsHistorySelectDateController extends GetxController {
 
   @override
   void onInit()  {
-    // await fetchCafateriaName();
+    // await fetchCafeteriaName();
         listenToWalletChanges(); // Start listening for real-time updates
 
     fetchParentsChildren();
@@ -204,10 +204,11 @@ class ParentsHistorySelectDateController extends GetxController {
     update(['parentsHistorySelectDataId']);
   }
   Future<void> getUpcomingOrders() async {
-    await Future.delayed(Duration(milliseconds: 1)); // Ensures async execution
+    await Future.delayed(Duration(milliseconds: 1));
 
     Map<String, Map<String, dynamic>> mealData = {};
     DateTime today = DateTime.now();
+    List<DateTime> futureOrderDates = [];
 
     print("🔍 Starting getUpcomingOrders() method");
     print("Current Date: $today");
@@ -239,8 +240,6 @@ class ParentsHistorySelectDateController extends GetxController {
         print("  - Repeat Count: ${schedule.repeatCount}");
         print("  - Repeat On: ${schedule.repeatOn}");
 
-        List<DateTime> futureOrderDates = [];
-
         for (int i = 0; i < (int.tryParse(schedule.repeatCount!) ?? 0); i++) {
           DateTime futureDate;
 
@@ -250,7 +249,9 @@ class ParentsHistorySelectDateController extends GetxController {
               futureDate = orderDate.add(Duration(days: j));
 
               String futureDayName = DateFormat('EEEE').format(futureDate).toLowerCase();
-              List<String> scheduledDays = schedule.repeatOn!.map((d) => d.toLowerCase().trim()).toList();
+              List<dynamic> scheduledDays = (schedule.repeatOn ?? [])
+                  .map((d) => d.toString().toLowerCase().trim())
+                  .toList();
 
               print("\n🕰️ Checking Future Weekday: $futureDate");
               print("  - Future Day Name: $futureDayName");
@@ -273,7 +274,9 @@ class ParentsHistorySelectDateController extends GetxController {
               }
 
               String futureDayName = DateFormat('EEEE').format(futureDate).toLowerCase();
-              List<dynamic> scheduledDays = schedule.repeatOn!.map((d) => d.toLowerCase().trim()).toList();
+              List<dynamic> scheduledDays = (schedule.repeatOn ?? [])
+                  .map((d) => d.toString().toLowerCase().trim())
+                  .toList();
 
               print("\n🕰️ Checking Future Monthday: $futureDate");
               print("  - Future Day Name: $futureDayName");
@@ -295,54 +298,62 @@ class ParentsHistorySelectDateController extends GetxController {
             mealData[meal.mealName] = {
               'count': 0,
               'image': meal.imageUrl,
-                            'itemPrice':meal.mealPrice??"",
-
-              'studentIds': <String>[]
+              'itemPrice': meal.mealPrice ?? "",
+              'studentIds': <dynamic>[] // Initialize as dynamic list
             };
           }
 
           mealData[meal.mealName]!['count'] += 1;
-          mealData[meal.mealName]!['studentIds'].add(child.id);
-          print("🏆 Meal Added to Order Data");
+          
+          // Get the existing studentIds list
+          var studentIds = mealData[meal.mealName]!['studentIds'] as List<dynamic>;
+          // Add the new ID
+          studentIds.add(child.id?.toString() ?? '');
+          // Update the map with the new list
+          mealData[meal.mealName]!['studentIds'] = studentIds;
         }
       }
     }
 
     print("\n🍲 Final Meal Data: $mealData");
 
-    // Clear the existing list before adding new data
+    // Clear existing list
     upComingMealOrderList.clear();
 
-    List<String?> adminMeals = meals.map((data) => data.name).toList();
 
     for (var entry in mealData.entries) {
       String mealName = entry.key;
       int studentCount = entry.value['count'];
       String? mealImage = entry.value['image'];
-            String? mealPrice = entry.value['itemPrice'];
+      String? mealPrice = entry.value['itemPrice'];
 
-      List<String> studentIds = (entry.value['studentIds'] as List<dynamic>?)?.cast<String>() ?? [];
-
-      bool isInAdminMeals = adminMeals.contains(mealName);
-      String weekday = DateFormat('EEEE').format(DateTime.now());
+      // Safe casting of studentIds
+      List<String> studentIds = [];
+      if (entry.value['studentIds'] != null) {
+        studentIds = (entry.value['studentIds'] as List)
+            .map((item) => item.toString())
+            .toList();
+      }
 
       upComingMealOrderList.add(
         UpcomingMealOrder(
           image: mealImage,
           itemName: mealName,
-          weekday: weekday,
-                    itemPrice: mealPrice,
-
+          weekday: DateFormat('EEEE').format(DateTime.now()),
+          itemPrice: mealPrice,
           expectedStudent: studentCount,
-          studentIds: studentIds, // ✅ Now storing student IDs
+          studentIds: studentIds,
         ),
       );
 
-      print("🍽️ Meal: $mealName | Ordered by: $studentCount students | student Id $studentIds| Exists in Admin Meals: $isInAdminMeals | Image: $mealImage| price : $mealPrice");
+      print("🍽️ Meal: $mealName | Ordered by: $studentCount students | "
+          "student Ids: $studentIds | Image: $mealImage | price: $mealPrice");
     }
 
-    // Sort the list in descending order by student count
-    upComingMealOrderList.sort((a, b) => (b.expectedStudent ?? 0).compareTo(a.expectedStudent ?? 0));
+    // Sort the list
+    upComingMealOrderList.sort((a, b) => 
+        (b.expectedStudent ?? 0).compareTo(a.expectedStudent ?? 0));
+    update(['parentsHistorySelectDataId']);
 
     print("✅ Sorted Meal List Updated!");
   }
