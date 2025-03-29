@@ -3,7 +3,8 @@ class UpcomingMealOrder {
   final String? itemName;
   final String? weekday;
   final int? expectedStudent;
-  final List<String>? studentIds; // Store student IDs
+  final List<String>? studentIds;
+  final String? itemPrice;
 
   UpcomingMealOrder({
     this.image,
@@ -11,6 +12,7 @@ class UpcomingMealOrder {
     this.weekday,
     this.expectedStudent,
     this.studentIds,
+    this.itemPrice,
   });
 
   Map<String, dynamic> toJson() {
@@ -19,7 +21,8 @@ class UpcomingMealOrder {
       "itemName": itemName,
       "weekday": weekday,
       "expectedStudent": expectedStudent,
-      "studentIds": studentIds, // Convert to JSON
+      "studentIds": studentIds,
+      "itemPrice": itemPrice,
     };
   }
 }

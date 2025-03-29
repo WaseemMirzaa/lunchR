@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/parents_history/controllers/parents_history_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:luncher/config/appBuilderId.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
+import 'package:luncher/models/cefeteria_admin/upcoming_meal_order.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../controllers/parents_history_select_date_controller.dart';
@@ -13,195 +15,334 @@ class ParentsHistorySelectDateView
   const ParentsHistorySelectDateView({super.key});
   @override
   Widget build(BuildContext context) {
-    final historyController = Get.find<ParentsHistoryController>();
+    // final historyController = Get.find<ParentsHistoryController>();
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2020, 1, 1),
-            lastDay: DateTime.utc(2030, 12, 31),
-            focusedDay: DateTime.now(), // Current visible month
-            calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, focusedDay) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${day.day}',
-                        style: AppTextStyles.RobotoRegular.copyWith(
-                          fontSize: 13,
-                          color: const Color(0xFF2E2E2E),
-                        ),
-                        // Show day number
-                      ),
-                      // Add orange dot below the specified dates
-                      if ([5, 12].contains(day.day)) // Specify any dates
-                        Container(
-                          width: 5,
-                          height: 5,
-                          decoration: const BoxDecoration(
-                            color:AppColors.gradientEndColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                    ],
-                  ),
-                );
-              },
-              todayBuilder: (context, day, focusedDay) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 6.0, horizontal: 10.0),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            AppColors.gradientEndColor,
-                            AppColors.gradientStartColor
-                          ],
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(8.0), // Rounded corners
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            blurRadius: 2,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
+      body:  GetBuilder<ParentsHistorySelectDateController>(
+          init: ParentsHistorySelectDateController(),
+           id: parentsHistorySelectDataId,
+          builder: (parentsHSDCont) {
+
+            return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // TableCalendar(
+              //   firstDay: DateTime.utc(2020, 1, 1),
+              //   lastDay: DateTime.utc(2030, 12, 31),
+              //   focusedDay: DateTime.now(), // Current visible month
+              //   calendarBuilders: CalendarBuilders(
+              //     defaultBuilder: (context, day, focusedDay) {
+              //       return Center(
+              //         child: Column(
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           children: [
+              //             Text(
+              //               '${day.day}',
+              //               style: AppTextStyles.RobotoRegular.copyWith(
+              //                 fontSize: 13,
+              //                 color: const Color(0xFF2E2E2E),
+              //               ),
+              //               // Show day number
+              //             ),
+              //             // Add orange dot below the specified dates
+              //             if ([5, 12].contains(day.day)) // Specify any dates
+              //               Container(
+              //                 width: 5,
+              //                 height: 5,
+              //                 decoration: const BoxDecoration(
+              //                   color:AppColors.gradientEndColor,
+              //                   shape: BoxShape.circle,
+              //                 ),
+              //               ),
+              //           ],
+              //         ),
+              //       );
+              //     },
+              //     todayBuilder: (context, day, focusedDay) {
+              //       return Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Container(
+              //             padding: const EdgeInsets.symmetric(
+              //                 vertical: 6.0, horizontal: 10.0),
+              //             decoration: BoxDecoration(
+              //               gradient: const LinearGradient(
+              //                 colors: [
+              //                   AppColors.gradientEndColor,
+              //                   AppColors.gradientStartColor
+              //                 ],
+              //                 begin: Alignment.topRight,
+              //                 end: Alignment.bottomLeft,
+              //               ),
+              //               borderRadius:
+              //                   BorderRadius.circular(8.0), // Rounded corners
+              //               boxShadow: [
+              //                 BoxShadow(
+              //                   color: Colors.grey.withOpacity(0.2),
+              //                   blurRadius: 2,
+              //                   spreadRadius: 1,
+              //                   offset: const Offset(0, 3),
+              //                 ),
+              //               ],
+              //             ),
+              //             child: Column(
+              //               children: [
+              //                 Text(
+              //                   '${day.day}', // Display the day number
+              //                   style: AppTextStyles.RobotoBold.copyWith(
+              //                     fontSize: 16,
+              //                     color: Colors.white,
+              //                   ),
+              //                 ),
+              //                 Text(
+              //                     [
+              //                       'SUN',
+              //                       'MON',
+              //                       'TUE',
+              //                       'WED',
+              //                       'THU',
+              //                       'FRI',
+              //                       'SAT'
+              //                     ][day.weekday % 7], // Display weekday
+              //                     style: AppTextStyles.RobotoLight.copyWith(
+              //                       fontSize: 12,
+              //                       color: Colors.white,
+              //                     )),
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       );
+              //     },
+              //   ),
+              //   calendarStyle: CalendarStyle(
+              //     todayTextStyle: const TextStyle(
+              //         color: Colors.transparent), // Hide default styling
+              //     outsideDaysVisible: false,
+              //     defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
+              //       fontSize: 13,
+              //       color: const Color(0xFF2E2E2E),
+              //     ),
+              //     weekendTextStyle: AppTextStyles.RobotoRegular.copyWith(
+              //       fontSize: 13,
+              //       color: const Color(0xFF2E2E2E),
+              //     ),
+              //   ),
+              //   headerStyle: HeaderStyle(
+              //     headerPadding:
+              //         const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              //     formatButtonVisible: false,
+              //     titleCentered: false,
+              //     titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
+              //       fontSize: 18,
+              //       color: const Color(0xFF2E2E2E),
+              //     ),
+              //     leftChevronVisible: false,
+              //     rightChevronVisible: false,
+              //   ),
+              //
+              //   daysOfWeekStyle: DaysOfWeekStyle(
+              //     weekdayStyle: AppTextStyles.RobotoRegular.copyWith(
+              //       fontSize: 11,
+              //       color: const Color(0xFFBFBFBF),
+              //     ),
+              //     weekendStyle: AppTextStyles.RobotoRegular.copyWith(
+              //       fontSize: 11,
+              //       color: const Color(0xFFBFBFBF),
+              //     ),
+              //     dowTextFormatter: (date, locale) {
+              //       return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
+              //     },
+              //   ),
+              // ),
+              TableCalendar(
+                firstDay: DateTime.utc(2020, 1, 1),
+                lastDay: DateTime.utc(2030, 12, 31),
+                focusedDay: DateTime.now(), // Current visible month
+                calendarBuilders: CalendarBuilders(
+                  defaultBuilder: (context, day, focusedDay) {
+                    String hasMealToday = parentsHSDCont.checkIfDateHasMeal(day); // Pass day
+
+                    return Center(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            '${day.day}', // Display the day number
-                            style: AppTextStyles.RobotoBold.copyWith(
-                              fontSize: 16,
-                              color: Colors.white,
+                            '${day.day}',
+                            style: AppTextStyles.RobotoRegular.copyWith(
+                              fontSize: 13,
+                              color: const Color(0xFF2E2E2E),
                             ),
                           ),
-                          Text(
-                              [
-                                'SUN',
-                                'MON',
-                                'TUE',
-                                'WED',
-                                'THU',
-                                'FRI',
-                                'SAT'
-                              ][day.weekday % 7], // Display weekday
-                              style: AppTextStyles.RobotoLight.copyWith(
-                                fontSize: 12,
-                                color: Colors.white,
-                              )),
+                          if (hasMealToday.isNotEmpty)
+                            Container(
+                              width: 5,
+                              height: 5,
+                              decoration: const BoxDecoration(
+                                color: AppColors.gradientEndColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
                         ],
                       ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            calendarStyle: CalendarStyle(
-              todayTextStyle: const TextStyle(
-                  color: Colors.transparent), // Hide default styling
-              outsideDaysVisible: false,
-              defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 13,
-                color: const Color(0xFF2E2E2E),
-              ),
-              weekendTextStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 13,
-                color: const Color(0xFF2E2E2E),
-              ),
-            ),
-            headerStyle: HeaderStyle(
-              headerPadding:
-                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              formatButtonVisible: false,
-              titleCentered: false,
-              titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 18,
-                color: const Color(0xFF2E2E2E),
-              ),
-              leftChevronVisible: false,
-              rightChevronVisible: false,
-            ),
+                    );
+                  },
+                  todayBuilder: (context, day, focusedDay) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [AppColors.gradientEndColor, AppColors.gradientStartColor],
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                blurRadius: 2,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              Text(
+                                '${day.day}', // Display the day number
+                                style: AppTextStyles.RobotoBold.copyWith(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                  [
+                                    'SUN',
+                                    'MON',
+                                    'TUE',
+                                    'WED',
+                                    'THU',
+                                    'FRI',
+                                    'SAT'
+                                  ][day.weekday % 7], // Display weekday
+                                  style: AppTextStyles.RobotoLight.copyWith(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                calendarStyle: CalendarStyle(
+                  todayTextStyle: const TextStyle(color: Colors.transparent), // Hide default styling
+                  outsideDaysVisible: false,
+                  defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 13,
+                    color: const Color(0xFF2E2E2E),
+                  ),
+                  weekendTextStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 13,
+                    color: const Color(0xFF2E2E2E),
+                  ),
+                ),
+                headerStyle: HeaderStyle(
+                  headerPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  formatButtonVisible: false,
+                  titleCentered: false,
+                  titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 18,
+                    color: const Color(0xFF2E2E2E),
+                  ),
+                  leftChevronVisible: false,
+                  rightChevronVisible: false,
+                ),
 
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 11,
-                color: const Color(0xFFBFBFBF),
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 11,
+                    color: const Color(0xFFBFBFBF),
+                  ),
+                  weekendStyle: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 11,
+                    color: const Color(0xFFBFBFBF),
+                  ),
+                  dowTextFormatter: (date, locale) {
+                    return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
+                  },
+                ),
               ),
-              weekendStyle: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 11,
-                color: const Color(0xFFBFBFBF),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(
+                  color: Color(0xFFEEEEEE),
+                  thickness: 1,
+                  height: 1,
+                ),
               ),
-              dowTextFormatter: (date, locale) {
-                return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
-              },
-            ),
-          ),
-
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Divider(
-              color: Color(0xFFEEEEEE),
-              thickness: 1,
-              height: 1,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 20, top: 10),
-            child: Align(alignment: Alignment.bottomRight,
-                child: Text('Balance: 200\$', style: AppTextStyles.RobotoRegular.copyWith(
-                  color: const Color(0xFFBFBFBF),
-                  fontSize: 13,
-                ),)),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              top: 8,
-            ),
-            child: Text(
-              'Upcoming',
-              style: AppTextStyles.RobotoRegular.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFBFBFBF),
+              Padding(
+                padding: const EdgeInsets.only(right: 20, top: 10),
+                child: Align(alignment: Alignment.bottomRight,
+                    child: Text('Balance: 200\$', style: AppTextStyles.RobotoRegular.copyWith(
+                      color: const Color(0xFFBFBFBF),
+                      fontSize: 13,
+                    ),)),
               ),
-            ),
-          ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  top: 8,
+                ),
+                child: Text(
+                  'Upcoming',
+                  style: AppTextStyles.RobotoRegular.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFFBFBFBF),
+                  ),
+                ),
+              ),
 
-          // Upcoming Orders Section
-          Expanded(
-              child: ListView.builder(
-            itemCount: 3, // Hardcoded number of items
-            padding:const EdgeInsets.only(top: 0),
+              // Upcoming Orders Section
+              Expanded(
+                  child: ListView.builder(
+                itemCount: parentsHSDCont.upComingMealOrderList.length, // Hardcoded number of items
+                padding:const EdgeInsets.only(top: 0),
 
-            itemBuilder: (context, index) {
-              return _buildOrderCard(context,
-                  historyController); // Call the method to build each order card
-            },
-          )),
-        ],
+                itemBuilder: (context, index) {
+                  return _buildOrderCard(context,
+                  parentsHSDCont.upComingMealOrderList[index],
+
+                      // historyController
+                  ); // Call the method to build each order card
+                },
+              )),
+            ],
+          );
+        }
       ),
     );
   }
 }
 
 Widget _buildOrderCard(
-    BuildContext context, ParentsHistoryController historyController) {
+    BuildContext context,
+    // ParentsHistorySelectDateController parentsHSDCont,
+    UpcomingMealOrder upcomingOrderCount,
+    // ParentsHistoryController historyController
+    ) {
   return GestureDetector(
     onTap: () {
-      historyController.updateSelectedIndex(1);
+       print("List of st kjkkkkkhudent IDs: ${upcomingOrderCount.studentIds}");
+      // Get.toNamed(Routes.CAFETERIA_UPCOMING_DETAIL, arguments: {
+      //   "orderStudentIds": upcomingOrderCount.studentIds,
+      // });
+      // historyController.updateSelectedIndex(1);
     },
     child: Container(
       height: 72, // Fixed height for each item
@@ -247,19 +388,35 @@ Widget _buildOrderCard(
                 Padding(
                   padding:
                   const  EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  child: Container(
-                    width: 43, // Adjust width for more rectangular shape
-                    height: 43, // Adjust height for more rectangular shape
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          8.0), // Optional: for rounded corners
-                      image: const DecorationImage(
-                        image: AssetImage(
-                            'assets/images/gra.png'), // Image asset path
-                        fit: BoxFit.cover, // Fit the image inside the container
+                    child: Container(
+                      width: 43, // Adjust width for more rectangular shape
+                      height: 43, // Adjust height for more rectangular shape
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0), // Optional: for rounded corners
                       ),
-                    ),
-                  ),
+                      child: upcomingOrderCount.image != null && upcomingOrderCount.image!.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                upcomingOrderCount.image!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 127,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const Center(child: CircularProgressIndicator());
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.error_outline_outlined,
+                                    size: 20,
+                                  ); //_buildPlaceholder();
+                                },
+                              ),
+                            )
+                          : const Icon(Icons.no_meals_sharp, size: 20) //_buildPlaceholder();
+
+                      ),
                 ),
 
                 const SizedBox(width: 8),
@@ -269,18 +426,33 @@ Widget _buildOrderCard(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Chicken Gravy", // Hardcoded title
+                      upcomingOrderCount.itemName ?? "", // Hardcoded title
                       style: AppTextStyles.PoppinsMedium.copyWith(
                         fontSize: 11,
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text("Wednesday",
-                        style: AppTextStyles.RobotoRegular.copyWith(
-                          fontSize: 12,
-                          color:const Color(0xFFBFBFBF),
-                        )), // Hardcoded subtitle
+                     RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: DateFormat('MMMM ').format(DateTime.now()),
+                            style: AppTextStyles.RobotoRegular.copyWith(
+                              fontSize: 12,
+                              color: const Color(0xFFBFBFBF),
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${DateTime.now().year}',
+                            style: AppTextStyles.RobotoRegular.copyWith(
+                              fontSize: 12,
+                              color: const Color(0xFFBFBFBF),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ), // H// Hardcoded subtitle
                   ],
                 ),
               ],
@@ -299,7 +471,7 @@ Widget _buildOrderCard(
                 children: [
                   // Centered Text ($25)
                   Text(
-                    "\$25",
+                    "\$${upcomingOrderCount.itemPrice??"N/A"}",
                     style: AppTextStyles.PoppinsMedium.copyWith(
                       fontSize: 14,
                     ),

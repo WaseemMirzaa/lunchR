@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/bindings/cafeteria_edit_staff_binding.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/views/cafeteria_edit_staff_view.dart';
+import 'package:luncher/app/modules/cafeteria_upcoming_detail/binding/cafeteria_upcoming_detail_binding.dart';
+import 'package:luncher/app/modules/cafeteria_upcoming_detail/view/cafeteria_upcoming_detail_viewe.dart';
 import 'package:luncher/app/modules/parent_children_edit/binding/parent_children_edit_binding.dart';
 import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
 import 'package:luncher/app/modules/parents_profile/binding/parent_profile_binding.dart';
@@ -354,6 +356,11 @@ class AppPages {
       name: _Paths.STAFF_HISTORY_DETAIL,
       page: () => const StaffHistoryDetailView(),
       binding: StaffHistoryDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_UPCOMING_DETAIL,
+      page: () => const CafeteriaUpcomingDetailsView(),
+      binding: CafeteriaUpcomingDetailsBinding(),
     ),
     GetPage(
       name: _Paths.STAFF_CHILD_VERIFICATION,

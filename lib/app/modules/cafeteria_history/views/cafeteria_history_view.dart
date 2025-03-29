@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_history_details/views/cafeteria_history_details_view.dart';
-import 'package:luncher/app/modules/cafeteria_history_list/views/cafeteria_history_list_view.dart';
 import 'package:luncher/app/modules/cafeteria_history_select_date/views/cafeteria_history_select_date_view.dart';
 
 import 'package:luncher/config/app_text_style.dart';

@@ -199,8 +199,8 @@ Widget _buildOrderCard(BuildContext context,
     CafeteriaHistorySelectDateController cafateriaHSDCont, UpcomingMealOrder upcomingOrderCount) {
   return GestureDetector(
     onTap: () {
-      print("List of student IDs: ${upcomingOrderCount.studentIds}");
-      Get.toNamed(Routes.CAFETERIA_HISTORY_DETAILS, arguments: {
+      print("List of st kjkkkkkhudent IDs: ${upcomingOrderCount.studentIds}");
+      Get.toNamed(Routes.CAFETERIA_UPCOMING_DETAIL, arguments: {
         "orderStudentIds": upcomingOrderCount.studentIds,
       });
       // historyController.updateSelectedIndex(1);
