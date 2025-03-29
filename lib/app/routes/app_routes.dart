@@ -52,6 +52,8 @@ abstract class Routes {
   static const STAFF_MEAL_SELECTION = _Paths.STAFF_MEAL_SELECTION;
   static const STAFF_PREPARING = _Paths.STAFF_PREPARING;
   static const STAFF_HISTORY = _Paths.STAFF_HISTORY;
+  static const STAFF_DELIVERED_ORDER_HISTORY_DETAILS = _Paths.STAFF_DELIVERED_ORDER_HISTORY_DETAILS;
+
   static const STAFF_HISTORY_CALENDER = _Paths.STAFF_HISTORY_CALENDER;
   static const STAFF_HISTORY_DETAIL = _Paths.STAFF_HISTORY_DETAIL;
   static const STAFF_CHILD_VERIFICATION = _Paths.STAFF_CHILD_VERIFICATION;
@@ -116,6 +118,7 @@ abstract class _Paths {
   static const STAFF_MEAL_SELECTION = '/staff-meal-selection';
   static const STAFF_PREPARING = '/staff-preparing';
   static const STAFF_HISTORY = '/staff-history';
+  static const STAFF_DELIVERED_ORDER_HISTORY_DETAILS = '/staff-delivered-order-history-details';
   static const STAFF_HISTORY_CALENDER = '/staff-history-calender';
   static const STAFF_HISTORY_DETAIL = '/staff-history-detail';
   static const STAFF_CHILD_VERIFICATION = '/staff-child-verification';

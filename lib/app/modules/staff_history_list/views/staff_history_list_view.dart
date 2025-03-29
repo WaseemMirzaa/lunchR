@@ -44,20 +44,15 @@ class StaffHistoryListView extends GetView<StaffHistoryListController> {
                             padding: const EdgeInsets.only(top: 8),
                             itemBuilder: (context, index) {
                               final preparingOrder = controller.deliveredOrdersList[index];
-                              // Get.toNamed(
-                              //   Routes.STAFF_HISTORY_DETAIL,
-                              //   arguments: {
-                              //     "DeliveredOrderData": controller.deliveredOrdersList[index],
-                              //   },
-                              // );
+                            
                               return GestureDetector(
                                 onTap: () {
-                                  // Get.toNamed(
-                                  //   Routes.STAFF_HISTORY_DETAIL,
-                                  //   arguments: {
-                                  //     "DeliveredOrderData": controller.deliveredOrdersList[index],
-                                  //   },
-                                  // );
+                                   Get.toNamed(
+                                Routes.STAFF_DELIVERED_ORDER_HISTORY_DETAILS,
+                                arguments: {
+                                  "DeliveredOrderData": controller.deliveredOrdersList[index],
+                                },
+                              );
                                 },
                                 child: Container(
                                   height: 117,

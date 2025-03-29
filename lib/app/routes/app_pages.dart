@@ -92,6 +92,9 @@ import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/staff_child_verification/bindings/staff_child_verification_binding.dart';
 import '../modules/staff_child_verification/views/staff_child_verification_view.dart';
+import '../modules/staff_delivered_order_history_detail/binding/binding.dart';
+import '../modules/staff_delivered_order_history_detail/bindings/staff_delivered_order_history_detail_binding.dart';
+import '../modules/staff_delivered_order_history_detail/view/staff_delivered_order_history_detail_view.dart';
 import '../modules/staff_history/bindings/staff_history_binding.dart';
 import '../modules/staff_history/views/staff_history_view.dart';
 import '../modules/staff_history_calender/bindings/staff_history_calender_binding.dart';
@@ -334,6 +337,12 @@ class AppPages {
       name: _Paths.STAFF_HISTORY,
       page: () => const StaffHistoryView(),
       binding: StaffHistoryBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: _Paths.STAFF_DELIVERED_ORDER_HISTORY_DETAILS,
+      page: () => const StaffDeliveredOrderHistoryDetails(),
+      binding: StaffDeliveredOrderHistoryDetailBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(
