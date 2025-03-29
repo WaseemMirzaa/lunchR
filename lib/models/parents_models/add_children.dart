@@ -4,6 +4,7 @@ class ParentsAddChildren {
   String? id;
   String? orderPrepId;
   String? parentId;
+  String? cafeteriaAdminId;  // Added new field
   String? numberOfChildren;
   String? allChildrenAreInSameSchool;
   String? classroomDelivery;
@@ -19,8 +20,8 @@ class ParentsAddChildren {
   String? orderPreparationDate;
   String? orderDeliveredTime;
   String? status;
-  String? orderBy;    // New field
-  String? deliveredBy; // New field
+  String? orderBy;
+  String? deliveredBy;
   
   bool startPreparation;
   bool delivered;
@@ -31,6 +32,7 @@ class ParentsAddChildren {
     this.id,
     this.orderPrepId,
     this.parentId,
+    this.cafeteriaAdminId,  // Added to constructor
     this.numberOfChildren,
     this.allChildrenAreInSameSchool,
     this.classroomDelivery,
@@ -44,8 +46,8 @@ class ParentsAddChildren {
     this.orderPreparationDate,
     this.orderDeliveredTime,
     this.status,
-    this.orderBy,     // Add to constructor
-    this.deliveredBy, // Add to constructor
+    this.orderBy,
+    this.deliveredBy,
     this.startPreparation = false,
     this.delivered = false,
     this.selectedMealMenuData,
@@ -56,6 +58,7 @@ class ParentsAddChildren {
       id: json['id'],
       orderPrepId: json['orderPrepId'],
       parentId: json['parentId'],
+      cafeteriaAdminId: json['cafeteriaAdminId'],  // Added to fromJson
       numberOfChildren: json['numberOfChildren'],
       classroomDelivery: json['classroomDelivery'],
       allChildrenAreInSameSchool: json['allChildrenAreInSameSchool'],
@@ -69,8 +72,8 @@ class ParentsAddChildren {
       orderPreparationDate: json['orderPreparationDate'],
       orderDeliveredTime: json['orderDeliveredTime'],
       status: json['status'],
-      orderBy: json['orderBy'],     // Add to fromJson
-      deliveredBy: json['deliveredBy'], // Add to fromJson
+      orderBy: json['orderBy'],
+      deliveredBy: json['deliveredBy'],
       startPreparation: json['startPreparation'] ?? false,
       delivered: json['delivered'] ?? false,
       selectedMealMenuData: json['selectedMealMenuData'] != null
@@ -86,6 +89,7 @@ class ParentsAddChildren {
       'id': id,
       'orderPrepId': orderPrepId,
       'parentId': parentId,
+      'cafeteriaAdminId': cafeteriaAdminId,  // Added to toJson
       'numberOfChildren': numberOfChildren,
       'classroomDelivery': classroomDelivery,
       'allChildrenAreInSameSchool': allChildrenAreInSameSchool,
@@ -99,8 +103,8 @@ class ParentsAddChildren {
       'orderPreparationDate': orderPreparationDate,
       'orderDeliveredTime': orderDeliveredTime,
       'status': status,
-      'orderBy': orderBy,     // Add to toJson
-      'deliveredBy': deliveredBy, // Add to toJson
+      'orderBy': orderBy,
+      'deliveredBy': deliveredBy,
       'startPreparation': startPreparation,
       'delivered': delivered,
       'selectedMealMenuData': selectedMealMenuData?.map((meal) => meal.toMap()).toList(),

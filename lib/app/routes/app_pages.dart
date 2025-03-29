@@ -119,7 +119,8 @@ import '../modules/staff_profile/bindings/staff_profile_binding.dart';
 import '../modules/staff_profile/views/staff_profile_view.dart';
 import '../modules/staff_settings/bindings/staff_settings_binding.dart';
 import '../modules/staff_settings/views/staff_settings_view.dart';
-
+import '../modules/cafeteria_setting_history/bindings/cafeteria_setting_history_binding.dart';
+import '../modules/cafeteria_setting_history/views/cafeteria_setting_history_view.dart';
 
 part 'app_routes.dart';
 
@@ -426,6 +427,13 @@ class AppPages {
       name: _Paths.PARENTS_ADD_WALLET,
       page: () => const ParentsAddWalletView(),
       binding: ParentsAddWalletBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAFETERIA_SETTING_HISTORY,
+      page: () => const CafeteriaSettingHistoryView(),
+      binding: CafeteriaSettingHistoryBinding(),
+      transition: Transition.rightToLeft,
+      transitionDuration: const Duration(milliseconds: 250),
     ),
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:luncher/models/cefeteria_admin/staff_model.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
 import 'package:luncher/services/base_service.dart';
@@ -32,7 +33,7 @@ class ChildVerificationWalletService extends BaseService {
     }
   }
 
-  Future<bool> saveOrderPreparation(ParentsAddChildren childData, String orderBy) async {
+  Future<bool> saveOrderPreparation(ParentsAddChildren childData, StaffModel staffModel) async {
     try {
       // Create new document in orderPreparation collection
       DocumentReference orderPrepRef = _firestore.collection('orderPreparation').doc();
@@ -55,7 +56,8 @@ class ChildVerificationWalletService extends BaseService {
         'classroomDelivery': childData.classroomDelivery,
         'childSchoolID': childData.childSchoolID,
         'childImageUrl': childData.childImageUrl,
-        'orderBy': orderBy,
+        'orderBy': staffModel.staffName,
+        'cafeteriaAdminId':staffModel.userId,
       };
 
       print("📝 Saving Order Preparation Data:");

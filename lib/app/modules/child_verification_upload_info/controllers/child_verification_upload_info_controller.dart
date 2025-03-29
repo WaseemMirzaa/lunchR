@@ -51,7 +51,7 @@ class ChildVerificationUploadInfoController extends GetxController {
         Get.snackbar('Error', 'Parent ID not found');
         return;
       }
-      print("parent id is bbb  $parentId");
+
 
       // Fetch the wallet data
       final wallet = await _walletService.fetchChildParentWallet(parentId);
@@ -151,7 +151,7 @@ class ChildVerificationUploadInfoController extends GetxController {
       isLoading.value = true;
       if (staffModel != null) {
         // Save the order preparation
-        bool success = await _walletService.saveOrderPreparation(child,staffModel.staffName!);
+        bool success = await _walletService.saveOrderPreparation(child,staffModel);
 
       if (success) {
         // Update the local list item
