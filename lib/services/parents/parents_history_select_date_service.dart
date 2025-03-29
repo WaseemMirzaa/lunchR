@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
+import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
 import 'package:luncher/services/base_service.dart';
 
 class ParentsHistorySelectDateService extends BaseService{
@@ -75,5 +76,30 @@ class ParentsHistorySelectDateService extends BaseService{
     }
   }
 
+ // Fetch wallet data as a real-time stream
+  Stream<ParentAddWalletModel?> fetchWalletStreamByParentId(String parentId) {
+    print("🚀 Listening for wallet data changes for parentId: $parentId");
 
+    return firestore
+        .collection('users')
+        .doc(parentId)
+        .collection('ParentWalletAmount')
+        .limit(1) // Fetch only one document
+        .snapshots()
+        .map((QuerySnapshot walletSnapshot) {
+      if (walletSnapshot.docs.isEmpty) {
+        print("🚀 No wallet data found for parentId: $parentId");
+        return null;
+      }
+
+      DocumentSnapshot walletDoc = walletSnapshot.docs.first;
+      String docId = walletDoc.id;
+      Map<String, dynamic> data = walletDoc.data() as Map<String, dynamic>;
+
+      ParentAddWalletModel wallet = ParentAddWalletModel.fromJson(docId, data);
+      print("✅ Wallet Data Updated: ${wallet.toJson()}");
+
+      return wallet;
+    });
+  }
 }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:luncher/models/cefeteria_admin/meal_model.dart';
 import 'package:luncher/models/cefeteria_admin/upcoming_meal_order.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
+import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
 import 'package:luncher/services/parents/parents_history_select_date_service.dart';
 
 class ParentsHistorySelectDateController extends GetxController {
@@ -22,27 +23,41 @@ class ParentsHistorySelectDateController extends GetxController {
   var childrenList = <ParentsAddChildren>[].obs;
   var meals = <MealModel>[].obs;
   var upComingMealOrderList = <UpcomingMealOrder>[].obs;
+    var parentAddWalletModel = Rxn<ParentAddWalletModel>(); // Observable wallet model
+
 
   @override
   void onInit()  {
     // await fetchCafateriaName();
+        listenToWalletChanges(); // Start listening for real-time updates
+
     fetchParentsChildren();
     _fetchCafeteriaMeals();
 
     super.onInit();
   }
-  // Future<void> fetchCafateriaName() async {
-  //   final user = _auth.currentUser;
-  //   // Fetch user document from Firestore
-  //   DocumentSnapshot<Map<String, dynamic>> userDoc = await _firestore
-  //       .collection(CollectionKey.USER_COLLECTION)
-  //       .doc(user?.uid)
-  //       .get();
-  //   print("user value documents  ${userDoc.exists}");
-  //   final cafaeteriaName = userDoc.data()?['cafeteriaName'] as String?;
-  //   print("Cafateria nama is :${cafaeteriaName}");
-  //   cafateriaAdminName = cafaeteriaName;
-  // }
+  void listenToWalletChanges() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      print("❌ No logged-in user found.");
+      return;
+    }
+
+    print("🚀 Listening for wallet updates for Parent ID: ${currentUser.uid}");
+
+    parentsHistorySelectDateService.fetchWalletStreamByParentId(currentUser.uid).listen(
+      (wallet) {
+        if (wallet != null) {
+        parentAddWalletModel.value = wallet;
+        }
+        print("🔄 Wallet data updated: ${wallet?.toJson()}");
+      },
+      onError: (error) {
+        print("❌ Error fetching wallet data: $error");
+      },
+    );
+  }
+
   Future<void> _fetchCafeteriaMeals() async {
     isLoading.value = true;
     String userId = FirebaseAuth.instance.currentUser?.uid ?? "";

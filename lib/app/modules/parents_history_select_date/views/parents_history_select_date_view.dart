@@ -22,139 +22,38 @@ class ParentsHistorySelectDateView
           init: ParentsHistorySelectDateController(),
            id: parentsHistorySelectDataId,
           builder: (parentsHSDCont) {
+ if(parentsHSDCont.isLoading.value){
+              return const Center(child: CircularProgressIndicator());
+            }
+             if (parentsHSDCont.upComingMealOrderList.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.calendar_today_outlined,
+                      size: 48,
+                      color: Colors.grey,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No Upcoming Orders',
+                      style: AppTextStyles.PoppinsMedium.copyWith(
+                        fontSize: 16,
+                      color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
 
-            return Column(
+            return 
+           
+            Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TableCalendar(
-              //   firstDay: DateTime.utc(2020, 1, 1),
-              //   lastDay: DateTime.utc(2030, 12, 31),
-              //   focusedDay: DateTime.now(), // Current visible month
-              //   calendarBuilders: CalendarBuilders(
-              //     defaultBuilder: (context, day, focusedDay) {
-              //       return Center(
-              //         child: Column(
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             Text(
-              //               '${day.day}',
-              //               style: AppTextStyles.RobotoRegular.copyWith(
-              //                 fontSize: 13,
-              //                 color: const Color(0xFF2E2E2E),
-              //               ),
-              //               // Show day number
-              //             ),
-              //             // Add orange dot below the specified dates
-              //             if ([5, 12].contains(day.day)) // Specify any dates
-              //               Container(
-              //                 width: 5,
-              //                 height: 5,
-              //                 decoration: const BoxDecoration(
-              //                   color:AppColors.gradientEndColor,
-              //                   shape: BoxShape.circle,
-              //                 ),
-              //               ),
-              //           ],
-              //         ),
-              //       );
-              //     },
-              //     todayBuilder: (context, day, focusedDay) {
-              //       return Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           Container(
-              //             padding: const EdgeInsets.symmetric(
-              //                 vertical: 6.0, horizontal: 10.0),
-              //             decoration: BoxDecoration(
-              //               gradient: const LinearGradient(
-              //                 colors: [
-              //                   AppColors.gradientEndColor,
-              //                   AppColors.gradientStartColor
-              //                 ],
-              //                 begin: Alignment.topRight,
-              //                 end: Alignment.bottomLeft,
-              //               ),
-              //               borderRadius:
-              //                   BorderRadius.circular(8.0), // Rounded corners
-              //               boxShadow: [
-              //                 BoxShadow(
-              //                   color: Colors.grey.withOpacity(0.2),
-              //                   blurRadius: 2,
-              //                   spreadRadius: 1,
-              //                   offset: const Offset(0, 3),
-              //                 ),
-              //               ],
-              //             ),
-              //             child: Column(
-              //               children: [
-              //                 Text(
-              //                   '${day.day}', // Display the day number
-              //                   style: AppTextStyles.RobotoBold.copyWith(
-              //                     fontSize: 16,
-              //                     color: Colors.white,
-              //                   ),
-              //                 ),
-              //                 Text(
-              //                     [
-              //                       'SUN',
-              //                       'MON',
-              //                       'TUE',
-              //                       'WED',
-              //                       'THU',
-              //                       'FRI',
-              //                       'SAT'
-              //                     ][day.weekday % 7], // Display weekday
-              //                     style: AppTextStyles.RobotoLight.copyWith(
-              //                       fontSize: 12,
-              //                       color: Colors.white,
-              //                     )),
-              //               ],
-              //             ),
-              //           ),
-              //         ],
-              //       );
-              //     },
-              //   ),
-              //   calendarStyle: CalendarStyle(
-              //     todayTextStyle: const TextStyle(
-              //         color: Colors.transparent), // Hide default styling
-              //     outsideDaysVisible: false,
-              //     defaultTextStyle: AppTextStyles.RobotoRegular.copyWith(
-              //       fontSize: 13,
-              //       color: const Color(0xFF2E2E2E),
-              //     ),
-              //     weekendTextStyle: AppTextStyles.RobotoRegular.copyWith(
-              //       fontSize: 13,
-              //       color: const Color(0xFF2E2E2E),
-              //     ),
-              //   ),
-              //   headerStyle: HeaderStyle(
-              //     headerPadding:
-              //         const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-              //     formatButtonVisible: false,
-              //     titleCentered: false,
-              //     titleTextStyle: AppTextStyles.RobotoRegular.copyWith(
-              //       fontSize: 18,
-              //       color: const Color(0xFF2E2E2E),
-              //     ),
-              //     leftChevronVisible: false,
-              //     rightChevronVisible: false,
-              //   ),
-              //
-              //   daysOfWeekStyle: DaysOfWeekStyle(
-              //     weekdayStyle: AppTextStyles.RobotoRegular.copyWith(
-              //       fontSize: 11,
-              //       color: const Color(0xFFBFBFBF),
-              //     ),
-              //     weekendStyle: AppTextStyles.RobotoRegular.copyWith(
-              //       fontSize: 11,
-              //       color: const Color(0xFFBFBFBF),
-              //     ),
-              //     dowTextFormatter: (date, locale) {
-              //       return ["S", "M", "T", "W", "T", "F", "S"][date.weekday % 7];
-              //     },
-              //   ),
-              // ),
+
               TableCalendar(
                 firstDay: DateTime.utc(2020, 1, 1),
                 lastDay: DateTime.utc(2030, 12, 31),
@@ -288,7 +187,7 @@ class ParentsHistorySelectDateView
               Padding(
                 padding: const EdgeInsets.only(right: 20, top: 10),
                 child: Align(alignment: Alignment.bottomRight,
-                    child: Text('Balance: 200\$', style: AppTextStyles.RobotoRegular.copyWith(
+                    child: Text('Balance: ${parentsHSDCont.parentAddWalletModel.value!.amount}\$', style: AppTextStyles.RobotoRegular.copyWith(
                       color: const Color(0xFFBFBFBF),
                       fontSize: 13,
                     ),)),
