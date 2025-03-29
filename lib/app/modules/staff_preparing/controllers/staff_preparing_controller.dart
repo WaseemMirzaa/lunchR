@@ -112,15 +112,51 @@ class StaffOrderPreparingController extends GetxController {
   Future<void> markAsDelivered(String orderId) async {
     isLoading.value = true;
     try {
-      bool success = await _preparationService.markOrderAsDelivered(orderId);
-      if (success) {
+      var order = preparingOrdersList.firstWhere(
+        (order) => order.orderPrepId == orderId,
+        orElse: () => ParentsAddChildren()
+      );
+
+      if (staffData.value?.staffName != order.orderBy) {
         Get.snackbar(
-          'Success',
-          'Order marked as delivered',
+          'Warning',
+          'Only ${order.orderBy} can delivered this order',
           snackPosition: SnackPosition.TOP,
         );
-            final historyController = Get.find<StaffHistoryController>();
+        return;
+      }
 
+      // Mark order as delivered
+      bool success = await _preparationService.markOrderAsDelivered(
+        orderId,
+        staffData.value?.staffName ?? ''
+      );
+
+      if (success) {
+        // Send notification to parent
+        // await _preparationService.sendDeliveryNotification({
+        //   'userId': order.parentId,
+        //   'title': 'Order Delivered! 🎉',
+        //   'message': 'Dear Parent, ${order.childName}\'s meal has been delivered. We hope they enjoy their lunch! If you have any feedback, please let us know.',
+        //   'type': 'order_delivered',
+        //   'isRead': false,
+        //   'timestamp': DateTime.now().toIso8601String(),
+        //   'data': {
+        //     'orderId': orderId,
+        //     'childName': order.childName,
+        //     'deliveredBy': staffData.value?.staffName,
+        //     'deliveryTime': DateTime.now().toIso8601String(),
+        //     'cafeteriaName': cafeteriaName.value
+        //   }
+        // });
+
+        Get.snackbar(
+          'Success',
+          'Order delivered Successfully',
+          snackPosition: SnackPosition.TOP,
+        );
+        
+        final historyController = Get.find<StaffHistoryController>();
         historyController.updateSelectedIndex(1);
       }
     } catch (e) {

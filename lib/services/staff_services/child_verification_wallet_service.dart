@@ -32,7 +32,7 @@ class ChildVerificationWalletService extends BaseService {
     }
   }
 
-  Future<bool> saveOrderPreparation(ParentsAddChildren childData) async {
+  Future<bool> saveOrderPreparation(ParentsAddChildren childData, String orderBy) async {
     try {
       // Create new document in orderPreparation collection
       DocumentReference orderPrepRef = _firestore.collection('orderPreparation').doc();
@@ -55,7 +55,7 @@ class ChildVerificationWalletService extends BaseService {
         'classroomDelivery': childData.classroomDelivery,
         'childSchoolID': childData.childSchoolID,
         'childImageUrl': childData.childImageUrl,
-        
+        'orderBy': orderBy,
       };
 
       print("📝 Saving Order Preparation Data:");

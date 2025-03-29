@@ -3,12 +3,16 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
 import 'package:luncher/app/modules/staff_landing_page/controllers/staff_landing_page_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/models/cefeteria_admin/staff_model.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/staff_services/child_verification_wallet_service.dart';
 
 class ChildVerificationUploadInfoController extends GetxController {
   final ChildVerificationWalletService _walletService = ChildVerificationWalletService();
+  final UserPreferences _preferences = UserPreferences();
+
   var childrenList = <ParentsAddChildren>[].obs;
   var isLoading = false.obs;
   final walletData = Rxn<ParentAddWalletModel>();
@@ -21,6 +25,7 @@ class ChildVerificationUploadInfoController extends GetxController {
     if (!Get.isRegistered<StaffHistoryController>()) {
       Get.put(StaffHistoryController(), permanent: true);  // Make it permanent here too
     }
+
     historyController = Get.find<StaffHistoryController>();
 
     if (Get.arguments != null && Get.arguments is Map<String, dynamic>) {
@@ -141,10 +146,12 @@ class ChildVerificationUploadInfoController extends GetxController {
 
   Future<void> startPreparationOrder(ParentsAddChildren child) async {
     try {
-      isLoading.value = true;
+      StaffModel? staffModel = await _preferences.getStaffDataPreference();
 
-      // Save the order preparation
-      bool success = await _walletService.saveOrderPreparation(child);
+      isLoading.value = true;
+      if (staffModel != null) {
+        // Save the order preparation
+        bool success = await _walletService.saveOrderPreparation(child,staffModel.staffName!);
 
       if (success) {
         // Update the local list item
@@ -183,6 +190,7 @@ class ChildVerificationUploadInfoController extends GetxController {
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
+      }
       }
     } catch (e) {
       print("❌ Error in startPreparationOrder: $e");
