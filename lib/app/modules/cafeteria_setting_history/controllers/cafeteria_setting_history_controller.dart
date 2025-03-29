@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:luncher/models/parents_models/add_children.dart';
+import 'package:luncher/services/cefeteria_admin_services/cafeteria_setting_history_service.dart';
 
 class CafeteriaSettingHistoryController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CafeteriaSettingHistoryService _historyService = CafeteriaSettingHistoryService();
   
   var isLoading = false.obs;
   var errorMessage = ''.obs;
   var selectedIndex = 0.obs;
+  var orderHistory = <ParentsAddChildren>[].obs;
 
   @override
   void onInit() {
@@ -25,7 +27,22 @@ class CafeteriaSettingHistoryController extends GetxController {
   Future<void> fetchHistoryData() async {
     try {
       isLoading.value = true;
-      // Add your fetch logic here
+      errorMessage.value = '';
+      
+      // Get current user ID
+      final String? userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        errorMessage.value = 'User not authenticated';
+        return;
+      }
+
+      // Fetch order history from service
+      final orders = await _historyService.fetchOrderHistory(userId);
+      
+      // Update the observable list
+      orderHistory.assignAll(orders);
+      
+      print("📋 Fetched ${orders.length} orders successfully");
       
     } catch (e) {
       errorMessage.value = 'Error fetching history data: $e';

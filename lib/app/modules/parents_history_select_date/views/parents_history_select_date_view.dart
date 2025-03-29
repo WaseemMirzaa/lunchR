@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/appBuilderId.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
@@ -238,9 +239,9 @@ Widget _buildOrderCard(
   return GestureDetector(
     onTap: () {
        print("List of st kjkkkkkhudent IDs: ${upcomingOrderCount.studentIds}");
-      // Get.toNamed(Routes.CAFETERIA_UPCOMING_DETAIL, arguments: {
-      //   "orderStudentIds": upcomingOrderCount.studentIds,
-      // });
+      Get.toNamed(Routes.CAFETERIA_UPCOMING_DETAIL, arguments: {
+        "orderStudentIds": upcomingOrderCount.studentIds,
+      });
       // historyController.updateSelectedIndex(1);
     },
     child: Container(
