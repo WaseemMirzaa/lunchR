@@ -77,7 +77,7 @@ class StaffOrderPreparationService {
     try {
       await _firestore.collection('orderPreparation').doc(orderId).update({
         'delivered': true,
-        'status': 'delivered',
+        'status': 'Delivered',
         'orderDeliveredTime': DateTime.now().toIso8601String(),
         'startPreparation':false,
       });
