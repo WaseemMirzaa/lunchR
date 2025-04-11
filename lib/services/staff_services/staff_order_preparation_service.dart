@@ -73,13 +73,15 @@ class StaffOrderPreparationService {
   }
 
   // Method to mark order as delivered
-  Future<bool> markOrderAsDelivered(String orderId) async {
+  Future<bool> markOrderAsDelivered(String orderId, String deliveredBy) async {
     try {
       await _firestore.collection('orderPreparation').doc(orderId).update({
         'delivered': true,
         'status': 'Delivered',
         'orderDeliveredTime': DateTime.now().toIso8601String(),
         'startPreparation':false,
+        'orderDeliveredBy':deliveredBy,
+
       });
       print("✅ Order marked as delivered: $orderId");
       return true;

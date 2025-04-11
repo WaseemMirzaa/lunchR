@@ -109,10 +109,11 @@ class StaffOrderPreparingController extends GetxController {
     );
   }
 
-  Future<void> markAsDelivered(String orderId) async {
+  Future<void> markAsDelivered(String orderId , String orderPrepareStaffname) async {
     isLoading.value = true;
     try {
-      bool success = await _preparationService.markOrderAsDelivered(orderId);
+      if(staffData.value!.staffName == orderPrepareStaffname){
+          bool success = await _preparationService.markOrderAsDelivered(orderId, staffData.value!.staffName!);
       if (success) {
         Get.snackbar(
           'Success',
@@ -123,6 +124,16 @@ class StaffOrderPreparingController extends GetxController {
 
         historyController.updateSelectedIndex(1);
       }
+      }
+      else{
+        Get.snackbar(
+          'Error',
+          'You cannot deliver this order. It was prepared by another staff member.',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+            print("object");
+
     } catch (e) {
       print("❌ Error marking order as delivered: $e");
       Get.snackbar(

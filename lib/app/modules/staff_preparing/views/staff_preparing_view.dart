@@ -176,7 +176,8 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
                                       height: 30,
                                       width: 90,
                                       onTap: () {
-                                        controller.markAsDelivered(controller.preparingOrdersList[index].orderPrepId!);
+                                        // print("Preparing button tapped!${controller.preparingOrdersList[index].orderPreparedBy!}");
+                                        controller.markAsDelivered(controller.preparingOrdersList[index].orderPrepId!,controller.preparingOrdersList[index].orderPreparedBy!);
                                         print("Preparing button tapped!");
                                         // Add your onTap logic here
                                       },

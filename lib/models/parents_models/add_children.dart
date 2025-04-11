@@ -19,6 +19,8 @@ class ParentsAddChildren {
   String? orderPreparationDate;
   String? orderDeliveredTime;
   String? status;
+  String? orderPreparedBy;
+  String? orderDeliveredBy;
   
   bool startPreparation;
   bool delivered;
@@ -42,6 +44,8 @@ class ParentsAddChildren {
     this.orderPreparationDate,
     this.orderDeliveredTime,
     this.status,
+    this.orderPreparedBy,
+    this.orderDeliveredBy,
     this.startPreparation = false,
     this.delivered = false,
     this.selectedMealMenuData,
@@ -65,6 +69,8 @@ class ParentsAddChildren {
       orderPreparationDate: json['orderPreparationDate'],
       orderDeliveredTime: json['orderDeliveredTime'],
       status: json['status'],
+      orderPreparedBy: json['orderPreparedBy'],
+      orderDeliveredBy: json['orderDeliveredBy'],
       startPreparation: json['startPreparation'] ?? false,
       delivered: json['delivered'] ?? false,
       selectedMealMenuData: json['selectedMealMenuData'] != null
@@ -93,6 +99,8 @@ class ParentsAddChildren {
       'orderPreparationDate': orderPreparationDate,
       'orderDeliveredTime': orderDeliveredTime,
       'status': status,
+      'orderPreparedBy': orderPreparedBy,
+      'orderDeliveredBy': orderDeliveredBy,
       'startPreparation': startPreparation,
       'delivered': delivered,
       'selectedMealMenuData': selectedMealMenuData?.map((meal) => meal.toMap()).toList(),

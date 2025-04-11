@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
 import 'package:luncher/app/modules/staff_landing_page/controllers/staff_landing_page_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
+import 'package:luncher/models/cefeteria_admin/staff_model.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
 import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/staff_services/child_verification_wallet_service.dart';
 
 class ChildVerificationUploadInfoController extends GetxController {
@@ -13,13 +15,16 @@ class ChildVerificationUploadInfoController extends GetxController {
   var isLoading = false.obs;
   final walletData = Rxn<ParentAddWalletModel>();
   late final StaffHistoryController historyController;
-
+  final UserPreferences preferences = UserPreferences();
+  StaffModel? staffModel;
   @override
   void onInit() {
     super.onInit();
+    getStaffData();
     // Initialize StaffHistoryController if it doesn't exist
+
     if (!Get.isRegistered<StaffHistoryController>()) {
-      Get.put(StaffHistoryController(), permanent: true);  // Make it permanent here too
+      Get.put(StaffHistoryController(), permanent: true); // Make it permanent here too
     }
     historyController = Get.find<StaffHistoryController>();
 
@@ -34,6 +39,11 @@ class ChildVerificationUploadInfoController extends GetxController {
     } else {
       print("No arguments received or invalid format");
     }
+  }
+
+  void getStaffData() async {
+    staffModel = await preferences.getStaffDataPreference();
+    print("staff name is ${staffModel?.staffName}");
   }
 
   Future<void> fetchChildParentWallet(String parentId) async {
@@ -99,17 +109,16 @@ class ChildVerificationUploadInfoController extends GetxController {
         //   Get.put(StaffLandingPageController(), permanent: true);
         // }
         // final staffLandingPageController = Get.find<StaffLandingPageController>();
-        
+
         // // Set the index before navigation
         // staffLandingPageController.selectedIndex.value = 1;
         // historyController.updateSelectedIndex(0);
-        
+
         // // Navigate to landing page
         // await Get.offAllNamed(
         //   Routes.STAFF_LANDING_PAGE,
         //   arguments: {'initialIndex': 1}  // Pass the initial index as argument
         // );
-        
       } catch (e) {
         print("Navigation error: $e");
       }
@@ -137,14 +146,13 @@ class ChildVerificationUploadInfoController extends GetxController {
   //     print("Error sending notification: $e");
   //   }
   // }
- 
 
   Future<void> startPreparationOrder(ParentsAddChildren child) async {
     try {
       isLoading.value = true;
 
       // Save the order preparation
-      bool success = await _walletService.saveOrderPreparation(child);
+      bool success = await _walletService.saveOrderPreparation(child,staffModel!.staffName!);
 
       if (success) {
         // Update the local list item
@@ -166,16 +174,13 @@ class ChildVerificationUploadInfoController extends GetxController {
           Get.put(StaffLandingPageController(), permanent: true);
         }
         final staffLandingPageController = Get.find<StaffLandingPageController>();
-        
+
         // Set the index before navigation
         staffLandingPageController.selectedIndex.value = 1;
         historyController.updateSelectedIndex(0);
-        
+
         // Navigate to landing page
-        await Get.offAllNamed(
-          Routes.STAFF_LANDING_PAGE,
-          arguments: {'initialIndex': 1}
-        );
+        await Get.offAllNamed(Routes.STAFF_LANDING_PAGE, arguments: {'initialIndex': 1});
       } else {
         Get.snackbar(
           'Error',
@@ -196,7 +201,8 @@ class ChildVerificationUploadInfoController extends GetxController {
       isLoading.value = false;
     }
   }
-   @override
+
+  @override
   void onClose() {
     super.onClose();
   }

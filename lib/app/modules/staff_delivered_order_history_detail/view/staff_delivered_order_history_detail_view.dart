@@ -678,7 +678,7 @@ class StaffDeliveredOrderHistoryDetails extends StatelessWidget {
                                     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12, color: Colors.black),
                                   ),
                                   Text(
-                                    "Name",
+                                    controller.deliveredOrderData.value!.orderDeliveredBy ?? "",
                                     style: AppTextStyles.MetropolisRegular.copyWith(fontSize: 12, color: const Color(0xFF858585)),
                                   ),
                                 ],

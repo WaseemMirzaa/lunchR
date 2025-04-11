@@ -17,6 +17,7 @@ class SplashController extends GetxController {
     checkUserStatus();
   }
 
+
   Future<void> checkUserStatus() async {
     StaffModel? staffModel = await preferences.getStaffDataPreference();
 
@@ -53,8 +54,7 @@ class SplashController extends GetxController {
     final schoolName = userDoc.data()?['schoolName'] as String?;
     final parentName = userDoc.data()?['parentsName'] as String?;
 
-    print(
-        "rolllllll  ${role} cafateria Name  ${cafaeteriaName} school name  ${schoolName} parent name  ${parentName}");
+    print("rolllllll  ${role} cafateria Name  ${cafaeteriaName} school name  ${schoolName} parent name  ${parentName}");
 
     // ========== Cafeteria  Flow ==========
 
@@ -73,13 +73,10 @@ class SplashController extends GetxController {
       print("user value documents splash adfa ${isChildExist}");
       if (parentName == null) {
         return Get.offNamed(Routes.PARENT_PROFILE);
-      }
-      else if (isWalletExist == true) {
+      } else if (isWalletExist == true) {
         return Get.offNamed(Routes.PARENTS_ADD_WALLET);
-      }
-      else if (isChildExist == true) {
+      } else if (isChildExist == true) {
         return Get.offNamed(Routes.PARENTS_CHILDREN_DETAILS);
-
       }
       return Get.offNamed(Routes.LANDING_PAGE);
     }
@@ -117,6 +114,7 @@ class SplashController extends GetxController {
     //     Get.offNamed(Routes.SELECTION);
     // }
   }
+
 // FOR CHECK THE PARENTS HAVE WALLET OR NOT
   Future<bool> doesParentWalletExist(String userId) async {
     QuerySnapshot<Map<String, dynamic>> walletSnapshot = await _firestore
@@ -128,6 +126,7 @@ class SplashController extends GetxController {
     // If there are documents in the subcollection, return true
     return walletSnapshot.docs.isEmpty;
   }
+
 // FOR CHECK THE PARENTS HAVE CHILDREN OR NOT
   Future<bool> doesParentHaveChildren(String parentId) async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
