@@ -101,7 +101,7 @@ class CafeteriaMenuPageView extends GetView<CafeteriaMenuPageController> {
     return Obx(
       ()=> Center(
         child: Text(
-          controller.schoolName.value, // Replace with dynamic text
+          '${controller.schoolName.value} / ${controller.cafeteriaName}', // Replace with dynamic text
           style: AppTextStyles.PoppinsBold.copyWith(
             fontSize: 14,
             color: AppColors.blackColor,

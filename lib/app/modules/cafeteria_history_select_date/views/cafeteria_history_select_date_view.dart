@@ -180,6 +180,32 @@ class CafeteriaHistorySelectDateView extends StatelessWidget {
                   itemCount: cafateriaHSDCont.upComingMealOrderList.length, // Hardcoded number of items
                   padding: const EdgeInsets.only(top: 0),
                   itemBuilder: (context, index) {
+                    if(cafateriaHSDCont.isLoading.value){
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (cafateriaHSDCont.upComingMealOrderList.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.calendar_today_outlined,
+                              size: 48,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No Upcoming Orders',
+                              style: AppTextStyles.PoppinsMedium.copyWith(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
                     return _buildOrderCard(
                         context,
                         // historyController,
@@ -199,8 +225,8 @@ Widget _buildOrderCard(BuildContext context,
     CafeteriaHistorySelectDateController cafateriaHSDCont, UpcomingMealOrder upcomingOrderCount) {
   return GestureDetector(
     onTap: () {
-      print("List of student IDs: ${upcomingOrderCount.studentIds}");
-      Get.toNamed(Routes.CAFETERIA_HISTORY_DETAILS, arguments: {
+      print("List of st kjkkkkkhudent IDs: ${upcomingOrderCount.studentIds}");
+      Get.toNamed(Routes.CAFETERIA_UPCOMING_DETAIL, arguments: {
         "orderStudentIds": upcomingOrderCount.studentIds,
       });
       // historyController.updateSelectedIndex(1);

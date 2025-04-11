@@ -392,7 +392,7 @@ class CafeteriaHistorySelectDateController extends GetxController {
               futureDate = orderDate.add(Duration(days: j));
 
               String futureDayName = DateFormat('EEEE').format(futureDate).toLowerCase();
-              List<String> scheduledDays = schedule.repeatOn!.map((d) => d.toLowerCase().trim()).toList();
+              List<dynamic> scheduledDays = schedule.repeatOn!.map((d) => d.toLowerCase().trim()).toList();
 
               print("\n🕰️ Checking Future Weekday: $futureDate");
               print("  - Future Day Name: $futureDayName");
@@ -437,6 +437,7 @@ class CafeteriaHistorySelectDateController extends GetxController {
             mealData[meal.mealName] = {
               'count': 0,
               'image': meal.imageUrl,
+              'itemPrice':meal.mealPrice??"",
               'studentIds': <String>[]
             };
           }
@@ -459,6 +460,7 @@ class CafeteriaHistorySelectDateController extends GetxController {
       String mealName = entry.key;
       int studentCount = entry.value['count'];
       String? mealImage = entry.value['image'];
+      String? mealPrice = entry.value['itemPrice'];
       List<String> studentIds = (entry.value['studentIds'] as List<dynamic>?)?.cast<String>() ?? [];
 
       bool isInAdminMeals = adminMeals.contains(mealName);
@@ -468,13 +470,14 @@ class CafeteriaHistorySelectDateController extends GetxController {
         UpcomingMealOrder(
           image: mealImage,
           itemName: mealName,
+          itemPrice: mealPrice,
           weekday: weekday,
           expectedStudent: studentCount,
           studentIds: studentIds, // ✅ Now storing student IDs
         ),
       );
 
-      print("🍽️ Meal: $mealName | Ordered by: $studentCount students | student Id $studentIds| Exists in Admin Meals: $isInAdminMeals | Image: $mealImage");
+      print("🍽️ Meal: $mealName | Ordered by: $studentCount students | student Id $studentIds| Exists in Admin Meals: $isInAdminMeals | Image: $mealImage| price : $mealPrice");
     }
 
     // Sort the list in descending order by student count

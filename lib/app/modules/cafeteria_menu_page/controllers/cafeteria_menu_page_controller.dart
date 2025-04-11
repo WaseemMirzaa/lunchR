@@ -20,6 +20,7 @@ class CafeteriaMenuPageController extends GetxController {
   var isLoading = false.obs;
   var searchText = "".obs;
   var schoolName = "".obs;
+  var cafeteriaName = "".obs;
   TextEditingController searchTextController = TextEditingController();
   final Map<String, ValueNotifier<bool>> switchControllers = {};
 
@@ -38,10 +39,12 @@ void fetchSchoolName()async{
       await _firestore.collection(CollectionKey.USER_COLLECTION).doc(user!.uid).get();
   print("user value documents splash ${userDoc.exists}");
   final schoolN = userDoc.data()?['schoolName'] as String?;
+  final cafeteriaN = userDoc.data()?['cafeteriaName'] as String?;
 
   if (schoolN !=null ) {
    print("School kkk name $schoolN");
    schoolName.value = schoolN;
+   cafeteriaName.value = cafeteriaN!;
   }else{
     schoolName.value = "School Name Not Available";
     print("School kkk name else $schoolN");

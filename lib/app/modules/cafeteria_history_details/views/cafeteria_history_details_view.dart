@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/config/appBuilderId.dart';
 import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_wallet_widget.dart';
-import 'package:luncher/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_history_details_controller.dart';
 
 class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsController> {
   const CafeteriaHistoryDetailsView({super.key});
+
   @override
   Widget build(BuildContext context) {
+    // Ensure controller is initialized
+    // final controller = Get.put(CafeteriaHistoryDetailsController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -21,215 +22,348 @@ class CafeteriaHistoryDetailsView extends GetView<CafeteriaHistoryDetailsControl
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // const SizedBox(height: 30),
-                // Title
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 30),
-                  child: GestureDetector(
-                    onTap: () {
-                      // controller.updateSelectedIndex(0);
-                      Get.back();
-                    },
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        margin: const EdgeInsets.only(
-                            top: 16), // Add some margin if needed
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              blurRadius: 4,
-                              spreadRadius: 2,
+            child: GetBuilder<CafeteriaHistoryDetailsController>(
+              init: CafeteriaHistoryDetailsController(),
+              builder: (context) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const SizedBox(height: 30),
+                    // Title
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 30),
+                      child: GestureDetector(
+                        onTap: () {
+                          // controller.updateSelectedIndex(0);
+                          Get.back();
+                        },
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            height: 35,
+                            width: 35,
+                            margin: const EdgeInsets.only(top: 16), // Add some margin if needed
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  blurRadius: 4,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                              color: Colors.white, // Background color for the container
                             ),
-                          ],
-                          color: Colors.white, // Background color for the container
-                        ),
-                        child: Center(
-                          child: Image.asset(
-                            "assets/icon/back.png",
-                            height: 15, // Set the height to 15
-                            width: 10, // Set the width to 15
+                            child: Center(
+                              child: Image.asset(
+                                "assets/icon/back.png",
+                                height: 15, // Set the height to 15
+                                width: 10, // Set the width to 15
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    'Details',
-                    style: AppTextStyles.MetropolisMedium.copyWith(
-                      fontSize: 18,
-                      color: const Color(0xFF434343),
+                    Center(
+                      child: Text(
+                        'Details',
+                        style: AppTextStyles.MetropolisMedium.copyWith(
+                          fontSize: 18,
+                          color: const Color(0xFF434343),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Month and Year
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: DateFormat('MMMM ').format(DateTime.now()),
-                          style: AppTextStyles.RobotoLight.copyWith(
-                            fontSize: 18,
-                            color: const Color(0xFF2E2E2E),
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${DateTime.now().year}',
-                          style: AppTextStyles.RobotoBold.copyWith(
-                            fontSize: 18,
-                            color: const Color(0xFF2E2E2E),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // List of Orders
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (controller.errorMessage.value.isNotEmpty) {
-                    return Center(
-                      child: Text(controller.errorMessage.value),
-                    );
-                  }
-
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: controller.childrenList.length,
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        thickness: 1,
-                        color: Colors.grey[300],
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      final child = controller.childrenList[index];
-                      return Container(
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
-                              spreadRadius: 1,
-                              blurRadius: 6,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: Row(
+                    const SizedBox(height: 20),
+                
+                    // Month and Year
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: RichText(
+                        text: TextSpan(
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 55,
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white, width: 3),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 6,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: ClipOval(
-                                    child: child.childImageUrl != null && child.childImageUrl!.isNotEmpty
-                                        ? Image.network(
-                                            child.childImageUrl!,
-                                            width: double.infinity,
-                                            fit: BoxFit.cover,
-                                            loadingBuilder: (context, child, loadingProgress) {
-                                              if (loadingProgress == null) return child;
-                                              return const Center(
-                                                child: CircularProgressIndicator(),
-                                              );
-                                            },
-                                            errorBuilder: (context, error, stackTrace) {
-                                              return Image.asset(
-                                                'assets/images/profile_emoji.png',
-                                                width: double.infinity,
-                                                fit: BoxFit.cover,
-                                              );
-                                            },
-                                          )
-                                        : Image.asset(
-                                            'assets/images/profile_emoji.png',
-                                            width: double.infinity,
-                                            fit: BoxFit.cover,
-                                          ),
-                                  ),
-                                ),
-                              ],
+                            TextSpan(
+                              text: DateFormat('MMMM ').format(DateTime.now()),
+                              style: AppTextStyles.RobotoLight.copyWith(
+                                fontSize: 18,
+                                color: const Color(0xFF2E2E2E),
+                              ),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        child.childName ?? "N/A",
-                                        style: AppTextStyles.MetropolisMedium.copyWith(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    child.schoolName ?? "N/A",
-                                    style: AppTextStyles.MetropolisRegular.copyWith(
-                                      fontSize: 12,
-                                      color: const Color(0xFF858585),
-                                    ),
-                                  ),
-                                  Text(
-                                    child.childSchoolID ?? "N/A",
-                                    style: AppTextStyles.MetropolisRegular.copyWith(
-                                      fontSize: 12,
-                                      color: const Color(0xFF858585),
-                                    ),
-                                  ),
-                                ],
+                            TextSpan(
+                              text: '${DateTime.now().year}',
+                              style: AppTextStyles.RobotoBold.copyWith(
+                                fontSize: 18,
+                                color: const Color(0xFF2E2E2E),
                               ),
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                
+                    const SizedBox(height: 20),
+                
+                    // List of Orders
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                
+                      if (controller.errorMessage.value.isNotEmpty) {
+                        return Center(
+                          child: Text(controller.errorMessage.value),
+                        );
+                      }
+                
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: controller.childrenList.length,
+                        separatorBuilder: (context, index) {
+                          return Divider(
+                            thickness: 1,
+                            color: Colors.grey[300],
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          final child = controller.childrenList[index];
+                          return Container(
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  spreadRadius: 1,
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            child: Row(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 55,
+                                      height: 55,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(color: Colors.white, width: 3),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 2,
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: ClipOval(
+                                        child:
+                                        child.childImageUrl != null && child.childImageUrl!.isNotEmpty
+                                            ? Image.network(
+                                          child.childImageUrl!,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return const Center(
+                                              child: CircularProgressIndicator(),
+                                            );
+                                          },
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/profile_emoji.png',
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
+                                        )
+                                            : Image.asset(
+                                          'assets/images/profile_emoji.png',
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            child.childName ?? "N/A",
+                                            style: AppTextStyles.MetropolisMedium.copyWith(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        child.schoolName ?? "N/A",
+                                        style: AppTextStyles.MetropolisRegular.copyWith(
+                                          fontSize: 12,
+                                          color: const Color(0xFF858585),
+                                        ),
+                                      ),
+                                      Text(
+                                        child.childSchoolID ?? "N/A",
+                                        style: AppTextStyles.MetropolisRegular.copyWith(
+                                          fontSize: 12,
+                                          color: const Color(0xFF858585),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       );
-                    },
-                  );
-                }),
-              ],
+                    }),
+                    // Obx(() {
+                    //   if (controller.isLoading.value) {
+                    //     return const Center(child: CircularProgressIndicator());
+                    //   }
+                    //
+                    //   if (controller.errorMessage.value.isNotEmpty) {
+                    //     return Center(
+                    //       child: Text(controller.errorMessage.value),
+                    //     );
+                    //   }
+                    //
+                    //   return ListView.separated(
+                    //     shrinkWrap: true,
+                    //     physics: const NeverScrollableScrollPhysics(),
+                    //     padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //     itemCount: controller.childrenList.length,
+                    //     separatorBuilder: (context, index) {
+                    //       return Divider(
+                    //         thickness: 1,
+                    //         color: Colors.grey[300],
+                    //       );
+                    //     },
+                    //     itemBuilder: (context, index) {
+                    //       final child = controller.childrenList[index];
+                    //       return Container(
+                    //         height: 80,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.white,
+                    //           borderRadius: BorderRadius.circular(12),
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: Colors.grey.withOpacity(0.4),
+                    //               spreadRadius: 1,
+                    //               blurRadius: 6,
+                    //               offset: const Offset(0, 6),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    //         child: Row(
+                    //           children: [
+                    //             Column(
+                    //               mainAxisAlignment: MainAxisAlignment.start,
+                    //               children: [
+                    //                 Container(
+                    //                   width: 55,
+                    //                   height: 55,
+                    //                   decoration: BoxDecoration(
+                    //                     color: Colors.white,
+                    //                     shape: BoxShape.circle,
+                    //                     border: Border.all(color: Colors.white, width: 3),
+                    //                     boxShadow: [
+                    //                       BoxShadow(
+                    //                         color: Colors.grey.withOpacity(0.3),
+                    //                         spreadRadius: 2,
+                    //                         blurRadius: 6,
+                    //                         offset: const Offset(0, 3),
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //                   child: ClipOval(
+                    //                     child: child.childImageUrl != null && child.childImageUrl!.isNotEmpty
+                    //                         ? Image.network(
+                    //                             child.childImageUrl!,
+                    //                             width: double.infinity,
+                    //                             fit: BoxFit.cover,
+                    //                             loadingBuilder: (context, child, loadingProgress) {
+                    //                               if (loadingProgress == null) return child;
+                    //                               return const Center(
+                    //                                 child: CircularProgressIndicator(),
+                    //                               );
+                    //                             },
+                    //                             errorBuilder: (context, error, stackTrace) {
+                    //                               return Image.asset(
+                    //                                 'assets/images/profile_emoji.png',
+                    //                                 width: double.infinity,
+                    //                                 fit: BoxFit.cover,
+                    //                               );
+                    //                             },
+                    //                           )
+                    //                         : Image.asset(
+                    //                             'assets/images/profile_emoji.png',
+                    //                             width: double.infinity,
+                    //                             fit: BoxFit.cover,
+                    //                           ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             const SizedBox(width: 12),
+                    //             Expanded(
+                    //               child: Column(
+                    //                 crossAxisAlignment: CrossAxisAlignment.start,
+                    //                 children: [
+                    //                   Row(
+                    //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //                     children: [
+                    //                       Text(
+                    //                         child.childName ?? "N/A",
+                    //                         style: AppTextStyles.MetropolisMedium.copyWith(
+                    //                           fontSize: 14,
+                    //                         ),
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //                   Text(
+                    //                     child.schoolName ?? "N/A",
+                    //                     style: AppTextStyles.MetropolisRegular.copyWith(
+                    //                       fontSize: 12,
+                    //                       color: const Color(0xFF858585),
+                    //                     ),
+                    //                   ),
+                    //                   Text(
+                    //                     child.childSchoolID ?? "N/A",
+                    //                     style: AppTextStyles.MetropolisRegular.copyWith(
+                    //                       fontSize: 12,
+                    //                       color: const Color(0xFF858585),
+                    //                     ),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       );
+                    //     },
+                    //   );
+                    // }),
+                  ],
+                );
+              }
             ),
           ),
         ),

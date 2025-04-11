@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/appBuilderId.dart';
+import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_wallet_widget.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +71,8 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
 
                 // ListView of WalletBalanceCards
                 Expanded(
-                  child: ListView.separated(
+                  child: controller.preparingOrdersList.isNotEmpty
+                        ?ListView.separated(
                     itemCount: controller.preparingOrdersList.length,
                     separatorBuilder: (context, index) => const SizedBox(height: 8), // Display 4 items
                     padding: const EdgeInsets.only(top: 8), // Reduce the top padding
@@ -297,7 +299,29 @@ class StaffPreparingView extends GetView<StaffOrderPreparingController> {
                       //   ),
                       // );
                     },
-                  ),
+                  ):Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No Orders in Preparing',
+                                  style: AppTextStyles.PoppinsBold.copyWith(
+                                    fontSize: 16,
+                                    color: AppColors.blackColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'There are currently no orders being in Preparing',
+                                  style: AppTextStyles.PoppinsRegular.copyWith(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                 ),
               ],
             );

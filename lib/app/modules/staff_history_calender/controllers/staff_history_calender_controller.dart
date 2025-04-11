@@ -232,7 +232,7 @@ class StaffHistoryCalenderController extends GetxController {
               futureDate = orderDate.add(Duration(days: j));
 
               String futureDayName = DateFormat('EEEE').format(futureDate).toLowerCase();
-              List<String> scheduledDays = schedule.repeatOn!.map((d) => d.toLowerCase().trim()).toList();
+              List<dynamic> scheduledDays = schedule.repeatOn!.map((d) => d.toLowerCase().trim()).toList();
 
               print("\n🕰️ Checking Future Weekday: $futureDate");
               print("  - Future Day Name: $futureDayName");

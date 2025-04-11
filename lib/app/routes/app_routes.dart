@@ -56,6 +56,9 @@ abstract class Routes {
 
   static const STAFF_HISTORY_CALENDER = _Paths.STAFF_HISTORY_CALENDER;
   static const STAFF_HISTORY_DETAIL = _Paths.STAFF_HISTORY_DETAIL;
+  static const CAFETERIA_UPCOMING_DETAIL = _Paths.CAFETERIA_UPCOMING_DETAIL;
+
+
   static const STAFF_CHILD_VERIFICATION = _Paths.STAFF_CHILD_VERIFICATION;
   static const STAFF_LANDING_PAGE = _Paths.STAFF_LANDING_PAGE;
   static const STAFF_HISTORY_LIST = _Paths.STAFF_HISTORY_LIST;
@@ -69,6 +72,8 @@ abstract class Routes {
   static const CAFETERIA_HOME_SETTINGS = _Paths.CAFETERIA_HOME_SETTINGS;
   static const CAFETERIA_SETTINGS = _Paths.CAFETERIA_SETTINGS;
   static const PARENTS_ADD_WALLET = _Paths.PARENTS_ADD_WALLET;
+  static const CAFETERIA_SETTING_HISTORY = _Paths.CAFETERIA_SETTING_HISTORY;
+  static const PARENT_UPCOMING_ORDER_DETAIL = '/parent-upcoming-order-detail';
 }
 
 abstract class _Paths {
@@ -121,6 +126,9 @@ abstract class _Paths {
   static const STAFF_DELIVERED_ORDER_HISTORY_DETAILS = '/staff-delivered-order-history-details';
   static const STAFF_HISTORY_CALENDER = '/staff-history-calender';
   static const STAFF_HISTORY_DETAIL = '/staff-history-detail';
+  static const CAFETERIA_UPCOMING_DETAIL = '/cafeteria-upcoming-detail';
+
+
   static const STAFF_CHILD_VERIFICATION = '/staff-child-verification';
   static const STAFF_LANDING_PAGE = '/staff-landing-page';
   static const STAFF_HISTORY_LIST = '/staff-history-list';
@@ -134,4 +142,5 @@ abstract class _Paths {
   static const CAFETERIA_HOME_SETTINGS = '/cafeteria-home-settings';
   static const CAFETERIA_SETTINGS = '/cafeteria-settings';
   static const PARENTS_ADD_WALLET = '/parents-add-wallet';
+  static const CAFETERIA_SETTING_HISTORY = '/cafeteria-setting-history';
 }

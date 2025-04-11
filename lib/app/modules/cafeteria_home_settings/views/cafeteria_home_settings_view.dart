@@ -23,69 +23,69 @@ class CafeteriaHomeSettingsView extends GetView<CafeteriaSettingsController> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: GetBuilder<CafeteriaSettingsController>(
-            init: CafeteriaSettingsController(),
-            builder: (controller) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 70,
-                  ),
-
-                  // Settings Title
-                  Text(
-                    'SETTINGS', // Title text
-                    style: AppTextStyles.MetropolisMedium.copyWith(
-                      fontSize: 18,
-                      color: const Color(0xFF434343),
+              init: CafeteriaSettingsController(),
+              builder: (controller) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 70,
                     ),
-                  ),
-                  // const SizedBox(height: 56), // Spacing between title and list
 
-                  // define the row of setting page
-                  const SizedBox(height: 40), // Spacing between title and list
-                  CafeteriaSettingWidget(
-                    labelName: "Profile",
-                    onTap: () {
-                      Get.toNamed(Routes.PROFILE);
-                    },
-                  ),
-                  CafeteriaSettingWidget(
-                    labelName: "Add Staff members",
-                    onTap: () {
-                      // Get.toNamed(Routes.CAFETERIA_ADD_STAFF, arguments: true);
-                      Get.toNamed(Routes.CAFETERIA_STAFF_LIST);
-                    },
-                  ),
-                  CafeteriaSettingWidget(
-                    labelName: "History",
-                    onTap: () {
-                      print("object Pressed");
-                    },
-                  ),
-                  CafeteriaSettingWidget(
-                    labelName: "Privacy Policy",
-                    onTap: () {
-                      print("object Pressed");
-                    },
-                  ),
-                  CafeteriaSettingWidget(
-                    labelName: "Terms & Conditions",
-                    onTap: () {
-                      print("object Pressed");
-                    },
-                  ),
-                  CafeteriaSettingWidget(
-                    labelName: "Sign Out",
-                    onTap: () {
-                      controller.logout();
-                      print("object Pressed");
-                    },
-                  ),
-                ],
-              );
-            }
-          ),
+                    // Settings Title
+                    Text(
+                      'SETTINGS', // Title text
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        fontSize: 18,
+                        color: const Color(0xFF434343),
+                      ),
+                    ),
+                    // const SizedBox(height: 56), // Spacing between title and list
+
+                    // define the row of setting page
+                    const SizedBox(
+                        height: 40), // Spacing between title and list
+                    CafeteriaSettingWidget(
+                      labelName: "Profile",
+                      onTap: () {
+                        Get.toNamed(Routes.PROFILE);
+                      },
+                    ),
+                    CafeteriaSettingWidget(
+                      labelName: "Add Staff members",
+                      onTap: () {
+                        // Get.toNamed(Routes.CAFETERIA_ADD_STAFF, arguments: true);
+                        Get.toNamed(Routes.CAFETERIA_STAFF_LIST);
+                      },
+                    ),
+                    CafeteriaSettingWidget(
+                      labelName: "History",
+                      onTap: () {
+                        Get.toNamed(Routes.CAFETERIA_SETTING_HISTORY);
+                      },
+                    ),
+                    CafeteriaSettingWidget(
+                      labelName: "Privacy Policy",
+                      onTap: () {
+                        print("object Pressed");
+                      },
+                    ),
+                    CafeteriaSettingWidget(
+                      labelName: "Terms & Conditions",
+                      onTap: () {
+                        print("object Pressed");
+                      },
+                    ),
+                    CafeteriaSettingWidget(
+                      labelName: "Sign Out",
+                      onTap: () {
+                        controller.logout();
+                        print("object Pressed");
+                      },
+                    ),
+                  ],
+                );
+              }),
         )
         // body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         //   Expanded(

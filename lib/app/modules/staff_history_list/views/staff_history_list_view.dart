@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
-import 'package:luncher/app/modules/staff_preparing/controllers/staff_preparing_controller.dart';
 import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/appBuilderId.dart';
 import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/models/parents_models/add_children.dart';
 
-import 'package:luncher/widgets/custom_wallet_widget.dart';
 
 import '../controllers/staff_history_list_controller.dart';
 
@@ -102,7 +99,7 @@ class StaffHistoryListView extends GetView<StaffHistoryListController> {
                               children: [
                                 const SizedBox(height: 16),
                                 Text(
-                                  'No Orders in Preparation',
+                                  'No Orders in Delivered',
                                   style: AppTextStyles.PoppinsBold.copyWith(
                                     fontSize: 16,
                                     color: AppColors.blackColor,
@@ -110,7 +107,7 @@ class StaffHistoryListView extends GetView<StaffHistoryListController> {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'There are currently no orders being prepared',
+                                  'There are currently no orders being Delivered',
                                   style: AppTextStyles.PoppinsRegular.copyWith(
                                     fontSize: 14,
                                     color: Colors.grey[600],
@@ -119,7 +116,7 @@ class StaffHistoryListView extends GetView<StaffHistoryListController> {
                               ],
                             ),
                           );
-                    ;
+                    
                   }),
                 ),
               ],

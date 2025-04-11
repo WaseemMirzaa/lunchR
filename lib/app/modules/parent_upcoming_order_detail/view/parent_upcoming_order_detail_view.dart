@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
-import 'package:luncher/config/app_text_style.dart';
-
 import 'package:intl/intl.dart';
+import 'package:luncher/config/app_text_style.dart';
+import '../controller/parent_upcoming_order_detail_controller.dart';
 
-import '../controllers/staff_history_detail_controller.dart';
+class ParentUpcomingOrderDetailView extends GetView<ParentUpcomingOrderDetailController> {
+  const ParentUpcomingOrderDetailView({Key? key}) : super(key: key);
 
-class StaffHistoryDetailView extends StatelessWidget {
-  const StaffHistoryDetailView({super.key});
   @override
   Widget build(BuildContext context) {
     // final historyController = Get.find<StaffHistoryController>();
@@ -21,8 +18,8 @@ class StaffHistoryDetailView extends StatelessWidget {
             constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
             ),
-            child: GetBuilder<StaffHistoryDetailController>(
-                init: StaffHistoryDetailController(),
+            child: GetBuilder<ParentUpcomingOrderDetailController>(
+                init: ParentUpcomingOrderDetailController(),
                 builder: (controller) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,30 +162,30 @@ class StaffHistoryDetailView extends StatelessWidget {
                                         ),
                                         child: ClipOval(
                                           child:
-                                              child.childImageUrl != null && child.childImageUrl!.isNotEmpty
-                                                  ? Image.network(
-                                                      child.childImageUrl!,
-                                                      width: double.infinity,
-                                                      fit: BoxFit.cover,
-                                                      loadingBuilder: (context, child, loadingProgress) {
-                                                        if (loadingProgress == null) return child;
-                                                        return const Center(
-                                                          child: CircularProgressIndicator(),
-                                                        );
-                                                      },
-                                                      errorBuilder: (context, error, stackTrace) {
-                                                        return Image.asset(
-                                                          'assets/images/profile_emoji.png',
-                                                          width: double.infinity,
-                                                          fit: BoxFit.cover,
-                                                        );
-                                                      },
-                                                    )
-                                                  : Image.asset(
-                                                      'assets/images/profile_emoji.png',
-                                                      width: double.infinity,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                          child.childImageUrl != null && child.childImageUrl!.isNotEmpty
+                                              ? Image.network(
+                                            child.childImageUrl!,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (context, child, loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return const Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            },
+                                            errorBuilder: (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/profile_emoji.png',
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                          )
+                                              : Image.asset(
+                                            'assets/images/profile_emoji.png',
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ],
