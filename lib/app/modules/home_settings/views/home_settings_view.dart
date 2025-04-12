@@ -5,6 +5,7 @@ import 'package:luncher/app/modules/cafeteria_settings/views/cafeteria_setting_w
 import 'package:luncher/app/modules/parents_history_list/views/parents_history_list_view.dart';
 import 'package:luncher/app/modules/profile/views/profile_view.dart';
 import 'package:luncher/app/modules/settings/views/settings_view.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 import '../controllers/home_settings_controller.dart';
@@ -42,7 +43,7 @@ class HomeSettingsView extends GetView<HomeSettingsController> {
                   CafeteriaSettingWidget(
                     labelName: "Profile",
                     onTap: () {
-                      // Get.toNamed(Routes.PROFILE);
+                      Get.toNamed(Routes.PARENT_PROFILE);
                     },
                   ),
                   CafeteriaSettingWidget(
