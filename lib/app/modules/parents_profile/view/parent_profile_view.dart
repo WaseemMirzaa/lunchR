@@ -45,7 +45,6 @@ class ParentsProfileView extends GetView<ParentsProfileController> {
                           const SizedBox(
                             height: 20,
                           ),
-                       
                           const SizedBox(
                             height: 20,
                           ),
@@ -65,58 +64,49 @@ class ParentsProfileView extends GetView<ParentsProfileController> {
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(
-                                              0.1), // Shadow color with opacity
+                                          color: Colors.black.withOpacity(0.1), // Shadow color with opacity
                                           blurRadius: 5, // Blur effect
                                           spreadRadius: 2, // Spread radius
-                                          offset: const Offset(0,
-                                              1), // Position of the shadow (x, y)
+                                          offset: const Offset(0, 1), // Position of the shadow (x, y)
                                         ),
                                       ],
                                     ),
                                     child: ClipOval(
-                                        child: controller.selectedImage.value !=
-                                                null
-                                            ? Image.file(
-                                                controller.selectedImage.value!,
-                                                fit: BoxFit.cover,
-                                                width: double.infinity,
-                                                height: 127,
-                                              )
-                                            : controller.imageUrl.value.isNotEmpty
-                                                ? Image.network(
-                                                    controller.imageUrl.value,
-                                                    fit: BoxFit.cover,
-                                                    width: double.infinity,
-                                                    height: 127,
-                                                    loadingBuilder: (context, child,
-                                                        loadingProgress) {
-                                                      if (loadingProgress == null)
-                                                        return child;
-                                                      return const Center(
-                                                          child:
-                                                              CircularProgressIndicator());
-                                                    },
-                                                    errorBuilder: (context, error,
-                                                        stackTrace) {
-                                                      return  const Icon(Icons.error_outline_outlined,size: 20); //_buildPlaceholder();
-                                                    },
-                                                  )
-                                                :
-                                        Image.asset(
-                                          // 'assets/images/userimg.png', // Replace with the actual image URL
-                                          'assets/images/profile_emoji.png', // Replace with the actual image URL
-                                          fit: BoxFit.cover,
-                                        ),
-                                        ),
+                                      child: controller.selectedImage.value != null
+                                          ? Image.file(
+                                              controller.selectedImage.value!,
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: 127,
+                                            )
+                                          : controller.imageUrl.value.isNotEmpty
+                                              ? Image.network(
+                                                  controller.imageUrl.value,
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                  height: 127,
+                                                  loadingBuilder: (context, child, loadingProgress) {
+                                                    if (loadingProgress == null) return child;
+                                                    return const Center(child: CircularProgressIndicator());
+                                                  },
+                                                  errorBuilder: (context, error, stackTrace) {
+                                                    return const Icon(Icons.error_outline_outlined,
+                                                        size: 20); //_buildPlaceholder();
+                                                  },
+                                                )
+                                              : Image.asset(
+                                                  // 'assets/images/userimg.png', // Replace with the actual image URL
+                                                  'assets/images/profile_emoji.png', // Replace with the actual image URL
+                                                  fit: BoxFit.cover,
+                                                ),
+                                    ),
                                   ),
                                 ),
                                 Positioned(
                                     bottom: 0,
                                     right: 0,
                                     child: CustomBackButton(
-                                        onTap: () => controller.pickImage(),
-                                        widget: const Icon(Icons.add)))
+                                        onTap: () => controller.pickImage(), widget: const Icon(Icons.add)))
                               ],
                             ),
                           ),
@@ -124,9 +114,7 @@ class ParentsProfileView extends GetView<ParentsProfileController> {
                             height: 60,
                           ),
                           SimpleTextFieldWithOutSuffixWidget(
-                              controller: controller.parentNameController,
-                              hintText: 'Please Enter Name'),
-                
+                              controller: controller.parentNameController, hintText: 'Please Enter Name'),
                           const SizedBox(
                             height: 20,
                           ),
@@ -147,6 +135,4 @@ class ParentsProfileView extends GetView<ParentsProfileController> {
       ),
     );
   }
-
-
 }

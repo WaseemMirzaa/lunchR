@@ -123,6 +123,8 @@ import '../modules/staff_settings/views/staff_settings_view.dart';
 import '../modules/cafeteria_setting_history/bindings/cafeteria_setting_history_binding.dart';
 import '../modules/cafeteria_setting_history/views/cafeteria_setting_history_view.dart';
 import '../modules/parent_upcoming_order_detail/view/parent_upcoming_order_detail_view.dart';
+import '../modules/setting_parent_profile/bindings/setting_parent_profile_binding.dart';
+import '../modules/setting_parent_profile/views/setting_parent_profile_view.dart';
 
 part 'app_routes.dart';
 
@@ -441,6 +443,11 @@ class AppPages {
       name: Routes.PARENT_UPCOMING_ORDER_DETAIL,
       page: () => const ParentUpcomingOrderDetailView(),
       binding: ParentUpcomingOrderDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.SETTING_PARENT_PROFILE,
+      page: () => const SettingParentProfileView(),
+      binding: SettingParentProfileBinding(),
     ),
   ];
 }

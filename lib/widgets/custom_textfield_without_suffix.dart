@@ -3,23 +3,23 @@ import 'package:luncher/config/app_colors.dart';
 import 'package:luncher/config/app_text_style.dart';
 
 class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
-  final String hintText;
+  final String? hintText; // Made optional by adding ?
   final TextInputType keyboardType;
   final bool isReadOnly;
   final VoidCallback? onTap;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
-  final String? Function(String?)? validator;// Optional onChanged callback
+  final String? Function(String?)? validator;
 
   const SimpleTextFieldWithOutSuffixWidget({
     super.key,
-    required this.hintText,
+    this.hintText, // Remove required keyword
     this.isReadOnly = false,
     this.keyboardType = TextInputType.text,
     this.onTap,
     this.controller,
     this.onChanged,
-    this.validator,// Optional onChanged callback
+    this.validator,
   });
 
   @override
@@ -42,7 +42,8 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: TextFormField(validator: validator,
+            child: TextFormField(
+              validator: validator,
               controller: controller,
               style: AppTextStyles.MetropolisRegular.copyWith(
                 color: const Color(0xFF4A4B4D),
@@ -51,7 +52,7 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
               keyboardType: keyboardType,
               readOnly: isReadOnly,
               onTap: onTap,
-              onChanged: onChanged, // Trigger the onChanged callback
+              onChanged: onChanged,
               decoration: InputDecoration(
                 labelText: isReadOnly ? null : hintText,
                 hintText: isReadOnly ? hintText : null,

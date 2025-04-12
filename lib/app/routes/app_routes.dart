@@ -74,6 +74,7 @@ abstract class Routes {
   static const PARENTS_ADD_WALLET = _Paths.PARENTS_ADD_WALLET;
   static const CAFETERIA_SETTING_HISTORY = _Paths.CAFETERIA_SETTING_HISTORY;
   static const PARENT_UPCOMING_ORDER_DETAIL = '/parent-upcoming-order-detail';
+  static const SETTING_PARENT_PROFILE = _Paths.SETTING_PARENT_PROFILE;
 }
 
 abstract class _Paths {
@@ -143,4 +144,5 @@ abstract class _Paths {
   static const CAFETERIA_SETTINGS = '/cafeteria-settings';
   static const PARENTS_ADD_WALLET = '/parents-add-wallet';
   static const CAFETERIA_SETTING_HISTORY = '/cafeteria-setting-history';
+  static const SETTING_PARENT_PROFILE = '/setting_parent_profile';
 }
