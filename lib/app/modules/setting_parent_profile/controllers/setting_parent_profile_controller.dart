@@ -93,7 +93,7 @@ class SettingParentProfileController extends GetxController {
         Get.snackbar(
           'Error',
           'Failed to update profile',
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (e) {

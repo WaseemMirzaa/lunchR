@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/admin_setting_profile/bindings/admin_setting_profile_binding.dart';
+import 'package:luncher/app/modules/admin_setting_profile/views/admin_setting_profile_view.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/bindings/cafeteria_edit_staff_binding.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/views/cafeteria_edit_staff_view.dart';
 import 'package:luncher/app/modules/cafeteria_upcoming_detail/binding/cafeteria_upcoming_detail_binding.dart';
@@ -448,6 +450,11 @@ class AppPages {
       name: Routes.SETTING_PARENT_PROFILE,
       page: () => const SettingParentProfileView(),
       binding: SettingParentProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.ADMIN_SETTING_PROFILE,
+      page: () => const AdminSettingProfileView(),
+      binding: AdminSettingProfileBinding(),
     ),
   ];
 }

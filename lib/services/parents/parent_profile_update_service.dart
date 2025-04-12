@@ -42,7 +42,7 @@ class ParentProfileUpdateService extends BaseService {
 
       Map<String, dynamic> updateData = {
         'parentsName': parentName,
-        'updatedAt': FieldValue.serverTimestamp(),
+        'profileUpdatedAt': FieldValue.serverTimestamp(),
       };
 
       // If new image file is provided, upload it

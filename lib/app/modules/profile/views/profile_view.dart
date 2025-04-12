@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
 import 'package:luncher/app/modules/home_settings/controllers/home_settings_controller.dart';
+import 'package:luncher/app/routes/app_pages.dart';
 import 'package:luncher/config/app_text_style.dart';
 import 'package:luncher/widgets/custom_textfeild.dart';
 import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
@@ -33,8 +34,8 @@ class ProfileView extends GetView<ProfileController> {
               alignment: Alignment.topLeft,
               child: GestureDetector(
                 onTap: () {
-                  // Get.back();
-                  historyController.updateSelectedIndex(0);
+                  Get.back();
+                  // historyController.updateSelectedIndex(0);
                   // historyController.updateSelectedIndex(0);
 
                 },
@@ -95,7 +96,12 @@ class ProfileView extends GetView<ProfileController> {
 
             const SizedBox(height: 10),
 
-            Row(
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.ADMIN_SETTING_PROFILE);
+                // Handle edit profile action
+              },
+              child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
               const  Icon(
@@ -107,20 +113,16 @@ class ProfileView extends GetView<ProfileController> {
                const SizedBox(width: 5),
 
                 // Edit Profile
-                GestureDetector(
-                  onTap: () {
-                    // Handle edit profile action
-                  },
-                  child: Text(
+                Text(
                     "Edit Profile",
                     style: AppTextStyles.MetropolisMedium.copyWith(
                       color: const Color(0xFFFF9A0D),
                       fontSize: 12,
                     ),
                   ),
-                ),
+              
               ],
-            ),
+            ),  ),
 
             const SizedBox(height: 10),
 
