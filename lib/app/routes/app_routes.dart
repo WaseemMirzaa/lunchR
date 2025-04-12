@@ -76,6 +76,7 @@ abstract class Routes {
   static const PARENT_UPCOMING_ORDER_DETAIL = '/parent-upcoming-order-detail';
   static const SETTING_PARENT_PROFILE = _Paths.SETTING_PARENT_PROFILE;
   static const ADMIN_SETTING_PROFILE = _Paths.ADMIN_SETTING_PROFILE;
+  static const STAFF_SETTING_PROFILE = _Paths.STAFF_SETTING_PROFILE;
 }
 
 abstract class _Paths {
@@ -147,4 +148,5 @@ abstract class _Paths {
   static const CAFETERIA_SETTING_HISTORY = '/cafeteria-setting-history';
   static const SETTING_PARENT_PROFILE = '/setting_parent_profile';
   static const ADMIN_SETTING_PROFILE = '/admin-setting-profile';
+  static const STAFF_SETTING_PROFILE = '/staff-setting-profile';
 }

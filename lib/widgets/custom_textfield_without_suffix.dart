@@ -6,6 +6,7 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
   final String? hintText; // Made optional by adding ?
   final TextInputType keyboardType;
   final bool isReadOnly;
+  final bool readOnly;  // Added readOnly parameter
   final VoidCallback? onTap;
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
@@ -15,6 +16,7 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
     super.key,
     this.hintText, // Remove required keyword
     this.isReadOnly = false,
+    this.readOnly = false,  // Added with default value false
     this.keyboardType = TextInputType.text,
     this.onTap,
     this.controller,
@@ -50,7 +52,7 @@ class SimpleTextFieldWithOutSuffixWidget extends StatelessWidget {
                 fontSize: 16,
               ),
               keyboardType: keyboardType,
-              readOnly: isReadOnly,
+              readOnly: readOnly || isReadOnly,  // Modified to use both parameters
               onTap: onTap,
               onChanged: onChanged,
               decoration: InputDecoration(

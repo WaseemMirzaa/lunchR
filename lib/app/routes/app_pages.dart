@@ -10,6 +10,8 @@ import 'package:luncher/app/modules/parent_children_edit/view/parent_children_ed
 import 'package:luncher/app/modules/parent_upcoming_order_detail/binding/parent_upcoming_order_detail_binding.dart';
 import 'package:luncher/app/modules/parents_profile/binding/parent_profile_binding.dart';
 import 'package:luncher/app/modules/parents_profile/view/parent_profile_view.dart';
+import 'package:luncher/app/modules/staff_setting_profile/bindings/staff_setting_profile_binding.dart';
+import 'package:luncher/app/modules/staff_setting_profile/views/staff_setting_profile_view.dart';
 
 import '../modules/cafeteria/bindings/cafeteria_binding.dart';
 import '../modules/cafeteria/views/cafeteria_view.dart';
@@ -168,7 +170,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA,
-      page: () =>  CafeteriaView(),
+      page: () => CafeteriaView(),
       binding: CafeteriaBinding(),
     ),
     GetPage(
@@ -178,7 +180,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MENU_PAGE,
-      page: () =>  MenuPageView(),
+      page: () => MenuPageView(),
       binding: MenuPageBinding(),
     ),
     GetPage(
@@ -190,7 +192,6 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
-
     ),
     GetPage(
       name: _Paths.SETTINGS,
@@ -286,7 +287,8 @@ class AppPages {
       name: _Paths.PARENTS_CHILDREN_DETAILS,
       page: () => const ParentsChildrenDetailsView(),
       binding: ParentsChildrenDetailsBinding(),
-    ),  GetPage(
+    ),
+    GetPage(
       name: _Paths.PARENTS_CHILDREN_EDIT,
       page: () => const ParentsChildrenEditView(),
       binding: ParentsChildrenEditBinding(),
@@ -329,7 +331,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STAFF_PHONE_VERIFICATION,
-      page: () =>  StaffPhoneAuthenticationView(),
+      page: () => StaffPhoneAuthenticationView(),
       binding: StaffPhoneVerificationBinding(),
     ),
     GetPage(
@@ -399,7 +401,6 @@ class AppPages {
       page: () => const StaffProfileView(),
       binding: StaffProfileBinding(),
     ),
-
     GetPage(
       name: _Paths.PARENT_PROFILE,
       page: () => const ParentsProfileView(),
@@ -407,11 +408,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA_ADD_STAFF,
-      page: () =>  const CafeteriaAddStaffView(),
+      page: () => const CafeteriaAddStaffView(),
       binding: CafeteriaAddStaffBinding(),
-    ), GetPage(
+    ),
+    GetPage(
       name: _Paths.CAFETERIA_EDIT_STAFF,
-      page: () =>  CafeteriaEditStaffView(),
+      page: () => CafeteriaEditStaffView(),
       binding: CafeteriaEditStaffBinding(),
     ),
     GetPage(
@@ -455,6 +457,11 @@ class AppPages {
       name: Routes.ADMIN_SETTING_PROFILE,
       page: () => const AdminSettingProfileView(),
       binding: AdminSettingProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.STAFF_SETTING_PROFILE,
+      page: () => const StaffSettingProfileView(),
+      binding: StaffSettingProfileBinding(),
     ),
   ];
 }

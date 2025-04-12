@@ -2,23 +2,31 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luncher/models/user_model.dart';
+import 'package:luncher/models/cefeteria_admin/staff_model.dart';
+import 'package:luncher/services/Shared_preference/preferences.dart';
 import 'package:luncher/services/staff/staff_profile_update_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StaffSettingProfileController extends GetxController {
-  final StaffProfileUpdateService _profileService = StaffProfileUpdateService();
-  
+  final StaffProfileUpdateService _staffProfileService = StaffProfileUpdateService();
+  final UserPreferences preferences = UserPreferences();
+  final ImagePicker _imagePicker = ImagePicker();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Form Controllers
   final nameController = TextEditingController();
-  final isLoading = false.obs;
-  final isImageLoading = false.obs;
-  final userProfile = Rxn<UserModel>();
+
+  // Reactive Variables
+  final staffModel = Rxn<StaffModel>();
   final selectedImage = Rxn<File>();
   final currentImageUrl = RxnString();
+  final isLoading = false.obs;
+  final isImageLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchStaffProfile();
+    loadInitialData();
   }
 
   @override
@@ -27,84 +35,121 @@ class StaffSettingProfileController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchStaffProfile() async {
+  Future<void> loadInitialData() async {
     try {
       isLoading.value = true;
-      final profile = await _profileService.getCurrentUserProfile();
-      if (profile != null) {
-        userProfile.value = profile;
-        nameController.text = profile.staffName ?? '';
-        currentImageUrl.value = profile.staffPic;
+      final data = await preferences.getStaffDataPreference();
+      if (data != null) {
+        staffModel.value = data;
+        _initializeFormData(data);
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to fetch profile: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      _handleError('Error loading data', e);
     } finally {
       isLoading.value = false;
     }
   }
 
+  void _initializeFormData(StaffModel data) {
+    nameController.text = data.staffName ?? '';
+    currentImageUrl.value = data.imageUrl;
+  }
+
   Future<void> pickImage() async {
-    final ImagePicker picker = ImagePicker();
     try {
       isImageLoading.value = true;
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      
+      final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+
       if (image != null) {
         selectedImage.value = File(image.path);
       }
+    } catch (e) {
+      _handleError('Error picking image', e);
     } finally {
       isImageLoading.value = false;
     }
   }
 
   Future<void> updateProfile() async {
+    if (!_validateInputs()) return;
+
+    try {
+      isLoading.value = true;
+      final currentStaff = staffModel.value;
+
+      if (currentStaff?.id == null) {
+        throw Exception('Staff ID is missing');
+      }
+
+      final success = await _staffProfileService.updateStaffProfile(
+        staffId: currentStaff!.id!,
+        staffName: nameController.text.trim(),
+        profileImage: selectedImage.value,
+      );
+
+      if (success) {
+        // Get fresh data from Firestore
+        DocumentSnapshot<Map<String, dynamic>> updatedDoc =
+            await _firestore.collection("staffData").doc(currentStaff.id).get();
+
+        if (updatedDoc.exists) {
+          // Create updated staff model with new data
+          StaffModel updatedStaff = StaffModel(
+            id: currentStaff.id,
+            staffName: updatedDoc.data()?['staffName'],
+            staffPhone: currentStaff.staffPhone,
+            staffPassword: currentStaff.staffPassword,
+            staffEmail: currentStaff.staffEmail,
+            userId: currentStaff.userId,
+            imageUrl: updatedDoc.data()?['imageUrl'] ?? currentStaff.imageUrl,
+          );
+
+          // Update local state
+          staffModel.value = updatedStaff;
+
+          // Update SharedPreferences with fresh data
+          await preferences.saveStaffDataPreference(updatedStaff);
+        }
+
+        Get.snackbar(
+          'Success',
+          'Profile updated successfully',
+          snackPosition: SnackPosition.TOP,
+        );
+        Get.back();
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Update failed: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  bool _validateInputs() {
     if (nameController.text.trim().isEmpty) {
       Get.snackbar(
         'Error',
         'Please enter your name',
         snackPosition: SnackPosition.BOTTOM,
       );
-      return;
+      return false;
     }
+    return true;
+  }
 
-    try {
-      isLoading.value = true;
-      if (selectedImage.value != null) {
-        isImageLoading.value = true;
-      }
-      
-      final success = await _profileService.updateStaffProfile(
-        staffName: nameController.text.trim(),
-        newImageFile: selectedImage.value,
-      );
-
-      if (success) {
-        Get.snackbar(
-          'Success',
-          'Profile updated successfully',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        await fetchStaffProfile();
-      } else {
-        Get.snackbar(
-          'Error',
-          'Failed to update profile',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-      }
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to update profile: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } finally {
-      isLoading.value = false;
-      isImageLoading.value = false;
-    }
+  void _handleError(String message, dynamic error) {
+    print('❌ $message: $error');
+    Get.snackbar(
+      'Error',
+      '$message: ${error.toString()}',
+      snackPosition: SnackPosition.BOTTOM,
+    );
   }
 }

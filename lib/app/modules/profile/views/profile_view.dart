@@ -14,130 +14,150 @@ class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
   @override
   Widget build(BuildContext context) {
-    //create three textfield for name, email and mobile number
-    TextEditingController nameController = TextEditingController();
-    final historyController = Get.find<CafeteriaHomeSettingsController>();
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Profile Picture
-
-            const SizedBox(
-              height: 40,
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                  // historyController.updateSelectedIndex(0);
-                  // historyController.updateSelectedIndex(0);
-
-                },
-                child: Container(
-                  height: 35,
-                  width: 35,
-                  margin: const EdgeInsets.only(top: 16), // Add some margin if needed
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        blurRadius: 4,
-                        spreadRadius: 2,
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              Align(
+                alignment: Alignment.topLeft,
+                child: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Container(
+                    height: 35,
+                    width: 35,
+                    margin: const EdgeInsets.only(top: 16),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          blurRadius: 4,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        "assets/icon/back.png",
+                        height: 15,
+                        width: 10,
                       ),
-                    ],
-                    color: Colors.white, // Background color for the container
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      "assets/icon/back.png",
-                      height: 15, // Set the height to 15
-                      width: 10, // Set the width to 15
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
+              const SizedBox(height: 20),
 
-            Container(
-              width: 102,
-              height: 102,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 3, // Border with a width of 3
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color with opacity
-                    blurRadius: 5, // Blur effect
-                    spreadRadius: 2, // Spread radius
-                    offset: const Offset(0, 1), // Position of the shadow (x, y)
+              Container(
+                width: 102,
+                height: 102,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 3,
                   ),
-                ],
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/userimg.png', // Replace with the actual image URL
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(Routes.ADMIN_SETTING_PROFILE);
-                // Handle edit profile action
-              },
-              child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              const  Icon(
-                  Icons.edit,
-                  color: Color(0xFFFF9A0D),
-                  size: 16,
-                ),
-
-               const SizedBox(width: 5),
-
-                // Edit Profile
-                Text(
-                    "Edit Profile",
-                    style: AppTextStyles.MetropolisMedium.copyWith(
-                      color: const Color(0xFFFF9A0D),
-                      fontSize: 12,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 5,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 1),
                     ),
-                  ),
-              
-              ],
-            ),  ),
-
-            const SizedBox(height: 10),
-
-            // Greeting Text
-            Text(
-              "Hi there Emilia!",
-              style: AppTextStyles.MetropolisBold.copyWith(
-                fontSize: 18,
+                  ],
+                ),
+                child: ClipOval(
+                  child: controller.userProfile.value?.cafeteriaLogo != null
+                      ? Image.network(
+                          controller.userProfile.value!.cafeteriaLogo!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: const Color(0xFFFC6011).withOpacity(0.2),
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/userimg.png',
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            );
+                          },
+                        )
+                      : Image.asset(
+                          'assets/images/userimg.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            const SimpleTextFieldWithOutSuffixWidget(hintText: 'School/Collage Name')
-          ],
-        ),
-      ),
+
+              const SizedBox(height: 10),
+
+              GestureDetector(
+                onTap: () => Get.toNamed(Routes.ADMIN_SETTING_PROFILE),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.edit,
+                      color: Color(0xFFFF9A0D),
+                      size: 16,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "Edit Profile",
+                      style: AppTextStyles.MetropolisMedium.copyWith(
+                        color: const Color(0xFFFF9A0D),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                "Hi there ${controller.userProfile.value?.cafeteriaName ?? 'User'}!",
+                style: AppTextStyles.MetropolisBold.copyWith(
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 40),
+              SimpleTextFieldWithOutSuffixWidget(
+                // hintText: controller.userProfile.value?.schoolName ?? 'School/College Name',
+                hintText:  'School/College Name',
+                readOnly: true,
+                controller: TextEditingController(
+                  text: controller.userProfile.value?.schoolName ?? '',
+                ),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 }

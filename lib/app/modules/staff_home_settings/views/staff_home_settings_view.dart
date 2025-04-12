@@ -45,7 +45,7 @@ class StaffHomeSettingsView extends GetView<StaffHomeSettingsController> {
                   CafeteriaSettingWidget(
                     labelName: "Profile",
                     onTap: () {
-                      Get.toNamed(Routes.STAFF_HOME_SETTINGS);
+                      Get.toNamed(Routes.STAFF_PROFILE);
                     },
                   ),
                   CafeteriaSettingWidget(
