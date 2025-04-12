@@ -43,7 +43,7 @@ class HomeSettingsView extends GetView<HomeSettingsController> {
                   CafeteriaSettingWidget(
                     labelName: "Profile",
                     onTap: () {
-                      // Get.toNamed(Routes.PARENT_PROFILE);
+                      Get.toNamed(Routes.PARENT_PROFILE);
                     },
                   ),
                   CafeteriaSettingWidget(
