@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:luncher/app/modules/admin_setting_profile/bindings/admin_setting_profile_binding.dart';
+import 'package:luncher/app/modules/admin_setting_profile/views/admin_setting_profile_view.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/bindings/cafeteria_edit_staff_binding.dart';
 import 'package:luncher/app/modules/cafeteria_add_staff/views/cafeteria_edit_staff_view.dart';
 import 'package:luncher/app/modules/cafeteria_upcoming_detail/binding/cafeteria_upcoming_detail_binding.dart';
@@ -8,6 +10,8 @@ import 'package:luncher/app/modules/parent_children_edit/view/parent_children_ed
 import 'package:luncher/app/modules/parent_upcoming_order_detail/binding/parent_upcoming_order_detail_binding.dart';
 import 'package:luncher/app/modules/parents_profile/binding/parent_profile_binding.dart';
 import 'package:luncher/app/modules/parents_profile/view/parent_profile_view.dart';
+import 'package:luncher/app/modules/staff_setting_profile/bindings/staff_setting_profile_binding.dart';
+import 'package:luncher/app/modules/staff_setting_profile/views/staff_setting_profile_view.dart';
 
 import '../modules/cafeteria/bindings/cafeteria_binding.dart';
 import '../modules/cafeteria/views/cafeteria_view.dart';
@@ -123,6 +127,8 @@ import '../modules/staff_settings/views/staff_settings_view.dart';
 import '../modules/cafeteria_setting_history/bindings/cafeteria_setting_history_binding.dart';
 import '../modules/cafeteria_setting_history/views/cafeteria_setting_history_view.dart';
 import '../modules/parent_upcoming_order_detail/view/parent_upcoming_order_detail_view.dart';
+import '../modules/setting_parent_profile/bindings/setting_parent_profile_binding.dart';
+import '../modules/setting_parent_profile/views/setting_parent_profile_view.dart';
 
 part 'app_routes.dart';
 
@@ -164,7 +170,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA,
-      page: () =>  CafeteriaView(),
+      page: () => CafeteriaView(),
       binding: CafeteriaBinding(),
     ),
     GetPage(
@@ -174,7 +180,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MENU_PAGE,
-      page: () =>  MenuPageView(),
+      page: () => MenuPageView(),
       binding: MenuPageBinding(),
     ),
     GetPage(
@@ -186,7 +192,6 @@ class AppPages {
       name: _Paths.PROFILE,
       page: () => const ProfileView(),
       binding: ProfileBinding(),
-
     ),
     GetPage(
       name: _Paths.SETTINGS,
@@ -282,7 +287,8 @@ class AppPages {
       name: _Paths.PARENTS_CHILDREN_DETAILS,
       page: () => const ParentsChildrenDetailsView(),
       binding: ParentsChildrenDetailsBinding(),
-    ),  GetPage(
+    ),
+    GetPage(
       name: _Paths.PARENTS_CHILDREN_EDIT,
       page: () => const ParentsChildrenEditView(),
       binding: ParentsChildrenEditBinding(),
@@ -325,7 +331,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STAFF_PHONE_VERIFICATION,
-      page: () =>  StaffPhoneAuthenticationView(),
+      page: () => StaffPhoneAuthenticationView(),
       binding: StaffPhoneVerificationBinding(),
     ),
     GetPage(
@@ -395,7 +401,6 @@ class AppPages {
       page: () => const StaffProfileView(),
       binding: StaffProfileBinding(),
     ),
-
     GetPage(
       name: _Paths.PARENT_PROFILE,
       page: () => const ParentsProfileView(),
@@ -403,11 +408,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CAFETERIA_ADD_STAFF,
-      page: () =>  const CafeteriaAddStaffView(),
+      page: () => const CafeteriaAddStaffView(),
       binding: CafeteriaAddStaffBinding(),
-    ), GetPage(
+    ),
+    GetPage(
       name: _Paths.CAFETERIA_EDIT_STAFF,
-      page: () =>  CafeteriaEditStaffView(),
+      page: () => CafeteriaEditStaffView(),
       binding: CafeteriaEditStaffBinding(),
     ),
     GetPage(
@@ -441,6 +447,21 @@ class AppPages {
       name: Routes.PARENT_UPCOMING_ORDER_DETAIL,
       page: () => const ParentUpcomingOrderDetailView(),
       binding: ParentUpcomingOrderDetailBinding(),
+    ),
+    GetPage(
+      name: Routes.SETTING_PARENT_PROFILE,
+      page: () => const SettingParentProfileView(),
+      binding: SettingParentProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.ADMIN_SETTING_PROFILE,
+      page: () => const AdminSettingProfileView(),
+      binding: AdminSettingProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.STAFF_SETTING_PROFILE,
+      page: () => const StaffSettingProfileView(),
+      binding: StaffSettingProfileBinding(),
     ),
   ];
 }
