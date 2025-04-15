@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_const.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_const.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashController extends GetxController {

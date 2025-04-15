@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/admin/admin_profile_update_service.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/admin/admin_profile_update_service.dart';
 
 class AdminSettingProfileController extends GetxController {
   final AdminProfileUpdateService _profileService = AdminProfileUpdateService();

@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/models/staff/staff_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart'; // Import for Completer
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/models/staff/staff_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart'; // Import for Completer
 
 class AuthenticationService extends GetxService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

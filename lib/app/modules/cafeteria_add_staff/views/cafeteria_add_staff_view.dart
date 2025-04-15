@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/config/validation.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/widgets/custom_back_button.dart';
-import 'package:luncher/widgets/custom_password_text_field.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/config/validation.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/widgets/custom_back_button.dart';
+import 'package:snacktag/widgets/custom_password_text_field.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_add_staff_controller.dart';
 

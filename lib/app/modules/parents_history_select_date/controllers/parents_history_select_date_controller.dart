@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/cefeteria_admin/upcoming_meal_order.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
-import 'package:luncher/services/parents/parents_history_select_date_service.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/cefeteria_admin/upcoming_meal_order.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/parents_models/parent_add_wallet_model.dart';
+import 'package:snacktag/services/parents/parents_history_select_date_service.dart';
 
 class ParentsHistorySelectDateController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -48,9 +48,9 @@ class ParentsHistorySelectDateController extends GetxController {
     parentsHistorySelectDateService.fetchWalletStreamByParentId(currentUser.uid).listen(
       (wallet) {
         if (wallet != null) {
-        parentAddWalletModel.value = wallet;
+        parentAddWalletModel.value = wallet as ParentAddWalletModel;
         }
-        print("🔄 Wallet data updated: ${wallet?.toJson()}");
+        print("🔄 Wallet data updated: ${wallet?.toString()}");
       },
       onError: (error) {
         print("❌ Error fetching wallet data: $error");

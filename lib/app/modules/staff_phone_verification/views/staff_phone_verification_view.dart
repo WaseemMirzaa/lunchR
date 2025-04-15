@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:luncher/app/modules/staff_phone_verification/controllers/staff_phone_verification_controller.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_password_text_field.dart';
-import 'package:luncher/widgets/custom_simple_textfields.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/app/modules/staff_phone_verification/controllers/staff_phone_verification_controller.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_password_text_field.dart';
+import 'package:snacktag/widgets/custom_simple_textfields.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 
 class StaffPhoneAuthenticationView extends StatelessWidget {
   StaffPhoneAuthenticationView({super.key});

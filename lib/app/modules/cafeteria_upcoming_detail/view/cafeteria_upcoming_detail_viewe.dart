@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/cafeteria_upcoming_detail/controller/cafeteria_upcoming_detail_controller.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/app/modules/cafeteria_upcoming_detail/controller/cafeteria_upcoming_detail_controller.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 import 'package:intl/intl.dart';
 

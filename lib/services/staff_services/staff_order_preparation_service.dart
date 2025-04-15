@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/user_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/user_model.dart';
 
 class StaffOrderPreparationService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

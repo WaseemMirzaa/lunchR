@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
 
 import '../controllers/staff_profile_controller.dart';
 

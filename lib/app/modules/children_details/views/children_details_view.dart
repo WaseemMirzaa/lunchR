@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/parents_models/parent_selected_meals.dart';
-import 'package:luncher/services/parents/school_cafaterias_model.dart';
-import 'package:luncher/widgets/custom_selectable_options.dart';
+import 'package:snacktag/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/parents_models/parent_selected_meals.dart';
+import 'package:snacktag/services/parents/school_cafaterias_model.dart';
+import 'package:snacktag/widgets/custom_selectable_options.dart';
 
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 import '../controllers/children_details_controller.dart';
 
 class ChildrenDetailsView extends GetView<ChildrenDetailsController> {

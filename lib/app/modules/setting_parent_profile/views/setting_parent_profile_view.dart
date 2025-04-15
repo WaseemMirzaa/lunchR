@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 import '../controllers/setting_parent_profile_controller.dart';
 
 class SettingParentProfileView extends GetView<SettingParentProfileController> {
@@ -85,19 +85,30 @@ class SettingParentProfileView extends GetView<SettingParentProfileController> {
                   onTap: controller.pickImage,
                   child: Stack(
                     children: [
-                      CircleAvatar(
+                      Obx(() => CircleAvatar(
                         radius: 50,
-                        backgroundColor: Colors.white,
                         backgroundImage: controller.selectedImage.value != null
-                            ? FileImage(controller.selectedImage.value!)
+                            ? FileImage(controller.selectedImage.value!) as ImageProvider
                             : controller.currentImageUrl.value != null
-                                ? NetworkImage(controller.currentImageUrl.value!)
-                                : null,
-                        child: (controller.selectedImage.value == null &&
-                                controller.currentImageUrl.value == null)
+                            ? NetworkImage(controller.currentImageUrl.value!)
+                            : null,
+                        child: controller.isImageLoading.value
+                            ? Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                            : (controller.selectedImage.value == null &&
+                            controller.currentImageUrl.value == null)
                             ? const Icon(Icons.person, size: 50)
                             : null,
-                      ),
+                      )),
                       Positioned(
                         bottom: 0,
                         right: 0,

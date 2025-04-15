@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/parents_home/controllers/parents_home_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/parents/add_children_service.dart';
-import 'package:luncher/services/parents/parent_add_wallet_service.dart';
-import 'package:luncher/widgets/custom_snackbar.dart';
+import 'package:snacktag/app/modules/parents_home/controllers/parents_home_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/models/parents_models/parent_add_wallet_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/parents/add_children_service.dart';
+import 'package:snacktag/services/parents/parent_add_wallet_service.dart';
+import 'package:snacktag/widgets/custom_snackbar.dart';
 
 class ParentsAddWalletController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

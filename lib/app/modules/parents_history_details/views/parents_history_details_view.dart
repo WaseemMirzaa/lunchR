@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_wallet_widget.dart';
-import 'package:luncher/widgets/custom_widget_tile_history.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_wallet_widget.dart';
+import 'package:snacktag/widgets/custom_widget_tile_history.dart';
 
 import '../controllers/parents_history_details_controller.dart';
 

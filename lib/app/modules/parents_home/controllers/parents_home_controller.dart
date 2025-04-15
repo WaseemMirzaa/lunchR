@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
-import 'package:luncher/services/parents/parent_home_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/parents_models/parent_add_wallet_model.dart';
+import 'package:snacktag/services/parents/parent_home_service.dart';
 
 class ParentsHomeController extends GetxController {
   final ParentHomeService parentHomeService = ParentHomeService();
@@ -69,7 +69,7 @@ class ParentsHomeController extends GetxController {
 
     parentHomeService.fetchWalletStreamByParentId(currentUser.uid).listen(
       (wallet) {
-        parentAddWalletModel.value = wallet;
+        parentAddWalletModel.value = wallet as ParentAddWalletModel;
         if (wallet != null) {
           switchController.value = wallet.enableMonthlyReload; // Sync switch state
         }

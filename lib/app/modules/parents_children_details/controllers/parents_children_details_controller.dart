@@ -97,11 +97,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/parents/add_children_service.dart';
-import 'package:luncher/widgets/custom_snackbar.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/parents/add_children_service.dart';
+import 'package:snacktag/widgets/custom_snackbar.dart';
 
 class ParentsChildrenDetailsController extends GetxController {
   final AddChildrenService addChildrenService = AddChildrenService();

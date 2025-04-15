@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/admin/admin_profile_update_service.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/admin/admin_profile_update_service.dart';
 
 class ProfileController extends GetxController {
   //TODO: Implement ProfileController

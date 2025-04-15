@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/staff/staff_profile_update_service.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/staff/staff_profile_update_service.dart';
 
 class StaffProfileController extends GetxController {
   final StaffProfileUpdateService _profileService = StaffProfileUpdateService();

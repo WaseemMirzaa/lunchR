@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/staff_services/cafeteria_child_verification_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/staff_services/cafeteria_child_verification_service.dart';
 
 class CafeteriaChildVerificationController extends GetxController {
    final CafeteriaChildVerificationService cafeteriaChildVerificationService =

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/cefeteria_admin/meal_shedule_model.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/parents/add_children_service.dart';
-import 'package:luncher/services/parents/school_cafaterias_model.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_shedule_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/parents/add_children_service.dart';
+import 'package:snacktag/services/parents/school_cafaterias_model.dart';
 
 class MenuPageController extends GetxController {
   //TODO: Implement CafeteriaController

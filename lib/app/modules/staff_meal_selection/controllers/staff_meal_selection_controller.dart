@@ -25,11 +25,11 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/meal_service.dart';
-import 'package:luncher/services/staff_services/staff_services.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/meal_service.dart';
+import 'package:snacktag/services/staff_services/staff_services.dart';
 
 class StaffMealSelectionController extends GetxController {
   final StaffMealService _mealService = StaffMealService();

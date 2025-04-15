@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:luncher/services/authentication_service.dart';
-import 'package:luncher/services/user_service.dart';
+import 'package:snacktag/services/authentication_service.dart';
+import 'package:snacktag/services/user_service.dart';
 
 import '../../../../widgets/custom_snackbar.dart';
 

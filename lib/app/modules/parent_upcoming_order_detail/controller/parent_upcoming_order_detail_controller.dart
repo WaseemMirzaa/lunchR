@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/parents/parent_upcoming_detail_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/parents/parent_upcoming_detail_service.dart';
 
 class ParentUpcomingOrderDetailController extends GetxController {
   final ParentsUpcomingDetailService parentsUpcomingDetailService = ParentsUpcomingDetailService();

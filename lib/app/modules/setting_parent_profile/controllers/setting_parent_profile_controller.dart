@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/parents/parent_profile_update_service.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/parents/parent_profile_update_service.dart';
 
 class SettingParentProfileController extends GetxController {
   final ParentProfileUpdateService _profileService = ParentProfileUpdateService();
@@ -30,6 +30,7 @@ class SettingParentProfileController extends GetxController {
   Future<void> fetchUserProfile() async {
     try {
       isLoading.value = true;
+      isImageLoading.value = true;
       final profile = await _profileService.getCurrentUserProfile();
       if (profile != null) {
         userProfile.value = profile;
@@ -44,6 +45,8 @@ class SettingParentProfileController extends GetxController {
       );
     } finally {
       isLoading.value = false;
+      isImageLoading.value = false;
+
     }
   }
 

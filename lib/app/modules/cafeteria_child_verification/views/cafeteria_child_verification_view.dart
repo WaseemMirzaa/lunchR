@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/cafeteria_child_verification_home/controllers/cafeteria_child_verification_home_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/app/modules/cafeteria_child_verification_home/controllers/cafeteria_child_verification_home_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 
 import '../controllers/cafeteria_child_verification_controller.dart';
 

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/config/app_const.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/config/app_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app/routes/app_pages.dart';
 import 'Shared_preference/preferences.dart';

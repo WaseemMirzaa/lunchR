@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/base_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/base_service.dart';
 
 class CafeteriaChildVerificationService extends BaseService{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

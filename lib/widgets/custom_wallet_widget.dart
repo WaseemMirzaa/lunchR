@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:luncher/app/modules/parents_add_wallet/controllers/parents_add_wallet_controller.dart';
-import 'package:luncher/app/modules/parents_home/controllers/parents_home_controller.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
+import 'package:snacktag/app/modules/parents_add_wallet/controllers/parents_add_wallet_controller.dart';
+import 'package:snacktag/app/modules/parents_home/controllers/parents_home_controller.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
 
 import '../app/routes/app_pages.dart';
 

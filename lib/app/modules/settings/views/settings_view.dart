@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/home_settings/controllers/home_settings_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/app/modules/home_settings/controllers/home_settings_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 import '../controllers/settings_controller.dart';
 

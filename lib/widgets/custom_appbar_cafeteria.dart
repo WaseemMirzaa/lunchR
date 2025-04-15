@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 class CustomAppBarCaferteria extends StatelessWidget
     implements PreferredSizeWidget {

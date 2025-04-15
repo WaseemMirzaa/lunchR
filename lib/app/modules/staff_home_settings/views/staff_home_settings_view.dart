@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/cafeteria_settings/views/cafeteria_setting_widget.dart';
-import 'package:luncher/app/modules/profile/views/profile_view.dart';
-import 'package:luncher/app/modules/staff_history_calender/views/staff_history_calender_view.dart';
-import 'package:luncher/app/modules/staff_profile/views/staff_profile_view.dart';
-import 'package:luncher/app/modules/staff_settings/controllers/staff_settings_controller.dart';
-import 'package:luncher/app/modules/staff_settings/views/staff_settings_view.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/app/modules/cafeteria_settings/views/cafeteria_setting_widget.dart';
+import 'package:snacktag/app/modules/profile/views/profile_view.dart';
+import 'package:snacktag/app/modules/staff_history_calender/views/staff_history_calender_view.dart';
+import 'package:snacktag/app/modules/staff_profile/views/staff_profile_view.dart';
+import 'package:snacktag/app/modules/staff_settings/controllers/staff_settings_controller.dart';
+import 'package:snacktag/app/modules/staff_settings/views/staff_settings_view.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 import '../controllers/staff_home_settings_controller.dart';
 

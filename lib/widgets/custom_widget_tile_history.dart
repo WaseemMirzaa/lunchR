@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 class WalletBalanceCardHistory extends StatelessWidget {
   final bool isEdit; // Parameter to control the visibility of "Edit" text

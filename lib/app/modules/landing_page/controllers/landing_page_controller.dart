@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/home_settings/controllers/home_settings_controller.dart';
-import 'package:luncher/app/modules/home_settings/views/home_settings_view.dart';
-import 'package:luncher/app/modules/notifications/controllers/notifications_controller.dart';
-import 'package:luncher/app/modules/notifications/views/notifications_view.dart';
-import 'package:luncher/app/modules/parents_history/controllers/parents_history_controller.dart';
-import 'package:luncher/app/modules/parents_history/views/parents_history_view.dart';
-import 'package:luncher/app/modules/parents_home/controllers/parents_home_controller.dart';
-import 'package:luncher/app/modules/parents_home/views/parents_home_view.dart';
+import 'package:snacktag/app/modules/home_settings/controllers/home_settings_controller.dart';
+import 'package:snacktag/app/modules/home_settings/views/home_settings_view.dart';
+import 'package:snacktag/app/modules/notifications/controllers/notifications_controller.dart';
+import 'package:snacktag/app/modules/notifications/views/notifications_view.dart';
+import 'package:snacktag/app/modules/parents_history/controllers/parents_history_controller.dart';
+import 'package:snacktag/app/modules/parents_history/views/parents_history_view.dart';
+import 'package:snacktag/app/modules/parents_home/controllers/parents_home_controller.dart';
+import 'package:snacktag/app/modules/parents_home/views/parents_home_view.dart';
 
 class LandingPageController extends GetxController {
   final List<String> images = [

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/cefeteria_admin_services/cafeteria_setting_history_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/cefeteria_admin_services/cafeteria_setting_history_service.dart';
 
 class CafeteriaSettingHistoryController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;

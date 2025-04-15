@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-// import 'package:luncher/app/modules/cafeteria_child_verification_home/controllers/cafeteria_child_verification_home_controller.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+// import 'package:snacktag/app/modules/cafeteria_child_verification_home/controllers/cafeteria_child_verification_home_controller.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 import 'package:intl/intl.dart';
 import '../controllers/child_verification_upload_info_controller.dart';
 

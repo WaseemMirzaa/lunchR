@@ -3,16 +3,16 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/parent_children_edit/controller/parent_children_edit_controller.dart';
-import 'package:luncher/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
-import 'package:luncher/app/modules/parents_children_details/views/parents_children_details_view.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/cefeteria_admin/meal_shedule_model.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/parents_models/parent_selected_meals.dart';
-import 'package:luncher/services/parents/add_children_service.dart';
-import 'package:luncher/services/parents/school_cafaterias_model.dart';
+import 'package:snacktag/app/modules/parent_children_edit/controller/parent_children_edit_controller.dart';
+import 'package:snacktag/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
+import 'package:snacktag/app/modules/parents_children_details/views/parents_children_details_view.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_shedule_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/parents_models/parent_selected_meals.dart';
+import 'package:snacktag/services/parents/add_children_service.dart';
+import 'package:snacktag/services/parents/school_cafaterias_model.dart';
 
 import '../../../../widgets/custom_dialog_schedule.dart';
 

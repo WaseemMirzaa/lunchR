@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/authentication_service.dart';
-import 'package:luncher/services/parent_authentication-service.dart';
-import 'package:luncher/services/parents/parenents_services.dart';
-import 'package:luncher/widgets/custom_snackbar.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/authentication_service.dart';
+import 'package:snacktag/services/parent_authentication-service.dart';
+import 'package:snacktag/services/parents/parenents_services.dart';
+import 'package:snacktag/widgets/custom_snackbar.dart';
 
 import '../../../../config/app_const.dart';
 

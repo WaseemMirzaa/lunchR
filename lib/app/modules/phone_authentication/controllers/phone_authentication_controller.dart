@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/services/authentication_service.dart';
-import 'package:luncher/services/parent_authentication-service.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/services/authentication_service.dart';
+import 'package:snacktag/services/parent_authentication-service.dart';
 
 import '../../../../widgets/custom_snackbar.dart';
 

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/cafeteria_add_staff/controllers/cafeteria_edit_staff_controller.dart';
+import 'package:snacktag/app/modules/cafeteria_add_staff/controllers/cafeteria_edit_staff_controller.dart';
 
 import '../controllers/cafeteria_add_staff_controller.dart';
 

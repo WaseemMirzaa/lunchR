@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/staff_services/staff_history_calendar_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/staff_services/staff_history_calendar_service.dart';
 
 class StaffHistoryDetailController extends GetxController {
 

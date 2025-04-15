@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/services/base_service.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/services/base_service.dart';
 
 class AddStaffService extends BaseService {
   Future<void> addStaff(StaffModel staff, File? imageFile,String userId) async {

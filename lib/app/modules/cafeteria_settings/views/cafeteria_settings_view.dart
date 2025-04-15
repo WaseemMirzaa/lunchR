@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
-import 'package:luncher/app/modules/cafeteria_settings/views/cafeteria_setting_widget.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/app/modules/cafeteria_home_settings/controllers/cafeteria_home_settings_controller.dart';
+import 'package:snacktag/app/modules/cafeteria_settings/views/cafeteria_setting_widget.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 import '../controllers/cafeteria_settings_controller.dart';
 

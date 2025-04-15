@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/widgets/custom_navbar.dart';
+import 'package:snacktag/widgets/custom_navbar.dart';
 
 import '../controllers/staff_landing_page_controller.dart';
 

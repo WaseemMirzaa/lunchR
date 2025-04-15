@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/staff_history_detail/views/staff_history_detail_view.dart';
-import 'package:luncher/app/modules/staff_history_list/views/staff_history_list_view.dart';
-import 'package:luncher/app/modules/staff_preparing/views/staff_preparing_view.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/app/modules/staff_history_detail/views/staff_history_detail_view.dart';
+import 'package:snacktag/app/modules/staff_history_list/views/staff_history_list_view.dart';
+import 'package:snacktag/app/modules/staff_preparing/views/staff_preparing_view.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 import '../controllers/staff_history_controller.dart';
 

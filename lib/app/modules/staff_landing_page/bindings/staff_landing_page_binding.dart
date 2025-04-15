@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import '../controllers/staff_landing_page_controller.dart';
-import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
+import 'package:snacktag/app/modules/staff_history/controllers/staff_history_controller.dart';
 
 class StaffLandingPageBinding extends Bindings {
   @override

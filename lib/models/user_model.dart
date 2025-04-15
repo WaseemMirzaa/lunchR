@@ -1,4 +1,4 @@
-import 'package:luncher/config/app_const.dart';
+import 'package:snacktag/config/app_const.dart';
 
 class UserModel {
   final String? userID;

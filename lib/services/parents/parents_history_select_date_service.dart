@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
-import 'package:luncher/services/base_service.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/parents_models/parent_add_wallet_model.dart';
+import 'package:snacktag/services/base_service.dart';
 
 class ParentsHistorySelectDateService extends BaseService{
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

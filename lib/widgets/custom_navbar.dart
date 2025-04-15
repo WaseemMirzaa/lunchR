@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:luncher/config/app_colors.dart';
+import 'package:snacktag/config/app_colors.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;

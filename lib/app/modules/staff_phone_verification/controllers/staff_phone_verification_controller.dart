@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/authentication_service.dart';
-import 'package:luncher/widgets/custom_snackbar.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/authentication_service.dart';
+import 'package:snacktag/widgets/custom_snackbar.dart';
 
 class StaffPhoneVerificationController extends GetxController {
   final isLoading = false.obs;

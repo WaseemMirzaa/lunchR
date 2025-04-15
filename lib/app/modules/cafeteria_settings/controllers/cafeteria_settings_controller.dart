@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CafeteriaSettingsController extends GetxController {

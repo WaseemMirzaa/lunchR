@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
-import 'package:luncher/services/base_service.dart';
+import 'package:snacktag/models/parents_models/parent_add_wallet_model.dart';
+import 'package:snacktag/services/base_service.dart';
 
 class ParentAddWalletService extends BaseService {
 

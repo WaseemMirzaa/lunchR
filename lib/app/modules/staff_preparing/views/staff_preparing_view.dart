@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/appBuilderId.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_wallet_widget.dart';
+import 'package:snacktag/app/modules/staff_history/controllers/staff_history_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/appBuilderId.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_wallet_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/staff_preparing_controller.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/config/appBuilderId.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/config/appBuilderId.dart';
+import 'package:snacktag/config/app_text_style.dart';
 
 import 'package:intl/intl.dart';
 
@@ -320,7 +320,7 @@ class StaffDeliveredOrderHistoryDetails extends StatelessWidget {
 
                   // Row with month/year and calendar icon
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                     child: RichText(
                       text: TextSpan(
                         children: [
@@ -773,7 +773,7 @@ class StaffDeliveredOrderHistoryDetails extends StatelessWidget {
                       ],
                     ),
                   ),
-                  CustomButton(text: 'Confirm', onPressed: () {}, isLoading: false.obs),
+                  // CustomButton(text: 'Confirm', onPressed: () {}, isLoading: false.obs),
                   SizedBox(
                     height: 16,
                   ),

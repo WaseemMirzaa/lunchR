@@ -1,7 +1,7 @@
 
 import 'package:get/get.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/services/cefeteria_admin_services/cafateria_history_selectdate_service.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/services/cefeteria_admin_services/cafateria_history_selectdate_service.dart';
 
 class CafeteriaHistoryDetailsController extends GetxController {
 

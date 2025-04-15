@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 import '../controllers/admin_setting_profile_controller.dart';
 
 class AdminSettingProfileView extends GetView<AdminSettingProfileController> {
@@ -83,7 +84,7 @@ class AdminSettingProfileView extends GetView<AdminSettingProfileController> {
                       Obx(() => CircleAvatar(
                             radius: 50,
                             backgroundImage: controller.selectedImage.value != null
-                                ? FileImage(controller.selectedImage.value!)
+                                ? FileImage(controller.selectedImage.value!) as ImageProvider
                                 : controller.currentImageUrl.value != null
                                     ? NetworkImage(controller.currentImageUrl.value!)
                                     : null,
@@ -101,7 +102,7 @@ class AdminSettingProfileView extends GetView<AdminSettingProfileController> {
                                   )
                                 : (controller.selectedImage.value == null &&
                                         controller.currentImageUrl.value == null)
-                                    ? const Icon(Icons.store, size: 50)
+                                    ? const Icon(Icons.person, size: 50)
                                     : null,
                           )),
                       Positioned(

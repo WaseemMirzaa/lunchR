@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:luncher/config/app_text_style.dart';
+import 'package:snacktag/config/app_text_style.dart';
 import '../controller/parent_upcoming_order_detail_controller.dart';
 
 class ParentUpcomingOrderDetailView extends GetView<ParentUpcomingOrderDetailController> {

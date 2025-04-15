@@ -1,4 +1,4 @@
-import 'package:luncher/models/parents_models/parent_selected_meals.dart';
+import 'package:snacktag/models/parents_models/parent_selected_meals.dart';
 
 class ParentsAddChildren {
   String? id;
@@ -108,7 +108,7 @@ class ParentsAddChildren {
   }
 }
 
-// import 'package:luncher/models/parents_models/parent_selected_meals.dart';
+// import 'package:snacktag/models/parents_models/parent_selected_meals.dart';
 //
 // class ParentsAddChildren {
 //    String? id;

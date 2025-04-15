@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/staff_history/controllers/staff_history_controller.dart';
-import 'package:luncher/app/modules/staff_landing_page/controllers/staff_landing_page_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/parents_models/parent_add_wallet_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/staff_services/child_verification_wallet_service.dart';
+import 'package:snacktag/app/modules/staff_history/controllers/staff_history_controller.dart';
+import 'package:snacktag/app/modules/staff_landing_page/controllers/staff_landing_page_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/parents_models/parent_add_wallet_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/staff_services/child_verification_wallet_service.dart';
 
 class ChildVerificationUploadInfoController extends GetxController {
   final ChildVerificationWalletService _walletService = ChildVerificationWalletService();

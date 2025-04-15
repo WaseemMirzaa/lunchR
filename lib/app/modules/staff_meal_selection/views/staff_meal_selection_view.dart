@@ -3,9 +3,9 @@
 //
 // import 'package:get/get.dart';
 //
-// import 'package:luncher/config/app_colors.dart';
-// import 'package:luncher/config/app_text_style.dart';
-// import 'package:luncher/widgets/custom_textfeild.dart';
+// import 'package:snacktag/config/app_colors.dart';
+// import 'package:snacktag/config/app_text_style.dart';
+// import 'package:snacktag/widgets/custom_textfeild.dart';
 //
 // import '../controllers/staff_meal_selection_controller.dart';
 //
@@ -235,15 +235,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/staff_meal_selection/controllers/staff_meal_selection_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/widgets/Custom_search_textfield.dart';
-import 'package:luncher/widgets/custom_textfeild.dart';
+import 'package:snacktag/app/modules/staff_meal_selection/controllers/staff_meal_selection_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/widgets/Custom_search_textfield.dart';
+import 'package:snacktag/widgets/custom_textfeild.dart';
 
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 
 
 class StaffMealSelectionView extends GetView<StaffMealSelectionController> {

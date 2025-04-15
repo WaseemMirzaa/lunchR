@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StaffSettingsController extends GetxController {

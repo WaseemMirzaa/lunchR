@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
 
 class CafeteriaSettingHistoryService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

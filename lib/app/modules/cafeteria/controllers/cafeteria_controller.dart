@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/parents/add_children_service.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/parents/add_children_service.dart';
 
 class CafeteriaController extends GetxController {
   final AddChildrenService addChildrenService = AddChildrenService();

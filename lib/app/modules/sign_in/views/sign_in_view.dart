@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_colors.dart';
 
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfeild.dart'; // Ensure this is imported correctly
-import 'package:luncher/widgets/reuse_button.dart'; // Ensure this is imported correctly
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfeild.dart'; // Ensure this is imported correctly
+import 'package:snacktag/widgets/reuse_button.dart'; // Ensure this is imported correctly
 import '../controllers/sign_in_controller.dart'; // Ensure your controller is correctly imported
 
 class SignInView extends GetView<SignInController> {

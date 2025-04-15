@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/validation.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/cefeteria_admin_services/add_staff_service.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/validation.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/cefeteria_admin_services/add_staff_service.dart';
 
 class CafeteriaAddStaffController extends GetxController {
   final AddStaffService _addStaffService = AddStaffService();

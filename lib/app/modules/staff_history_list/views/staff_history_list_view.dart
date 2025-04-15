@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/appBuilderId.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/appBuilderId.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
 
 
 import '../controllers/staff_history_list_controller.dart';

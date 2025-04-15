@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/base_service.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/base_service.dart';
 
 class StaffProfileUpdateService extends BaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

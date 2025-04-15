@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfeild.dart';
+import 'package:snacktag/app/modules/parents_children_details/controllers/parents_children_details_controller.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfeild.dart';
 
 class SchoolSelectorDialog extends StatefulWidget {
   final List<String> schoolsList;

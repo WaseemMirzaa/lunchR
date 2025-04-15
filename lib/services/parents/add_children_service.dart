@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:luncher/models/cefeteria_admin/meal_model.dart';
-import 'package:luncher/models/cefeteria_admin/meal_shedule_model.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/base_service.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_model.dart';
+import 'package:snacktag/models/cefeteria_admin/meal_shedule_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/base_service.dart';
 
 class AddChildrenService extends BaseService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

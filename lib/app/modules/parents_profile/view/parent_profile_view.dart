@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:luncher/app/modules/parents_profile/controller/parent_profile_controller.dart';
-import 'package:luncher/app/modules/staff_home_settings/controllers/staff_home_settings_controller.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_back_button.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/app/modules/parents_profile/controller/parent_profile_controller.dart';
+import 'package:snacktag/app/modules/staff_home_settings/controllers/staff_home_settings_controller.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_back_button.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 
 class ParentsProfileView extends GetView<ParentsProfileController> {
   const ParentsProfileView({super.key});

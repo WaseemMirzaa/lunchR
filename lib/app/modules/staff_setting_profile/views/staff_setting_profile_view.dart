@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 import '../controllers/staff_setting_profile_controller.dart';
 
 class StaffSettingProfileView extends GetView<StaffSettingProfileController> {
@@ -83,7 +83,7 @@ class StaffSettingProfileView extends GetView<StaffSettingProfileController> {
                       Obx(() => CircleAvatar(
                         radius: 50,
                         backgroundImage: controller.selectedImage.value != null
-                            ? FileImage(controller.selectedImage.value!)
+                            ? FileImage(controller.selectedImage.value!) as ImageProvider
                             : controller.currentImageUrl.value != null
                             ? NetworkImage(controller.currentImageUrl.value!)
                             : null,

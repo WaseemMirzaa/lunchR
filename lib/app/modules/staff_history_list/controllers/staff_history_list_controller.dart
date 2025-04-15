@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:luncher/models/cefeteria_admin/staff_model.dart';
-import 'package:luncher/models/parents_models/add_children.dart';
-import 'package:luncher/models/user_model.dart';
-import 'package:luncher/services/Shared_preference/preferences.dart';
-import 'package:luncher/services/staff_services/staff_order_preparation_service.dart';
+import 'package:snacktag/models/cefeteria_admin/staff_model.dart';
+import 'package:snacktag/models/parents_models/add_children.dart';
+import 'package:snacktag/models/user_model.dart';
+import 'package:snacktag/services/Shared_preference/preferences.dart';
+import 'package:snacktag/services/staff_services/staff_order_preparation_service.dart';
 
 class StaffHistoryListController extends GetxController {
   final StaffOrderPreparationService _preparationService = StaffOrderPreparationService();

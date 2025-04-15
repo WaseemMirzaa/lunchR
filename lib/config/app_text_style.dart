@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:luncher/config/app_fonts.dart';
+import 'package:snacktag/config/app_fonts.dart';
 
 class AppTextStyles {
   // Metropolis Regular (18pt, weight: w400)

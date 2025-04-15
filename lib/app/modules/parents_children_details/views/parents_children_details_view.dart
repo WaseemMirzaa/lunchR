@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:luncher/app/modules/cafeteria_phone_verification/views/cafeteria_phone_verification_view.dart';
-import 'package:luncher/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
-import 'package:luncher/app/routes/app_pages.dart';
-import 'package:luncher/config/app_colors.dart';
-import 'package:luncher/config/app_text_style.dart';
-import 'package:luncher/widgets/custom_dialog.dart';
-import 'package:luncher/widgets/custom_selectable_options.dart';
-import 'package:luncher/widgets/custom_snackbar.dart';
-import 'package:luncher/widgets/custom_textfield_without_suffix.dart';
-import 'package:luncher/widgets/reuse_button.dart';
+import 'package:snacktag/app/modules/cafeteria_phone_verification/views/cafeteria_phone_verification_view.dart';
+import 'package:snacktag/app/modules/parent_children_edit/view/parent_children_edit_VIEW.dart';
+import 'package:snacktag/app/routes/app_pages.dart';
+import 'package:snacktag/config/app_colors.dart';
+import 'package:snacktag/config/app_text_style.dart';
+import 'package:snacktag/widgets/custom_dialog.dart';
+import 'package:snacktag/widgets/custom_selectable_options.dart';
+import 'package:snacktag/widgets/custom_snackbar.dart';
+import 'package:snacktag/widgets/custom_textfield_without_suffix.dart';
+import 'package:snacktag/widgets/reuse_button.dart';
 
 import '../controllers/parents_children_details_controller.dart';
 
